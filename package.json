@@ -33,6 +33,8 @@
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "redux-persist": "^6.0.0",
+    "simplebar": "^5.3.6",
+    "simplebar-react": "^2.3.6",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },
