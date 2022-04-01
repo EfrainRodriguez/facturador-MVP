@@ -13,32 +13,36 @@ export const productSlice = createSlice({
         name: 'Producto 1',
         purchasePrice: '$100',
         salePrice: '$200',
-        category: 'Categoria 1'
+        category: 1
       },
       {
         id: 2,
         name: 'Producto 2',
         purchasePrice: '$300',
         salePrice: '$400',
-        category: 'Categoria 2'
+        category: 2
       },
       {
         id: 3,
         name: 'Producto 3',
         purchasePrice: '$500',
         salePrice: '$600',
-        category: 'Categoria 3'
+        category: 3
       }
-    ]
+    ],
+    errors: []
   },
   reducers: {
     setProductList(state, action) {
       state.productList = action.payload;
+    },
+    setErrors: (state, action) => {
+      state.errors = action.payload;
     }
   }
 });
 
-export const { setProductList } = productSlice.actions;
+export const { setProductList, setErrors } = productSlice.actions;
 
 export default productSlice.reducer;
 
@@ -55,8 +59,8 @@ export const createProduct = (product) => (dispatch, getState) => {
   );
 };
 
-export const updateProduct = (product) => (dispatch) => {
-  const productList = productSlice.state.productList.map((item) => {
+export const updateProduct = (product) => (dispatch, getState) => {
+  const productList = getState().inventory.products.productList.map((item) => {
     if (item.id === product.id) {
       return product;
     }

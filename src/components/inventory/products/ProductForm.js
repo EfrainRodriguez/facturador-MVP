@@ -28,7 +28,7 @@ const ProductForm = ({
           <TextInput
             name="name"
             label="Nombre"
-            value={data.name}
+            value={data.name || ''}
             error={getErrorMessage('name', errors)}
             placeholder="Informe el nombre del producto"
             onChange={handleChange}
@@ -38,7 +38,7 @@ const ProductForm = ({
           <SelectInput
             name="category"
             label="Categoria"
-            value={data.category}
+            value={data.category || ''}
             options={categoryOptions}
             error={getErrorMessage('category', errors)}
             placeholder="Informe la categoria del producto"
@@ -49,7 +49,7 @@ const ProductForm = ({
           <NumberFormattedInput
             name="purchasePrice"
             label="Precio de compra"
-            value={data.purchasePrice}
+            value={data.purchasePrice || ''}
             error={getErrorMessage('purchasePrice', errors)}
             placeholder="Informe el precio de compra del producto"
             onValueChange={(e) =>
@@ -62,7 +62,7 @@ const ProductForm = ({
         <Grid item xs={12} sm={6}>
           <NumberFormattedInput
             name="salePrice"
-            valie={data.salePrice}
+            value={data.salePrice || ''}
             label="Precio de venta"
             error={getErrorMessage('salePrice', errors)}
             placeholder="Informe el precio de venta del producto"
@@ -76,7 +76,7 @@ const ProductForm = ({
         <Grid item xs={12} sm={6}>
           <SelectInput
             name="unit"
-            value={data.unit}
+            value={data.unit || ''}
             options={unitOptions}
             label="Unidad de medida"
             error={getErrorMessage('unit', errors)}
@@ -87,7 +87,7 @@ const ProductForm = ({
         <Grid item xs={12} sm={6}>
           <TextInput
             name="code"
-            value={data.code}
+            value={data.code || ''}
             label="Referencia"
             error={getErrorMessage('code', errors)}
             placeholder="Informe una referencia para el producto"
@@ -100,7 +100,7 @@ const ProductForm = ({
             minRows={3}
             name="description"
             label="Descripción"
-            value={data.description}
+            value={data.description || ''}
             error={getErrorMessage('description', errors)}
             placeholder="Agregue una descripción para el producto"
             onChange={handleChange}
