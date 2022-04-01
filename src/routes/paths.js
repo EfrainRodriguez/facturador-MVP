@@ -28,10 +28,10 @@ export const PATH_SALES = {
 
 export const PATH_INVENTORY = {
   root: ROOT_INVENTORY,
-  products: path(ROOT_INVENTORY, '/produtos'),
-  editProductRoot: path(ROOT_INVENTORY, '/produtos/editar'),
-  editProduct: path(ROOT_INVENTORY, '/produtos/editar/:id'),
-  createProduct: path(ROOT_INVENTORY, '/produtos/crear'),
+  products: path(ROOT_INVENTORY, '/productos'),
+  editProductRoot: path(ROOT_INVENTORY, '/productos/editar'),
+  editProduct: path(ROOT_INVENTORY, '/productos/editar/:id'),
+  createProduct: path(ROOT_INVENTORY, '/productos/crear'),
   categories: path(ROOT_INVENTORY, '/categorias'),
   editCategoryRoot: path(ROOT_INVENTORY, '/categorias/editar'),
   editCategory: path(ROOT_INVENTORY, '/categorias/editar/:id'),

@@ -112,6 +112,11 @@ export const routes = [
         path: PATH_INVENTORY.createProduct,
         component: lazy(() => import('../pages/inventory/CreateProduct'))
       },
+      {
+        exact: true,
+        path: PATH_INVENTORY.editProduct,
+        component: lazy(() => import('../pages/inventory/EditProduct'))
+      },
       // categories
       {
         exact: true,

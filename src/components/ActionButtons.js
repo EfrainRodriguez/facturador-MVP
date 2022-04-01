@@ -25,7 +25,7 @@ const ActionButtons = ({
       </Tooltip>
       <Tooltip title={deleteLabel} placement="top" sx={{ ml: 1 }}>
         <IconButton onClick={handleDelete} {...deleteProps}>
-          <Delete color="error" />
+          <Delete />
         </IconButton>
       </Tooltip>
       {moreActions && moreActions}

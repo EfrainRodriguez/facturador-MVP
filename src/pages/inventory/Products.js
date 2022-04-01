@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
+// redux
+import { useSelector } from 'react-redux';
 // material
 import { Card, Button, Typography } from '@mui/material';
 // components
@@ -10,6 +12,13 @@ import { PATH_INVENTORY } from '../../routes/paths';
 
 const Products = () => {
   const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const {
+    inventory: {
+      products: { productList }
+    }
+  } = useSelector((state) => state);
 
   const navigate = useNavigate();
 
@@ -42,27 +51,6 @@ const Products = () => {
     }
   ];
 
-  const products = [
-    {
-      name: 'Producto 1',
-      purchasePrice: '$100',
-      salePrice: '$200',
-      category: 'Categoria 1'
-    },
-    {
-      name: 'Producto 2',
-      purchasePrice: '$300',
-      salePrice: '$400',
-      category: 'Categoria 2'
-    },
-    {
-      name: 'Producto 3',
-      purchasePrice: '$500',
-      salePrice: '$600',
-      category: 'Categoria 3'
-    }
-  ];
-
   const handleCreateNewProduct = () => {
     navigate(PATH_INVENTORY.createProduct);
   };
@@ -73,11 +61,17 @@ const Products = () => {
 
   const handleChangePage = () => {};
 
-  const handleRowSelected = () => {};
+  const handleRowSelected = (item) => {
+    setSelectedItem(item);
+  };
 
   const handleChangeRowsPerPage = () => {};
 
-  const handleEditProduct = () => {};
+  const handleEditProduct = () => {
+    if (selectedItem) {
+      navigate(`${PATH_INVENTORY.editProductRoot}/${selectedItem.id}`);
+    }
+  };
 
   const handleDeleteProduct = () => {};
 
@@ -114,7 +108,7 @@ const Products = () => {
         />
         <TableX
           selected={selectedItems}
-          sourceData={products}
+          sourceData={productList}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}
