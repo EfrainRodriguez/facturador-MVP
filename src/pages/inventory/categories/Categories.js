@@ -6,19 +6,15 @@ import { useSelector } from 'react-redux';
 // material
 import { Card, Button, Typography } from '@mui/material';
 // components
-import { Page, TableX, ActionButtons, TableToolbar } from '../../components';
+import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
-import { PATH_INVENTORY } from '../../routes/paths';
+import { PATH_INVENTORY } from '../../../routes/paths';
 
-const Products = () => {
+const Categories = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const {
-    inventory: {
-      products: { productList }
-    }
-  } = useSelector((state) => state);
+  const { categoryList } = useSelector((state) => state.inventory.categories);
 
   const navigate = useNavigate();
 
@@ -29,22 +25,13 @@ const Products = () => {
       render: (data) => <Typography>{data}</Typography>
     },
     {
-      columnName: 'purchasePrice',
-      columnLabel: 'Precio de compra',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
+      columnName: 'father',
+      columnLabel: 'Categoria padre',
       render: (data) => <Typography>{data}</Typography>
     },
     {
-      columnName: 'salePrice',
-      columnLabel: 'Precio de venta',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (data) => <Typography>{data}</Typography>
-    },
-    {
-      columnName: 'category',
-      columnLabel: 'Categoria',
+      columnName: 'status',
+      columnLabel: 'Status',
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
       render: (data) => <Typography>{data}</Typography>
@@ -52,7 +39,7 @@ const Products = () => {
   ];
 
   const handleCreateNewProduct = () => {
-    navigate(PATH_INVENTORY.createProduct);
+    navigate(PATH_INVENTORY.createCategory);
   };
 
   const handleSelect = (items) => {
@@ -67,17 +54,17 @@ const Products = () => {
 
   const handleChangeRowsPerPage = () => {};
 
-  const handleEditProduct = () => {
+  const handleEditCategory = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editProductRoot}/${selectedItem.id}`);
+      navigate(`${PATH_INVENTORY.editCategoryRoot}/${selectedItem.id}`);
     }
   };
 
-  const handleDeleteProduct = () => {};
+  const handleDeleteCategory = () => {};
 
   return (
     <Page
-      title="Lista de productos"
+      title="Categories de productos"
       actions={
         <Button
           type="primary"
@@ -85,7 +72,7 @@ const Products = () => {
           size="medium"
           onClick={handleCreateNewProduct}
         >
-          Nuevo producto
+          Nueva categoria
         </Button>
       }
     >
@@ -94,21 +81,21 @@ const Products = () => {
           numSelected={selectedItems.length}
           actions={
             <ActionButtons
-              editLabel="Editar producto"
+              editLabel="Editar categoria"
               editProps={{ disabled: selectedItems.length > 1 }}
               deleteLabel={
                 selectedItems.length > 1
-                  ? 'Eliminar productos'
-                  : 'Eliminar producto'
+                  ? 'Eliminar categorias'
+                  : 'Eliminar categoria'
               }
-              onEdit={handleEditProduct}
-              onDelete={handleDeleteProduct}
+              onEdit={handleEditCategory}
+              onDelete={handleDeleteCategory}
             />
           }
         />
         <TableX
           selected={selectedItems}
-          sourceData={productList}
+          sourceData={categoryList}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}
@@ -120,4 +107,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Categories;

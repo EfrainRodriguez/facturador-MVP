@@ -15,7 +15,7 @@ import TextInput from './TextInput';
 import SelectInput from './SelectInput';
 
 // inventory
-import { ProductForm } from './inventory';
+import { ProductForm, CategoryForm } from './inventory';
 
 export {
   Page,
@@ -26,6 +26,7 @@ export {
   BackButton,
   SelectInput,
   ProductForm,
+  CategoryForm,
   TableToolbar,
   RouteProgress,
   ActionButtons,
