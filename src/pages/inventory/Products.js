@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // material
 import { Card, Button, Typography } from '@mui/material';
 // components
-import { Page, TableX } from '../../components';
+import { Page, TableX, ActionButtons, TableToolbar } from '../../components';
 // paths
 import { PATH_INVENTORY } from '../../routes/paths';
 
 const Products = () => {
+  const [selectedItems, setSelectedItems] = useState([]);
+
   const navigate = useNavigate();
 
   const cellSchema = [
@@ -65,6 +67,20 @@ const Products = () => {
     navigate(PATH_INVENTORY.createProduct);
   };
 
+  const handleSelect = (items) => {
+    setSelectedItems(items);
+  };
+
+  const handleChangePage = () => {};
+
+  const handleRowSelected = () => {};
+
+  const handleChangeRowsPerPage = () => {};
+
+  const handleEditProduct = () => {};
+
+  const handleDeleteProduct = () => {};
+
   return (
     <Page
       title="Lista de productos"
@@ -80,13 +96,30 @@ const Products = () => {
       }
     >
       <Card sx={{ pt: 3 }}>
+        <TableToolbar
+          numSelected={selectedItems.length}
+          actions={
+            <ActionButtons
+              editLabel="Editar producto"
+              editProps={{ disabled: selectedItems.length > 1 }}
+              deleteLabel={
+                selectedItems.length > 1
+                  ? 'Eliminar productos'
+                  : 'Eliminar producto'
+              }
+              onEdit={handleEditProduct}
+              onDelete={handleDeleteProduct}
+            />
+          }
+        />
         <TableX
+          selected={selectedItems}
           sourceData={products}
           cellSchema={cellSchema}
-          // onSelected={setSelected}
-          // onChangePage={handleChangePage}
-          // onRowSelected={handleUserSelected}
-          // onChangeRowsPerPage={handleChangeRowsPerPage}
+          onSelect={handleSelect}
+          onChangePage={handleChangePage}
+          onRowSelected={handleRowSelected}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Card>
     </Page>

@@ -16,7 +16,7 @@ const PageHeader = ({ title, actions, backwardPath, hasBackButton }) => (
         <Box display="flex">
           {hasBackButton && <BackButton path={backwardPath} />}
           <Box flexGrow={1} />
-          {actions}
+          {actions && actions}
         </Box>
       </Box>
     </Box>

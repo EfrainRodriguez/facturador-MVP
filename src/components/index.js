@@ -6,7 +6,8 @@ import PageHeader from './PageHeader';
 import BackButton from './BackButton';
 
 // table
-import { TableX } from './table';
+import { TableX, TableToolbar } from './table';
+import ActionButtons from './ActionButtons';
 
 export {
   NotistackProvider,
@@ -15,5 +16,7 @@ export {
   Page,
   PageHeader,
   BackButton,
-  TableX
+  TableX,
+  ActionButtons,
+  TableToolbar
 };
