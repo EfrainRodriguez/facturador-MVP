@@ -9,14 +9,26 @@ import BackButton from './BackButton';
 import { TableX, TableToolbar } from './table';
 import ActionButtons from './ActionButtons';
 
+// inputs
+import NumberFormattedInput from './NumberFormattedInput';
+import TextInput from './TextInput';
+import SelectInput from './SelectInput';
+
+// inventory
+import { ProductForm } from './inventory';
+
 export {
-  NotistackProvider,
-  RouteProgress,
-  ScrollBar,
   Page,
+  TableX,
+  TextInput,
+  ScrollBar,
   PageHeader,
   BackButton,
-  TableX,
+  SelectInput,
+  ProductForm,
+  TableToolbar,
+  RouteProgress,
   ActionButtons,
-  TableToolbar
+  NotistackProvider,
+  NumberFormattedInput
 };
