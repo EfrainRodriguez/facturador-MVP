@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+// common slice
+// import { setLoading } from '../../common';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +33,7 @@ export const productSlice = createSlice({
   },
   reducers: {
     setProductList(state, action) {
-      state.themeMode = action.payload;
+      state.productList = action.payload;
     }
   }
 });
@@ -41,3 +43,24 @@ export const { setProductList } = productSlice.actions;
 export default productSlice.reducer;
 
 // ----------------------------------------------------------------------
+
+export const fetchProducts = () => (dispatch) => {
+  dispatch(setProductList([]));
+};
+
+export const createProduct = (product) => (dispatch, getState) => {
+  // dispatch(setLoading(true));
+  dispatch(
+    setProductList([...getState().inventory.products.productList, product])
+  );
+};
+
+export const updateProduct = (product) => (dispatch) => {
+  const productList = productSlice.state.productList.map((item) => {
+    if (item.id === product.id) {
+      return product;
+    }
+    return item;
+  });
+  dispatch(setProductList(productList));
+};

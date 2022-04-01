@@ -117,7 +117,7 @@ const SidebarItem = ({
     <ListItemStyle
       button
       to={href}
-      exact={open}
+      exact={open.toString()}
       disableGutters
       component={RouterLink}
       className={
