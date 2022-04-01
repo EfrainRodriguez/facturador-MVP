@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 // router
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+// notistack
+import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProduct } from '../../redux/slices/inventory/products';
@@ -18,20 +20,24 @@ const EditProduct = () => {
 
   const dispatch = useDispatch();
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const categories = [
     {
       label: 'Categoria 1',
-      value: '1'
+      value: 1
     },
     {
       label: 'Categoria 2',
-      value: '2'
+      value: 2
     }
   ];
 
   const handleSubmit = () => {
     dispatch(updateProduct(data));
+    navigate(PATH_INVENTORY.products);
+    enqueueSnackbar('Producto actualizado!', { variant: 'success' });
   };
 
   const handleChange = (event) => {

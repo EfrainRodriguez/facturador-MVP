@@ -13,21 +13,21 @@ export const productSlice = createSlice({
         name: 'Producto 1',
         purchasePrice: '$100',
         salePrice: '$200',
-        category: 'Categoria 1'
+        category: 1
       },
       {
         id: 2,
         name: 'Producto 2',
         purchasePrice: '$300',
         salePrice: '$400',
-        category: 'Categoria 2'
+        category: 2
       },
       {
         id: 3,
         name: 'Producto 3',
         purchasePrice: '$500',
         salePrice: '$600',
-        category: 'Categoria 3'
+        category: 3
       }
     ],
     errors: []

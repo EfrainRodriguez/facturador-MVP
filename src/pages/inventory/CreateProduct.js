@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
+// notistack
+import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../../redux/slices/inventory/products';
@@ -16,21 +18,23 @@ const CreateProduct = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const categories = [
     {
       label: 'Categoria 1',
-      value: '1'
+      value: 1
     },
     {
       label: 'Categoria 2',
-      value: '2'
+      value: 2
     }
   ];
 
   const handleSubmit = () => {
     dispatch(createProduct(data));
     navigate(PATH_INVENTORY.products);
+    enqueueSnackbar('Producto creado!', { variant: 'success' });
   };
 
   const handleChange = (event) => {
@@ -45,6 +49,7 @@ const CreateProduct = () => {
       backwardPath={PATH_INVENTORY.products}
     >
       <ProductForm
+        data={data}
         errors={errors}
         categoryOptions={categories}
         submitButtonText="Crear producto"
