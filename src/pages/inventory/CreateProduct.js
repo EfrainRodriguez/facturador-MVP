@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../../redux/slices/inventory/products';
 // components
 import { Page, ProductForm } from '../../components';
@@ -11,6 +11,8 @@ import { PATH_INVENTORY } from '../../routes/paths';
 
 const CreateProduct = () => {
   const [data, setData] = useState({});
+
+  const { errors } = useSelector((state) => state.inventory.products);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,6 +45,7 @@ const CreateProduct = () => {
       backwardPath={PATH_INVENTORY.products}
     >
       <ProductForm
+        errors={errors}
         categoryOptions={categories}
         submitButtonText="Crear producto"
         onChange={handleChange}

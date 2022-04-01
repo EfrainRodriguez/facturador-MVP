@@ -29,16 +29,20 @@ export const productSlice = createSlice({
         salePrice: '$600',
         category: 'Categoria 3'
       }
-    ]
+    ],
+    errors: []
   },
   reducers: {
     setProductList(state, action) {
       state.productList = action.payload;
+    },
+    setErrors: (state, action) => {
+      state.errors = action.payload;
     }
   }
 });
 
-export const { setProductList } = productSlice.actions;
+export const { setProductList, setErrors } = productSlice.actions;
 
 export default productSlice.reducer;
 
@@ -55,8 +59,8 @@ export const createProduct = (product) => (dispatch, getState) => {
   );
 };
 
-export const updateProduct = (product) => (dispatch) => {
-  const productList = productSlice.state.productList.map((item) => {
+export const updateProduct = (product) => (dispatch, getState) => {
+  const productList = getState().inventory.products.productList.map((item) => {
     if (item.id === product.id) {
       return product;
     }

@@ -62,7 +62,7 @@ const ProductForm = ({
         <Grid item xs={12} sm={6}>
           <NumberFormattedInput
             name="salePrice"
-            valie={data.salePrice}
+            value={data.salePrice}
             label="Precio de venta"
             error={getErrorMessage('salePrice', errors)}
             placeholder="Informe el precio de venta del producto"
