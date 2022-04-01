@@ -47,28 +47,28 @@ const ProductForm = ({
         </Grid>
         <Grid item xs={12} sm={6}>
           <NumberFormattedInput
-            name="purchaseName"
+            name="purchasePrice"
             label="Precio de compra"
-            value={data.purchaseName}
-            error={getErrorMessage('purchaseName', errors)}
+            value={data.purchasePrice}
+            error={getErrorMessage('purchasePrice', errors)}
             placeholder="Informe el precio de compra del producto"
             onValueChange={(e) =>
               handleChange({
-                target: { name: 'purchaseName', value: e.floatValue }
+                target: { name: 'purchasePrice', value: e.floatValue }
               })
             }
           />
         </Grid>
         <Grid item xs={12} sm={6}>
           <NumberFormattedInput
-            name="saleName"
-            valie={data.saleName}
+            name="salePrice"
+            valie={data.salePrice}
             label="Precio de venta"
-            error={getErrorMessage('saleName', errors)}
+            error={getErrorMessage('salePrice', errors)}
             placeholder="Informe el precio de venta del producto"
             onValueChange={(e) =>
               handleChange({
-                target: { name: 'saleName', value: e.floatValue }
+                target: { name: 'salePrice', value: e.floatValue }
               })
             }
           />

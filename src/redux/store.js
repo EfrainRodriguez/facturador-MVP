@@ -4,6 +4,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // slices
 import settings from './slices/settings';
+import common from './slices/common';
 import inventory from './slices/inventory';
 
 // persist config -------------------------------------------
@@ -18,6 +19,7 @@ const settingsPersistConfig = {
 const store = configureStore({
   reducer: {
     settings: persistReducer(settingsPersistConfig, settings),
+    common,
     inventory
   },
   middleware: (getDefaultMiddleware) =>

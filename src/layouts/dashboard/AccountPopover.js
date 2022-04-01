@@ -86,8 +86,7 @@ const AccountPopover = ({ user = {} }) => {
 
       <Popover
         keepMounted
-        getContentAnchorEl={null}
-        anchorOrigin={{ horizontal: 'right' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         open={open}
         onClose={handleClose}

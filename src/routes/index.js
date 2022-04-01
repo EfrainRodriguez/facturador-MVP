@@ -14,8 +14,6 @@ import {
   PATH_PERSONS,
   PATH_SALES
 } from './paths';
-// loading page
-import LoadingPage from '../pages/LoadingPage';
 
 export const renderRoutesList = (routes = []) =>
   routes.map((route, index) => {
@@ -54,26 +52,23 @@ export const renderRoutesList = (routes = []) =>
   });
 
 export const renderRoutes = (routes = []) => (
-  <Suspense fallback={<LoadingPage />}>
+  <Suspense fallback={null}>
     <Routes>{renderRoutesList(routes)}</Routes>
   </Suspense>
 );
 
 export const routes = [
   {
-    exact: true,
     path: PATH_AUTH.login,
     // guard: LoggedGuard,
     component: lazy(() => import('../pages/authentication/Login'))
   },
   {
-    exact: true,
     path: PATH_AUTH.forgotPassword,
     // guard: LoggedGuard,
     component: () => <div>Home</div>
   },
   {
-    exact: true,
     path: PATH_AUTH.changePassword,
     // guard: LoggedGuard,
     component: () => <div>Home</div>
@@ -85,75 +80,62 @@ export const routes = [
     routes: [
       // home
       {
-        exact: true,
         path: PATH_HOME.root,
         component: () => <div>home</div>
       },
       // sales
       {
-        exact: true,
         path: PATH_SALES.root,
         component: () => <div>Sales</div>
       },
       // profile
       {
-        exact: true,
         path: PATH_PROFILE.root,
         component: () => <div>profile</div>
       },
       // products
       {
-        exact: true,
         path: PATH_INVENTORY.products,
         component: lazy(() => import('../pages/inventory/Products'))
       },
       {
-        exact: true,
         path: PATH_INVENTORY.createProduct,
         component: lazy(() => import('../pages/inventory/CreateProduct'))
       },
       {
-        exact: true,
         path: PATH_INVENTORY.editProduct,
         component: lazy(() => import('../pages/inventory/EditProduct'))
       },
       // categories
       {
-        exact: true,
         path: PATH_INVENTORY.categories,
         component: () => <div>categories</div>
       },
       // stock
       {
-        exact: true,
         path: PATH_INVENTORY.stock,
         component: () => <div>stock</div>
       },
       // customers
       {
-        exact: true,
         path: PATH_PERSONS.customers,
         component: () => <div>users</div>
       },
       {
-        exact: true,
         path: PATH_PERSONS.editCustomer.edit,
         component: () => <div>edit user</div>
       },
       {
-        exact: true,
         path: PATH_PERSONS.createCustomer.create,
         component: () => <div>create user</div>
       },
       // providers
       {
-        exact: true,
         path: PATH_PERSONS.providers,
         component: () => <div>providers</div>
       },
       // employees
       {
-        exact: true,
         path: PATH_PERSONS.empolyees,
         component: () => <div>employees</div>
       }
