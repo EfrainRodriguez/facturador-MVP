@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct } from '../../redux/slices/inventory/products';
+import { createProduct } from '../../../redux/slices/inventory/products';
 // components
-import { Page, ProductForm } from '../../components';
+import { Page, ProductForm } from '../../../components';
 // paths
-import { PATH_INVENTORY } from '../../routes/paths';
+import { PATH_INVENTORY } from '../../../routes/paths';
 
 const CreateProduct = () => {
   const [data, setData] = useState({});

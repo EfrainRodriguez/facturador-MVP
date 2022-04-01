@@ -96,20 +96,36 @@ export const routes = [
       // products
       {
         path: PATH_INVENTORY.products,
-        component: lazy(() => import('../pages/inventory/Products'))
+        component: lazy(() => import('../pages/inventory/products/Products'))
       },
       {
         path: PATH_INVENTORY.createProduct,
-        component: lazy(() => import('../pages/inventory/CreateProduct'))
+        component: lazy(() =>
+          import('../pages/inventory/products/CreateProduct')
+        )
       },
       {
         path: PATH_INVENTORY.editProduct,
-        component: lazy(() => import('../pages/inventory/EditProduct'))
+        component: lazy(() => import('../pages/inventory/products/EditProduct'))
       },
       // categories
       {
         path: PATH_INVENTORY.categories,
-        component: () => <div>categories</div>
+        component: lazy(() =>
+          import('../pages/inventory/categories/Categories')
+        )
+      },
+      {
+        path: PATH_INVENTORY.editCategory,
+        component: lazy(() =>
+          import('../pages/inventory/categories/EditCategory')
+        )
+      },
+      {
+        path: PATH_INVENTORY.createCategory,
+        component: lazy(() =>
+          import('../pages/inventory/categories/CreateCategory')
+        )
       },
       // stock
       {
