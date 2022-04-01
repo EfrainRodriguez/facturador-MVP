@@ -27,6 +27,8 @@ import {
 // import { useSelector } from 'react-redux';
 // layout
 import SidebarItem from './SidebarItem';
+// components
+import { ScrollBar } from '../../components';
 // paths
 import {
   PATH_HOME,
@@ -62,7 +64,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   // const { user } = useSelector((state) => state.auth);
 
   const siderbarContent = () => (
-    <>
+    <ScrollBar>
       <Typography variant="h5" sx={{ px: 2.5, mt: 4 }}>
         Bienvenido!
       </Typography>
@@ -140,7 +142,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
         />
         <SidebarItem title="Salir" href={PATH_HOME.root} icon={<Logout />} />
       </List>
-    </>
+    </ScrollBar>
   );
 
   return (

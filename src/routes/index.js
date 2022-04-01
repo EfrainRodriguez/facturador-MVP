@@ -87,7 +87,7 @@ export const routes = [
       {
         exact: true,
         path: PATH_HOME.root,
-        component: () => <div>Home</div>
+        component: () => <div>home</div>
       },
       // sales
       {
@@ -105,7 +105,17 @@ export const routes = [
       {
         exact: true,
         path: PATH_INVENTORY.products,
-        component: () => <div>products</div>
+        component: lazy(() => import('../pages/inventory/Products'))
+      },
+      {
+        exact: true,
+        path: PATH_INVENTORY.createProduct,
+        component: lazy(() => import('../pages/inventory/CreateProduct'))
+      },
+      {
+        exact: true,
+        path: PATH_INVENTORY.editProduct,
+        component: lazy(() => import('../pages/inventory/EditProduct'))
       },
       // categories
       {

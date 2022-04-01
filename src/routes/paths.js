@@ -28,12 +28,14 @@ export const PATH_SALES = {
 
 export const PATH_INVENTORY = {
   root: ROOT_INVENTORY,
-  products: path(ROOT_INVENTORY, '/produtos'),
-  editProductRoot: path(ROOT_INVENTORY, '/produtos/editar'),
-  editProduct: path(ROOT_INVENTORY, '/produtos/editar/:id'),
+  products: path(ROOT_INVENTORY, '/productos'),
+  editProductRoot: path(ROOT_INVENTORY, '/productos/editar'),
+  editProduct: path(ROOT_INVENTORY, '/productos/editar/:id'),
+  createProduct: path(ROOT_INVENTORY, '/productos/crear'),
   categories: path(ROOT_INVENTORY, '/categorias'),
   editCategoryRoot: path(ROOT_INVENTORY, '/categorias/editar'),
   editCategory: path(ROOT_INVENTORY, '/categorias/editar/:id'),
+  createCategory: path(ROOT_INVENTORY, '/categorias/crear'),
   stock: path(ROOT_INVENTORY, '/stock')
 };
 
@@ -42,16 +44,13 @@ export const PATH_PERSONS = {
   customers: path(ROOT_PERSONS, '/clientes'),
   editCustomerRoot: path(ROOT_PERSONS, '/clientes/editar'),
   editCustomer: path(ROOT_PERSONS, '/clientes/editar/:id'),
-  createCustomerRoot: path(ROOT_PERSONS, '/clientes/crear'),
-  createCustomer: path(ROOT_PERSONS, '/clientes/crear/:id'),
+  createCustomer: path(ROOT_PERSONS, '/clientes/crear'),
   providers: path(ROOT_PERSONS, '/poveedores'),
   editProviderRoot: path(ROOT_PERSONS, '/poveedores/editar'),
   editProvider: path(ROOT_PERSONS, '/poveedores/editar/:id'),
-  createProviderRoot: path(ROOT_PERSONS, '/poveedores/crear'),
-  createProvider: path(ROOT_PERSONS, '/poveedores/crear/:id'),
+  createProvider: path(ROOT_PERSONS, '/poveedores/crear'),
   empolyees: path(ROOT_PERSONS, '/empleados'),
   editEmployeeRoot: path(ROOT_PERSONS, '/empleados/editar'),
   editEmployee: path(ROOT_PERSONS, '/empleados/editar/:id'),
-  createEmployeeRoot: path(ROOT_PERSONS, '/empleados/crear'),
-  createEmployee: path(ROOT_PERSONS, '/empleados/crear/:id')
+  createEmployee: path(ROOT_PERSONS, '/empleados/crear')
 };
