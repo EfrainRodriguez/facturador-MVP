@@ -1,26 +1,28 @@
 import React from 'react';
-// material
+// router
+import { useNavigate } from 'react-router-dom';
+// antd
+import { Container, Card, Box, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Card, Container, Typography, Box } from '@mui/material';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { login, setRemember } from '../../redux/slices/auth';
+import { forgotPassword } from '../../redux/slices/auth';
 // components
-import { LoginForm } from '../../components';
+import { ForgotPasswordForm } from '../../components';
 // pages
 import LoadingPage from '../LoadingPage';
-// util
-import { getErrorObject } from '../../utils/error';
+// path
+import { PATH_AUTH } from '../../routes/paths';
 
-// ----------------------------------------------------------------------
+// custom styles -----------------------------------
 
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
+  height: '100vh',
   display: 'flex',
-  minHeight: '100vh',
   flexDirection: 'column',
   justifyContent: 'center',
   padding: theme.spacing(12, 0)
@@ -35,27 +37,27 @@ const CardStyle = styled(Card)(({ theme }) => ({
   margin: theme.spacing(0)
 }));
 
-// ----------------------------------------------------------------------
+// -------------------------------------------------
 
-const Login = () => {
-  const { user, remember, isLoading } = useSelector((state) => state.auth);
+const ForgotPassword = () => {
+  const { isLoading } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
 
-  const onSubmit = (data, { setErrors }) => {
-    const { email, password, remember: changedRemember, documentNumber } = data;
-    dispatch(setRemember(changedRemember));
-    dispatch(
-      login({
-        email,
-        password,
-        documentNumber
-      })
-    )
+  const redirectToLogin = () => navigate(PATH_AUTH.login);
+
+  const onSubmit = (data) => {
+    dispatch(forgotPassword(data))
       .then(() => {
-        enqueueSnackbar('Nos alegra tenerte de vuelta!', {
-          variant: 'success'
-        });
+        enqueueSnackbar(
+          'Te hemos enviado un link al correo electrónico que ingresaste',
+          {
+            variant: 'success',
+            onClose: () => redirectToLogin()
+          }
+        );
       })
       .catch((error) => {
         enqueueSnackbar(
@@ -66,30 +68,27 @@ const Login = () => {
             variant: 'error'
           }
         );
-        return (
-          error.response &&
-          error.response.data &&
-          setErrors(getErrorObject(error.response.data.errors))
-        );
       });
   };
 
   return (
     <>
       {isLoading && <LoadingPage />}
-      <Container>
+      <Container maxWidth>
         <ContentStyle>
           <CardStyle>
-            <Box mb={4}>
+            <Box mb={2}>
               <Typography align="center" variant="h4">
-                Accesar
+                Recuperar contraseña
               </Typography>
             </Box>
-            <LoginForm
-              {...(remember && { ...user })}
-              remember={remember}
-              onSubmit={onSubmit}
-            />
+            <Box mb={4}>
+              <Typography variant="p">
+                Recuperar la contraseña es fácil, te enviaremos una nueva por
+                e-mail
+              </Typography>
+            </Box>
+            <ForgotPasswordForm onSubmit={onSubmit} />
           </CardStyle>
         </ContentStyle>
       </Container>
@@ -97,4 +96,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

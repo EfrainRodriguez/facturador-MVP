@@ -14,6 +14,13 @@ import NumberFormattedInput from './NumberFormattedInput';
 import TextInput from './TextInput';
 import SelectInput from './SelectInput';
 
+// login
+import {
+  ChangePasswordForm,
+  ForgotPasswordForm,
+  LoginForm
+} from './authentication';
+
 // inventory
 import { ProductForm, CategoryForm } from './inventory';
 
@@ -22,6 +29,7 @@ export {
   TableX,
   TextInput,
   ScrollBar,
+  LoginForm,
   PageHeader,
   BackButton,
   SelectInput,
@@ -31,5 +39,7 @@ export {
   RouteProgress,
   ActionButtons,
   NotistackProvider,
+  ChangePasswordForm,
+  ForgotPasswordForm,
   NumberFormattedInput
 };
