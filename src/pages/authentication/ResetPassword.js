@@ -1,4 +1,6 @@
 import React from 'react';
+// router
+import { useNavigate, useParams } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 import { Card, Container, Typography, Box } from '@mui/material';
@@ -6,13 +8,13 @@ import { Card, Container, Typography, Box } from '@mui/material';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { login, setRemember } from '../../redux/slices/auth';
+import { resetPassword } from '../../redux/slices/auth';
 // components
-import { LoginForm } from '../../components';
+import { ChangePasswordForm } from '../../components';
 // pages
 import LoadingPage from '../LoadingPage';
-// util
-import { getErrorObject } from '../../utils/error';
+// path
+import { PATH_AUTH } from '../../routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -37,25 +39,23 @@ const CardStyle = styled(Card)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const Login = () => {
-  const { user, remember, isLoading } = useSelector((state) => state.auth);
+const ResetPassword = () => {
+  const { isLoading } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const params = useParams();
 
-  const onSubmit = (data, { setErrors }) => {
-    const { email, password, remember: changedRemember, documentNumber } = data;
-    dispatch(setRemember(changedRemember));
-    dispatch(
-      login({
-        email,
-        password,
-        documentNumber
-      })
-    )
+  const redirectToLogin = () => navigate(PATH_AUTH.login);
+
+  const onSubmit = (data) => {
+    dispatch(resetPassword({ ...data, passwordResetToken: params.token }))
       .then(() => {
-        enqueueSnackbar('Nos alegra tenerte de vuelta!', {
+        enqueueSnackbar('La contraseña ha sido restablecida con éxito!', {
           variant: 'success'
         });
+        redirectToLogin();
       })
       .catch((error) => {
         enqueueSnackbar(
@@ -65,11 +65,6 @@ const Login = () => {
           {
             variant: 'error'
           }
-        );
-        return (
-          error.response &&
-          error.response.data &&
-          setErrors(getErrorObject(error.response.data.errors))
         );
       });
   };
@@ -82,12 +77,11 @@ const Login = () => {
           <CardStyle>
             <Box mb={4}>
               <Typography align="center" variant="h4">
-                Accesar
+                Actualizar contraseña
               </Typography>
             </Box>
-            <LoginForm
-              {...(remember && { ...user })}
-              remember={remember}
+            <ChangePasswordForm
+              hasCurrentPasswordField={false}
               onSubmit={onSubmit}
             />
           </CardStyle>
@@ -97,4 +91,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ResetPassword;

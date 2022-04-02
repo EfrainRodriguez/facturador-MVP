@@ -5,6 +5,9 @@ import { Routes, Route } from 'react-router-dom';
 import { RouteProgress } from '../components';
 // layout
 import DashboardLayout from '../layouts/dashboard';
+// guards
+import AuthGuard from '../guards/AuthGuard';
+import LoggedGuard from '../guards/LoggedGuard';
 // paths
 import {
   PATH_AUTH,
@@ -60,22 +63,22 @@ export const renderRoutes = (routes = []) => (
 export const routes = [
   {
     path: PATH_AUTH.login,
-    // guard: LoggedGuard,
+    guard: LoggedGuard,
     component: lazy(() => import('../pages/authentication/Login'))
   },
   {
     path: PATH_AUTH.forgotPassword,
-    // guard: LoggedGuard,
-    component: () => <div>Home</div>
+    guard: LoggedGuard,
+    component: lazy(() => import('../pages/authentication/ForgotPassword'))
   },
   {
     path: PATH_AUTH.changePassword,
-    // guard: LoggedGuard,
-    component: () => <div>Home</div>
+    guard: LoggedGuard,
+    component: lazy(() => import('../pages/authentication/ResetPassword'))
   },
   // private routes for logged and ok status user ------------------------
   {
-    // guard: AuthGuard,
+    guard: AuthGuard,
     layout: DashboardLayout,
     routes: [
       // home
