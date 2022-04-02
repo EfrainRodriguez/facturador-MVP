@@ -4,6 +4,7 @@ import ScrollBar from './ScrollBar';
 import Page from './Page';
 import PageHeader from './PageHeader';
 import BackButton from './BackButton';
+import Modal from './Modal';
 
 // table
 import { TableX, TableToolbar } from './table';
@@ -26,6 +27,7 @@ import { ProductForm, CategoryForm } from './inventory';
 
 export {
   Page,
+  Modal,
   TableX,
   TextInput,
   ScrollBar,

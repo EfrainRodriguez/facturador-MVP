@@ -15,7 +15,7 @@ import { styled, alpha } from '@mui/material/styles';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch } from 'react-redux';
-// import { logout } from '../../store/slices/auth';
+import { logout } from '../../redux/slices/auth';
 
 // custom styles--------------------------------------------------------
 
@@ -53,11 +53,11 @@ const AccountPopover = ({ user = {} }) => {
   };
 
   const handleLogout = () => {
-    // dispatch(logout()).then(() => {
-    //   enqueueSnackbar('Vuelve cuando desees, te estaremos esperando', {
-    //     variant: 'success'
-    //   });
-    // });
+    dispatch(logout()).then(() => {
+      enqueueSnackbar('Vuelve pronto!', {
+        variant: 'success'
+      });
+    });
   };
 
   return (

@@ -53,7 +53,7 @@ const Login = () => {
       })
     )
       .then(() => {
-        enqueueSnackbar('Nos alegra tenerte de vuelta!', {
+        enqueueSnackbar('Bienvenido!', {
           variant: 'success'
         });
       })

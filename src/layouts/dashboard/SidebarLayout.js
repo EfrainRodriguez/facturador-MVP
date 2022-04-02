@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // router
@@ -13,22 +13,25 @@ import {
   Link,
   Typography,
   Box,
-  Avatar
+  Avatar,
+  Button
 } from '@mui/material';
 import {
   Home,
   MonetizationOn,
   Person,
   Group,
-  Inventory,
-  Logout
+  Inventory
 } from '@mui/icons-material';
+// notistack
+import { useSnackbar } from 'notistack';
 // redux
-// import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/slices/auth';
 // layout
 import SidebarItem from './SidebarItem';
 // components
-import { ScrollBar } from '../../components';
+import { ScrollBar, Modal } from '../../components';
 // paths
 import {
   PATH_HOME,
@@ -61,7 +64,22 @@ const AccountStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
   // const { user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleLogout = () => {
+    dispatch(logout()).then(() => {
+      enqueueSnackbar('Vuelve pronto!', {
+        variant: 'success'
+      });
+    });
+  };
+
+  const handleCancel = () => setIsOpenModal(false);
 
   const siderbarContent = () => (
     <ScrollBar>
@@ -140,13 +158,34 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
           href={PATH_PROFILE.root}
           icon={<Person />}
         />
-        <SidebarItem title="Salir" href={PATH_HOME.root} icon={<Logout />} />
+        <Box my={8} px={2} display="flex" justifyContent="center">
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => setIsOpenModal(true)}
+          >
+            Salir
+          </Button>
+        </Box>
       </List>
     </ScrollBar>
   );
 
   return (
     <RootStyle>
+      <Modal open={isOpenModal} onCancel={handleCancel}>
+        <Typography variant="h6" mb={3}>
+          Está seguro que desea salir?
+        </Typography>
+        <Box display="flex" justifyContent="space-between">
+          <Button variant="outlined" onClick={handleCancel}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={handleLogout}>
+            Salir
+          </Button>
+        </Box>
+      </Modal>
       <Hidden lgUp>
         <Drawer
           open={isOpenSidebar}
