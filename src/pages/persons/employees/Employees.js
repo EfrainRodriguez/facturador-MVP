@@ -10,11 +10,11 @@ import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
 import { PATH_PERSONS } from '../../../routes/paths';
 
-const Customers = () => {
+const Employees = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const { customerList } = useSelector((state) => state.persons.customers);
+  const { employeeList } = useSelector((state) => state.persons.employees);
 
   const navigate = useNavigate();
 
@@ -50,8 +50,8 @@ const Customers = () => {
     }
   ];
 
-  const handleCreateNewCustomer = () => {
-    navigate(PATH_PERSONS.createCustomer);
+  const handleCreateNewEmployee = () => {
+    navigate(PATH_PERSONS.createEmployee);
   };
 
   const handleSelect = (items) => {
@@ -66,25 +66,25 @@ const Customers = () => {
 
   const handleChangeRowsPerPage = () => {};
 
-  const handleEditCustomer = () => {
+  const handleEditEmployee = () => {
     if (selectedItem) {
-      navigate(`${PATH_PERSONS.editCustomerRoot}/${selectedItem.id}`);
+      navigate(`${PATH_PERSONS.editEmployeeRoot}/${selectedItem.id}`);
     }
   };
 
-  const handleDeleteCustomer = () => {};
+  const handleDeleteEmployee = () => {};
 
   return (
     <Page
-      title="Clientes"
+      title="Empleados"
       actions={
         <Button
           type="primary"
           variant="contained"
           size="medium"
-          onClick={handleCreateNewCustomer}
+          onClick={handleCreateNewEmployee}
         >
-          Nuevo cliente
+          Nuevo empleado
         </Button>
       }
     >
@@ -93,21 +93,21 @@ const Customers = () => {
           numSelected={selectedItems.length}
           actions={
             <ActionButtons
-              editLabel="Editar cliente"
+              editLabel="Editar empleado"
               editProps={{ disabled: selectedItems.length > 1 }}
               deleteLabel={
                 selectedItems.length > 1
-                  ? 'Eliminar clientes'
-                  : 'Eliminar cliente'
+                  ? 'Eliminar empleados'
+                  : 'Eliminar empleado'
               }
-              onEdit={handleEditCustomer}
-              onDelete={handleDeleteCustomer}
+              onEdit={handleEditEmployee}
+              onDelete={handleDeleteEmployee}
             />
           }
         />
         <TableX
           selected={selectedItems}
-          sourceData={customerList}
+          sourceData={employeeList}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}
@@ -119,4 +119,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Employees;

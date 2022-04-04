@@ -168,7 +168,17 @@ export const routes = [
       // employees
       {
         path: PATH_PERSONS.empolyees,
-        component: () => <div>employees</div>
+        component: lazy(() => import('../pages/persons/employees/Employees'))
+      },
+      {
+        path: PATH_PERSONS.createEmployee,
+        component: lazy(() =>
+          import('../pages/persons/employees/CreateEmployee')
+        )
+      },
+      {
+        path: PATH_PERSONS.editEmployee,
+        component: lazy(() => import('../pages/persons/employees/EditEmployee'))
       }
     ]
   }

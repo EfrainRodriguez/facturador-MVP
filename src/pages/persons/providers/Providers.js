@@ -50,7 +50,7 @@ const Providers = () => {
     }
   ];
 
-  const handleCreateNewCustomer = () => {
+  const handleCreateNewProvider = () => {
     navigate(PATH_PERSONS.createProvider);
   };
 
@@ -66,13 +66,13 @@ const Providers = () => {
 
   const handleChangeRowsPerPage = () => {};
 
-  const handleEditCustomer = () => {
+  const handleEditProvider = () => {
     if (selectedItem) {
       navigate(`${PATH_PERSONS.editProviderRoot}/${selectedItem.id}`);
     }
   };
 
-  const handleDeleteProduct = () => {};
+  const handleDeleteProvider = () => {};
 
   return (
     <Page
@@ -82,7 +82,7 @@ const Providers = () => {
           type="primary"
           variant="contained"
           size="medium"
-          onClick={handleCreateNewCustomer}
+          onClick={handleCreateNewProvider}
         >
           Nuevo proveedor
         </Button>
@@ -100,8 +100,8 @@ const Providers = () => {
                   ? 'Eliminar proveedors'
                   : 'Eliminar proveedor'
               }
-              onEdit={handleEditCustomer}
-              onDelete={handleDeleteProduct}
+              onEdit={handleEditProvider}
+              onDelete={handleDeleteProvider}
             />
           }
         />
