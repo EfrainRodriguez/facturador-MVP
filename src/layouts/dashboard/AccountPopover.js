@@ -16,6 +16,8 @@ import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/slices/auth';
+// image
+import UserLogo from '../../assets/images/user.svg';
 
 // custom styles--------------------------------------------------------
 
@@ -81,7 +83,7 @@ const AccountPopover = ({ user = {} }) => {
           })
         }}
       >
-        <Avatar src="https://www.pngitem.com/pimgs/m/576-5768840_cartoon-man-png-avatar-transparent-png.png" />
+        <Avatar src={UserLogo} />
       </IconButton>
 
       <Popover
