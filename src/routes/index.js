@@ -153,7 +153,17 @@ export const routes = [
       // providers
       {
         path: PATH_PERSONS.providers,
-        component: () => <div>providers</div>
+        component: lazy(() => import('../pages/persons/providers/Providers'))
+      },
+      {
+        path: PATH_PERSONS.createProvider,
+        component: lazy(() =>
+          import('../pages/persons/providers/CreateProvider')
+        )
+      },
+      {
+        path: PATH_PERSONS.editProvider,
+        component: lazy(() => import('../pages/persons/providers/EditProvider'))
       },
       // employees
       {

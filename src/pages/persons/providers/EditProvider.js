@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { createCustomer } from '../../../redux/slices/persons/customers';
+import { updateProvider } from '../../../redux/slices/persons/providers';
 // components
 import { Page, PersonForm } from '../../../components';
 // paths
 import { PATH_PERSONS } from '../../../routes/paths';
 
-const CreateCustomer = () => {
+const EditProvider = () => {
   const [data, setData] = useState({
     documentType: 'CC'
   });
 
-  const { errors } = useSelector((state) => state.persons.customers);
+  const { errors, providerList } = useSelector(
+    (state) => state.persons.providers
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
-    dispatch(createCustomer(data));
-    navigate(PATH_PERSONS.customers);
-    enqueueSnackbar('Cliente creado!', { variant: 'success' });
+    dispatch(updateProvider(data));
+    navigate(PATH_PERSONS.providers);
+    enqueueSnackbar('Datos del proveedor actualizados!', {
+      variant: 'success'
+    });
   };
 
   const handleChange = (event) => {
@@ -33,16 +38,21 @@ const CreateCustomer = () => {
     setData({ ...data, [name]: value });
   };
 
+  useEffect(() => {
+    const provider = providerList.find((item) => item.id == id);
+    setData(provider);
+  }, [providerList, id]);
+
   return (
     <Page
       hasBackButton
-      title="Crear cliente"
-      backwardPath={PATH_PERSONS.customers}
+      title="Editar proveedor"
+      backwardPath={PATH_PERSONS.providers}
     >
       <PersonForm
         data={data}
         errors={errors}
-        submitButtonText="Crear cliente"
+        submitButtonText="Guardar cambios"
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
@@ -50,4 +60,4 @@ const CreateCustomer = () => {
   );
 };
 
-export default CreateCustomer;
+export default EditProvider;

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { createCustomer } from '../../../redux/slices/persons/customers';
+import { createProvider } from '../../../redux/slices/persons/providers';
 // components
 import { Page, PersonForm } from '../../../components';
 // paths
@@ -16,16 +16,16 @@ const CreateCustomer = () => {
     documentType: 'CC'
   });
 
-  const { errors } = useSelector((state) => state.persons.customers);
+  const { errors } = useSelector((state) => state.persons.providers);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
-    dispatch(createCustomer(data));
-    navigate(PATH_PERSONS.customers);
-    enqueueSnackbar('Cliente creado!', { variant: 'success' });
+    dispatch(createProvider(data));
+    navigate(PATH_PERSONS.providers);
+    enqueueSnackbar('Proveedor creado!', { variant: 'success' });
   };
 
   const handleChange = (event) => {
@@ -36,13 +36,13 @@ const CreateCustomer = () => {
   return (
     <Page
       hasBackButton
-      title="Crear cliente"
-      backwardPath={PATH_PERSONS.customers}
+      title="Crear proveedor"
+      backwardPath={PATH_PERSONS.providers}
     >
       <PersonForm
         data={data}
         errors={errors}
-        submitButtonText="Crear cliente"
+        submitButtonText="Crear proveedor"
         onChange={handleChange}
         onSubmit={handleSubmit}
       />
