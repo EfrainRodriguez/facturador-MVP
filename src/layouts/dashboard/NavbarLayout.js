@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Menu, Brightness4, BrightnessHigh } from '@mui/icons-material';
 // redux
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 // components
 import AccountPopover from './AccountPopover';
 // hooks
@@ -44,7 +44,7 @@ const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 const DashboardNavbar = ({ onOpenSidebar }) => {
-  // const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const { themeMode, toggleMode } = useSettings();
   return (
     <RootStyle>
@@ -67,7 +67,7 @@ const DashboardNavbar = ({ onOpenSidebar }) => {
           <Switch checked={!(themeMode === 'light')} onChange={toggleMode} />
         </Box>
         <Box>
-          <AccountPopover />
+          <AccountPopover user={user} />
         </Box>
       </ToolbarStyle>
     </RootStyle>

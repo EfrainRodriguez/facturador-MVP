@@ -25,6 +25,9 @@ import {
 // inventory
 import { ProductForm, CategoryForm } from './inventory';
 
+// persons
+import { PersonForm } from './persons';
+
 export {
   Page,
   Modal,
@@ -32,6 +35,7 @@ export {
   TextInput,
   ScrollBar,
   LoginForm,
+  PersonForm,
   PageHeader,
   BackButton,
   SelectInput,

@@ -43,18 +43,18 @@ export const fetchCategories = () => (dispatch) => {
   dispatch(setCategoryList([]));
 };
 
-export const createCategory = (product) => (dispatch, getState) => {
+export const createCategory = (category) => (dispatch, getState) => {
   // dispatch(setLoading(true));
   dispatch(
-    setCategoryList([...getState().inventory.categories.categoryList, product])
+    setCategoryList([...getState().inventory.categories.categoryList, category])
   );
 };
 
-export const updateCategory = (product) => (dispatch, getState) => {
+export const updateCategory = (category) => (dispatch, getState) => {
   const categoryList = getState().inventory.categories.categoryList.map(
     (item) => {
-      if (item.id === product.id) {
-        return product;
+      if (item.id === category.id) {
+        return category;
       }
       return item;
     }

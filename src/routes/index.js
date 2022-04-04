@@ -133,20 +133,22 @@ export const routes = [
       // stock
       {
         path: PATH_INVENTORY.stock,
-        component: () => <div>stock</div>
+        component: lazy(() => import('../pages/persons/customers/Customers'))
       },
       // customers
       {
         path: PATH_PERSONS.customers,
-        component: () => <div>users</div>
+        component: lazy(() => import('../pages/persons/customers/Customers'))
       },
       {
-        path: PATH_PERSONS.editCustomer.edit,
-        component: () => <div>edit user</div>
+        path: PATH_PERSONS.createCustomer,
+        component: lazy(() =>
+          import('../pages/persons/customers/CreateCustomer')
+        )
       },
       {
-        path: PATH_PERSONS.createCustomer.create,
-        component: () => <div>create user</div>
+        path: PATH_PERSONS.editCustomer,
+        component: lazy(() => import('../pages/persons/customers/EditCustomer'))
       },
       // providers
       {

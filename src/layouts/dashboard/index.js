@@ -9,6 +9,7 @@ import { experimentalStyled as styled } from '@mui/material/styles';
 import NavbarLayout from './NavbarLayout';
 import SidebarLayout from './SidebarLayout';
 import LoadingPage from '../../pages/LoadingPage';
+import ScrollBar from '../../components/ScrollBar';
 // constants
 import { LAYOUT } from '../../utils/constants';
 
@@ -48,7 +49,9 @@ const DashboardLayout = ({ children }) => {
         isOpenSidebar={open}
         onCloseSidebar={() => setOpen(false)}
       />
-      <MainStyle>{children || <Outlet />}</MainStyle>
+      <ScrollBar>
+        <MainStyle>{children || <Outlet />}</MainStyle>
+      </ScrollBar>
     </RootStyle>
   );
 };
