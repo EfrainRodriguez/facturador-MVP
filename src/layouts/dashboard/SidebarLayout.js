@@ -40,6 +40,8 @@ import {
   PATH_PERSONS,
   PATH_SALES
 } from '../../routes/paths';
+// image
+import UserLogo from '../../assets/images/user.svg';
 // constants
 import { LAYOUT } from '../../utils/constants';
 
@@ -88,7 +90,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
       </Typography>
       <Link underline="none" component={RouterLink} to={PATH_PROFILE.root}>
         <AccountStyle>
-          <Avatar src="https://www.pngitem.com/pimgs/m/576-5768840_cartoon-man-png-avatar-transparent-png.png" />
+          <Avatar src={UserLogo} />
           <Box sx={{ ml: 2 }}>
             <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
               {user.firstName}
@@ -134,7 +136,6 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
             level={1}
             href={PATH_INVENTORY.categories}
           />
-          <SidebarItem title="Stock" level={1} href={PATH_INVENTORY.stock} />
         </SidebarItem>
         <SidebarItem title="Personas" icon={<Group />}>
           <SidebarItem

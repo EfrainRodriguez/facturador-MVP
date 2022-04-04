@@ -28,6 +28,9 @@ import { ProductForm, CategoryForm } from './inventory';
 // persons
 import { PersonForm } from './persons';
 
+// profile
+import { ProfileChangePassword, ProfileGeneral } from './profile';
+
 export {
   Page,
   Modal,
@@ -44,8 +47,10 @@ export {
   TableToolbar,
   RouteProgress,
   ActionButtons,
+  ProfileGeneral,
   NotistackProvider,
   ChangePasswordForm,
   ForgotPasswordForm,
-  NumberFormattedInput
+  NumberFormattedInput,
+  ProfileChangePassword
 };

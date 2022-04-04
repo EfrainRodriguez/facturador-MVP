@@ -94,7 +94,7 @@ export const routes = [
       // profile
       {
         path: PATH_PROFILE.root,
-        component: () => <div>profile</div>
+        component: lazy(() => import('../pages/profile/Profile'))
       },
       // products
       {
@@ -129,11 +129,6 @@ export const routes = [
         component: lazy(() =>
           import('../pages/inventory/categories/CreateCategory')
         )
-      },
-      // stock
-      {
-        path: PATH_INVENTORY.stock,
-        component: lazy(() => import('../pages/persons/customers/Customers'))
       },
       // customers
       {
