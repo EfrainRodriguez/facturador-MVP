@@ -26,7 +26,7 @@ import {
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/slices/auth';
 // layout
 import SidebarItem from './SidebarItem';
@@ -66,7 +66,7 @@ const AccountStyle = styled('div')(({ theme }) => ({
 const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
 
-  // const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
@@ -91,7 +91,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
           <Avatar src="https://www.pngitem.com/pimgs/m/576-5768840_cartoon-man-png-avatar-transparent-png.png" />
           <Box sx={{ ml: 2 }}>
             <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-              {/* {user.firstName} */}
+              {user.firstName}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Admin

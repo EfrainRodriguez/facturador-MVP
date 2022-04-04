@@ -133,30 +133,52 @@ export const routes = [
       // stock
       {
         path: PATH_INVENTORY.stock,
-        component: () => <div>stock</div>
+        component: lazy(() => import('../pages/persons/customers/Customers'))
       },
       // customers
       {
         path: PATH_PERSONS.customers,
-        component: () => <div>users</div>
+        component: lazy(() => import('../pages/persons/customers/Customers'))
       },
       {
-        path: PATH_PERSONS.editCustomer.edit,
-        component: () => <div>edit user</div>
+        path: PATH_PERSONS.createCustomer,
+        component: lazy(() =>
+          import('../pages/persons/customers/CreateCustomer')
+        )
       },
       {
-        path: PATH_PERSONS.createCustomer.create,
-        component: () => <div>create user</div>
+        path: PATH_PERSONS.editCustomer,
+        component: lazy(() => import('../pages/persons/customers/EditCustomer'))
       },
       // providers
       {
         path: PATH_PERSONS.providers,
-        component: () => <div>providers</div>
+        component: lazy(() => import('../pages/persons/providers/Providers'))
+      },
+      {
+        path: PATH_PERSONS.createProvider,
+        component: lazy(() =>
+          import('../pages/persons/providers/CreateProvider')
+        )
+      },
+      {
+        path: PATH_PERSONS.editProvider,
+        component: lazy(() => import('../pages/persons/providers/EditProvider'))
       },
       // employees
       {
         path: PATH_PERSONS.empolyees,
-        component: () => <div>employees</div>
+        component: lazy(() => import('../pages/persons/employees/Employees'))
+      },
+      {
+        path: PATH_PERSONS.createEmployee,
+        component: lazy(() =>
+          import('../pages/persons/employees/CreateEmployee')
+        )
+      },
+      {
+        path: PATH_PERSONS.editEmployee,
+        component: lazy(() => import('../pages/persons/employees/EditEmployee'))
       }
     ]
   }

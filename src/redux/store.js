@@ -7,6 +7,7 @@ import settings from './slices/settings';
 import common from './slices/common';
 import inventory from './slices/inventory';
 import auth from './slices/auth';
+import persons from './slices/persons';
 
 // persist config -------------------------------------------
 
@@ -34,7 +35,8 @@ const store = configureStore({
     settings: persistReducer(settingsPersistConfig, settings),
     common,
     inventory,
-    auth: persistReducer(authPersistConfig, auth)
+    auth: persistReducer(authPersistConfig, auth),
+    persons
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
