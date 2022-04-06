@@ -86,6 +86,10 @@ export const routes = [
         path: PATH_HOME.root,
         component: () => <div>home</div>
       },
+      {
+        path: '/',
+        component: () => <div>home</div>
+      },
       // sales
       {
         path: PATH_SALES.root,
@@ -176,5 +180,9 @@ export const routes = [
         component: lazy(() => import('../pages/persons/employees/EditEmployee'))
       }
     ]
+  },
+  {
+    path: '*',
+    component: lazy(() => import('../pages/Page404'))
   }
 ];
