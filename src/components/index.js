@@ -23,7 +23,7 @@ import {
 } from './authentication';
 
 // inventory
-import { ProductForm, CategoryForm } from './inventory';
+import { ProductForm, CategoryForm, ProductDetails } from './inventory';
 
 // persons
 import { PersonForm } from './persons';
@@ -47,6 +47,7 @@ export {
   TableToolbar,
   RouteProgress,
   ActionButtons,
+  ProductDetails,
   ProfileGeneral,
   NotistackProvider,
   ChangePasswordForm,

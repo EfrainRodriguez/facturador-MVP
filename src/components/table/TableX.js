@@ -62,7 +62,7 @@ function applySortFilter(array, comparator, query) {
 const Row = ({
   row,
   rowIndex,
-  RowDetails,
+  renderRowDetails,
   hasCheckbox,
   hasCollapse,
   isItemSelected,
@@ -111,7 +111,7 @@ const Row = ({
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
-            {RowDetails}
+            {renderRowDetails && renderRowDetails(row)}
           </Collapse>
         </TableCell>
       </TableRow>
@@ -122,7 +122,7 @@ const Row = ({
 Row.propTypes = {
   row: PropTypes.object,
   rowIndex: PropTypes.number,
-  RowDetails: PropTypes.any,
+  renderRowDetails: PropTypes.func,
   cellSchema: PropTypes.array,
   hasCheckbox: PropTypes.bool,
   hasCollapse: PropTypes.bool,
@@ -133,7 +133,7 @@ Row.propTypes = {
 const TableX = ({
   count = 0,
   page = 0,
-  RowDetails,
+  renderRowDetails,
   rowsPerPage = 10,
   selected = [],
   pageLimits = [5, 10, 15, 20],
@@ -226,7 +226,7 @@ const TableX = ({
                 row={row}
                 key={rowIndex}
                 rowIndex={rowIndex}
-                RowDetails={RowDetails}
+                renderRowDetails={renderRowDetails}
                 cellSchema={cellSchema}
                 hasCheckbox={hasCheckbox}
                 hasCollapse={hasCollapse}
@@ -272,7 +272,7 @@ const TableX = ({
 TableX.propTypes = {
   count: PropTypes.number,
   page: PropTypes.number,
-  RowDetails: PropTypes.any,
+  renderRowDetails: PropTypes.func,
   rowsPerPage: PropTypes.number,
   selected: PropTypes.array,
   pageLimits: PropTypes.array,

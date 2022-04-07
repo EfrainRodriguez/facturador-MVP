@@ -4,9 +4,16 @@ import { useNavigate } from 'react-router-dom';
 // redux
 import { useSelector } from 'react-redux';
 // material
-import { Card, Button, Typography } from '@mui/material';
+import { Card, Button } from '@mui/material';
 // components
-import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
+import {
+  Page,
+  TableX,
+  ActionButtons,
+  ProductDetails,
+  TableToolbar,
+  NumberFormattedInput
+} from '../../../components';
 // paths
 import { PATH_INVENTORY } from '../../../routes/paths';
 
@@ -21,29 +28,37 @@ const Products = () => {
   const cellSchema = [
     {
       columnName: 'name',
-      columnLabel: 'Nombre',
-      render: (data) => <Typography>{data}</Typography>
+      columnLabel: 'Nombre'
+    },
+    {
+      columnName: 'amount',
+      columnLabel: 'Cantidad en stock',
+      columnProps: { align: 'center' },
+      cellProps: { align: 'center' }
     },
     {
       columnName: 'purchasePrice',
       columnLabel: 'Precio de compra',
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
-      render: (data) => <Typography>{data}</Typography>
+      render: (data) => (
+        <NumberFormattedInput displayType="text" value={data || ''} />
+      )
     },
     {
       columnName: 'salePrice',
       columnLabel: 'Precio de venta',
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
-      render: (data) => <Typography>{data}</Typography>
+      render: (data) => (
+        <NumberFormattedInput displayType="text" value={data || ''} />
+      )
     },
     {
       columnName: 'category',
       columnLabel: 'Categoria',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (data) => <Typography>{data}</Typography>
+      cellProps: { align: 'center' }
     }
   ];
 
@@ -103,6 +118,8 @@ const Products = () => {
           }
         />
         <TableX
+          hasCollapse
+          renderRowDetails={(item) => <ProductDetails data={item} />}
           selected={selectedItems}
           sourceData={productList}
           cellSchema={cellSchema}
