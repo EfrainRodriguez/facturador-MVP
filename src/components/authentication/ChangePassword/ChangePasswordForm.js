@@ -34,11 +34,11 @@ const ChangePasswordForm = ({
       .matches(
         /^(?=.*[a-zA-Z])/,
         'Su nueva contraseña debe tener al menos una letra'
-      )
-      .matches(
-        /^(?=.*[A-Z])/,
-        'Su nueva contraseña debe tener al menos una letra mayúscula'
       ),
+    // .matches(
+    //   /^(?=.*[A-Z])/,
+    //   'Su nueva contraseña debe tener al menos una letra mayúscula'
+    // ),
     passwordConfirm: Yup.string()
       .required('Por favor repita su nueva contraseña')
       .oneOf([Yup.ref('newPassword'), null], 'Las contraseñas no coinciden')

@@ -91,7 +91,7 @@ export const routes = [
       // sales
       {
         path: PATH_SALES.root,
-        component: () => <div>Sales</div>
+        component: lazy(() => import('../pages/sales/Sales'))
       },
       // profile
       {
