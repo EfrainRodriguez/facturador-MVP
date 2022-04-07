@@ -136,6 +136,7 @@ const DashboardSidebar = ({ isOpenSidebar, onCloseSidebar }) => {
             level={1}
             href={PATH_INVENTORY.categories}
           />
+          <SidebarItem title="Unidades" level={1} href={PATH_INVENTORY.units} />
         </SidebarItem>
         <SidebarItem title="Personas" icon={<Group />}>
           <SidebarItem

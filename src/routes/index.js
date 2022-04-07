@@ -132,6 +132,19 @@ export const routes = [
           import('../pages/inventory/categories/CreateCategory')
         )
       },
+      // units
+      {
+        path: PATH_INVENTORY.units,
+        component: lazy(() => import('../pages/inventory/units/Units'))
+      },
+      {
+        path: PATH_INVENTORY.editUnit,
+        component: lazy(() => import('../pages/inventory/units/EditUnit'))
+      },
+      {
+        path: PATH_INVENTORY.createUnit,
+        component: lazy(() => import('../pages/inventory/units/CreateUnit'))
+      },
       // customers
       {
         path: PATH_PERSONS.customers,

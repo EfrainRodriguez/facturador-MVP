@@ -23,7 +23,12 @@ import {
 } from './authentication';
 
 // inventory
-import { ProductForm, CategoryForm, ProductDetails } from './inventory';
+import {
+  ProductForm,
+  CategoryForm,
+  ProductDetails,
+  UnitForm
+} from './inventory';
 
 // persons
 import { PersonForm } from './persons';
@@ -35,6 +40,7 @@ export {
   Page,
   Modal,
   TableX,
+  UnitForm,
   TextInput,
   ScrollBar,
   LoginForm,
