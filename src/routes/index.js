@@ -29,11 +29,13 @@ export const renderRoutesList = (routes = []) =>
           key={index}
           path={route.path}
           element={
-            <Guard>
-              <Layout>
-                <Component />
-              </Layout>
-            </Guard>
+            <Suspense fallback={<RouteProgress />}>
+              <Guard>
+                <Layout>
+                  <Component />
+                </Layout>
+              </Guard>
+            </Suspense>
           }
         />
       );
@@ -53,9 +55,7 @@ export const renderRoutesList = (routes = []) =>
   });
 
 export const renderRoutes = (routes = []) => (
-  <Suspense fallback={<RouteProgress />}>
-    <Routes>{renderRoutesList(routes)}</Routes>
-  </Suspense>
+  <Routes>{renderRoutesList(routes)}</Routes>
 );
 
 export const routes = [

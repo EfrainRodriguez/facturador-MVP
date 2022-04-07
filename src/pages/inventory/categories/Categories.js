@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // redux
 import { useSelector } from 'react-redux';
 // material
-import { Card, Button, Typography } from '@mui/material';
+import { Card, Button } from '@mui/material';
 // components
 import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
@@ -21,20 +21,21 @@ const Categories = () => {
   const cellSchema = [
     {
       columnName: 'name',
-      columnLabel: 'Nombre',
-      render: (data) => <Typography>{data}</Typography>
+      columnLabel: 'Nombre'
     },
     {
       columnName: 'father',
-      columnLabel: 'Categoria padre',
-      render: (data) => <Typography>{data}</Typography>
+      columnLabel: 'Categoria padre'
+    },
+    {
+      columnName: 'description',
+      columnLabel: 'Descripción'
     },
     {
       columnName: 'status',
       columnLabel: 'Status',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (data) => <Typography>{data}</Typography>
+      cellProps: { align: 'center' }
     }
   ];
 
