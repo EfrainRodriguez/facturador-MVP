@@ -36,7 +36,10 @@ export const PATH_INVENTORY = {
   editCategoryRoot: path(ROOT_INVENTORY, '/categorias/editar'),
   editCategory: path(ROOT_INVENTORY, '/categorias/editar/:id'),
   createCategory: path(ROOT_INVENTORY, '/categorias/crear'),
-  stock: path(ROOT_INVENTORY, '/stock')
+  units: path(ROOT_INVENTORY, '/unidades'),
+  editUnitRoot: path(ROOT_INVENTORY, '/unidades/editar'),
+  editUnit: path(ROOT_INVENTORY, '/unidades/editar/:id'),
+  createUnit: path(ROOT_INVENTORY, '/unidades/crear')
 };
 
 export const PATH_PERSONS = {

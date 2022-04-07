@@ -29,11 +29,13 @@ export const renderRoutesList = (routes = []) =>
           key={index}
           path={route.path}
           element={
-            <Guard>
-              <Layout>
-                <Component />
-              </Layout>
-            </Guard>
+            <Suspense fallback={<RouteProgress />}>
+              <Guard>
+                <Layout>
+                  <Component />
+                </Layout>
+              </Guard>
+            </Suspense>
           }
         />
       );
@@ -53,9 +55,7 @@ export const renderRoutesList = (routes = []) =>
   });
 
 export const renderRoutes = (routes = []) => (
-  <Suspense fallback={<RouteProgress />}>
-    <Routes>{renderRoutesList(routes)}</Routes>
-  </Suspense>
+  <Routes>{renderRoutesList(routes)}</Routes>
 );
 
 export const routes = [
@@ -131,6 +131,19 @@ export const routes = [
         component: lazy(() =>
           import('../pages/inventory/categories/CreateCategory')
         )
+      },
+      // units
+      {
+        path: PATH_INVENTORY.units,
+        component: lazy(() => import('../pages/inventory/units/Units'))
+      },
+      {
+        path: PATH_INVENTORY.editUnit,
+        component: lazy(() => import('../pages/inventory/units/EditUnit'))
+      },
+      {
+        path: PATH_INVENTORY.createUnit,
+        component: lazy(() => import('../pages/inventory/units/CreateUnit'))
       },
       // customers
       {

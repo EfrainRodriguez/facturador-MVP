@@ -10,11 +10,11 @@ import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
 import { PATH_INVENTORY } from '../../../routes/paths';
 
-const Categories = () => {
+const Units = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const { categoryList } = useSelector((state) => state.inventory.categories);
+  const { unitList } = useSelector((state) => state.inventory.units);
 
   const navigate = useNavigate();
 
@@ -24,23 +24,13 @@ const Categories = () => {
       columnLabel: 'Nombre'
     },
     {
-      columnName: 'father',
-      columnLabel: 'Categoria padre'
-    },
-    {
       columnName: 'description',
       columnLabel: 'Descripción'
-    },
-    {
-      columnName: 'status',
-      columnLabel: 'Status',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
     }
   ];
 
-  const handleCreateNewProduct = () => {
-    navigate(PATH_INVENTORY.createCategory);
+  const handleCreateNewUnit = () => {
+    navigate(PATH_INVENTORY.createUnit);
   };
 
   const handleSelect = (items) => {
@@ -55,25 +45,25 @@ const Categories = () => {
 
   const handleChangeRowsPerPage = () => {};
 
-  const handleEditCategory = () => {
+  const handleEditUnit = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editCategoryRoot}/${selectedItem.id}`);
+      navigate(`${PATH_INVENTORY.editUnitRoot}/${selectedItem.id}`);
     }
   };
 
-  const handleDeleteCategory = () => {};
+  const handleDeleteUnit = () => {};
 
   return (
     <Page
-      title="Categories de productos"
+      title="Unidades de medida"
       actions={
         <Button
           type="primary"
           variant="contained"
           size="medium"
-          onClick={handleCreateNewProduct}
+          onClick={handleCreateNewUnit}
         >
-          Nueva categoria
+          Nueva unidad
         </Button>
       }
     >
@@ -82,21 +72,21 @@ const Categories = () => {
           numSelected={selectedItems.length}
           actions={
             <ActionButtons
-              editLabel="Editar categoria"
+              editLabel="Editar unidad"
               editProps={{ disabled: selectedItems.length > 1 }}
               deleteLabel={
                 selectedItems.length > 1
-                  ? 'Eliminar categorias'
-                  : 'Eliminar categoria'
+                  ? 'Eliminar unidades'
+                  : 'Eliminar unidad'
               }
-              onEdit={handleEditCategory}
-              onDelete={handleDeleteCategory}
+              onEdit={handleEditUnit}
+              onDelete={handleDeleteUnit}
             />
           }
         />
         <TableX
           selected={selectedItems}
-          sourceData={categoryList}
+          sourceData={unitList}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}
@@ -108,4 +98,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Units;
