@@ -11,22 +11,35 @@ export const productSlice = createSlice({
       {
         id: 1,
         name: 'Producto 1',
-        purchasePrice: '$100',
-        salePrice: '$200',
+        amount: 10,
+        unit: 1,
+        brand: 'Marca 1',
+        description: 'Descripción 1',
+        code: 'Referencia 1',
+        purchasePrice: 100,
+        salePrice: 200,
         category: 1
       },
       {
         id: 2,
         name: 'Producto 2',
-        purchasePrice: '$300',
-        salePrice: '$400',
+        amount: 20,
+        unit: 2,
+        brand: 'Marca 2',
+        description: 'Descripción 2',
+        purchasePrice: 300,
+        salePrice: 400,
         category: 2
       },
       {
         id: 3,
         name: 'Producto 3',
-        purchasePrice: '$500',
-        salePrice: '$600',
+        amount: 30,
+        unit: 3,
+        brand: 'Marca 3',
+        description: 'Descripción 3',
+        purchasePrice: 500,
+        salePrice: 600,
         category: 3
       }
     ],
