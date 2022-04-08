@@ -23,7 +23,8 @@ export const PATH_PROFILE = {
 };
 
 export const PATH_SALES = {
-  root: ROOT_SALES
+  root: ROOT_SALES,
+  createSale: path(ROOT_SALES, '/crear')
 };
 
 export const PATH_INVENTORY = {

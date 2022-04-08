@@ -5,6 +5,7 @@ import Page from './Page';
 import PageHeader from './PageHeader';
 import BackButton from './BackButton';
 import Modal from './Modal';
+import DateInput from './DateInput';
 
 // table
 import { TableX, TableToolbar } from './table';
@@ -36,12 +37,17 @@ import { PersonForm } from './persons';
 // profile
 import { ProfileChangePassword, ProfileGeneral } from './profile';
 
+// sales
+import { SaleForm } from './sales';
+
 export {
   Page,
   Modal,
   TableX,
   UnitForm,
+  SaleForm,
   TextInput,
+  DateInput,
   ScrollBar,
   LoginForm,
   PersonForm,

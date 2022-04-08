@@ -14,7 +14,7 @@ import {
   NumberFormattedInput
 } from '../../components';
 // paths
-import { PATH_INVENTORY } from '../../routes/paths';
+import { PATH_SALES } from '../../routes/paths';
 
 const Sales = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -53,7 +53,7 @@ const Sales = () => {
   ];
 
   const handleCreateNewSale = () => {
-    navigate(PATH_INVENTORY.createProduct);
+    navigate(PATH_SALES.createSale);
   };
 
   const handleSelect = (items) => {
@@ -70,7 +70,7 @@ const Sales = () => {
 
   const handleEditSale = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editProductRoot}/${selectedItem.id}`);
+      navigate(`${PATH_SALES.editSaleRoot}/${selectedItem.id}`);
     }
   };
 

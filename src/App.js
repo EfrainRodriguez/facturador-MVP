@@ -1,6 +1,10 @@
 import React from 'react';
 // router
 import { BrowserRouter as Router } from 'react-router-dom';
+// material
+import { LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { ptBR } from 'date-fns/locale';
 // redux
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/lib/integration/react';
@@ -16,9 +20,11 @@ const App = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <ThemeConfig>
-        <NotistackProvider>
-          <Router>{renderRoutes(routes)}</Router>
-        </NotistackProvider>
+        <LocalizationProvider locale={ptBR} dateAdapter={AdapterDateFns}>
+          <NotistackProvider>
+            <Router>{renderRoutes(routes)}</Router>
+          </NotistackProvider>
+        </LocalizationProvider>
       </ThemeConfig>
     </PersistGate>
   </Provider>
