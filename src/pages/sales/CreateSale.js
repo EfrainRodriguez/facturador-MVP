@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createSale } from '../../redux/slices/sales';
+import { createCustomer } from '../../redux/slices/persons/customers';
 // components
 import {
   Page,
@@ -15,6 +16,8 @@ import {
   TableX,
   SaleForm,
   TextInput,
+  SaleResume,
+  PersonForm,
   TableToolbar,
   SaleItemForm,
   ActionButtons,
@@ -30,11 +33,21 @@ const CreateSale = () => {
   const [selectedItem, setSelectedItem] = useState({});
   const [data, setData] = useState({
     createdAt: new Date(),
-    products: []
+    products: [],
+    paymentStatus: 'PENDING',
+    paymentMethod: 'CASH',
+    customer: {}
   });
   const [showProductModal, setShowProductModal] = useState(false);
+  const [showCreateCustomerModal, setShowCreateCustomertModal] =
+    useState(false);
 
-  const { errors } = useSelector((state) => state.sales);
+  const {
+    sales: { errors },
+    inventory: {
+      units: { unitList }
+    }
+  } = useSelector((state) => state);
 
   const cellSchema = [
     {
@@ -92,7 +105,12 @@ const CreateSale = () => {
   const getTotal = () => getSubtotal() - getDiscount();
 
   const handleSubmit = () => {
-    dispatch(createSale(data));
+    dispatch(
+      createSale({
+        ...data,
+        total: getTotal()
+      })
+    );
     navigate(PATH_SALES.root);
     enqueueSnackbar('Venta registrada!', { variant: 'success' });
   };
@@ -115,13 +133,14 @@ const CreateSale = () => {
   const handleChangeRowsPerPage = () => {};
 
   const handleAddProduct = () => {
-    setSelectedItem({});
     setShowProductModal(true);
+    setSelectedItem({});
   };
 
   const handleCloseProductModal = () => {
-    setSelectedItem({});
     setShowProductModal(false);
+    setSelectedItem({});
+    setSelectedItems([]);
   };
 
   const handleInsertProduct = (product) => {
@@ -144,16 +163,34 @@ const CreateSale = () => {
   };
 
   const handleDeleteProduct = () => {
-    setData({
-      ...data,
-      products: data.products.filter((item) => item.id !== selectedItem.id)
-    });
-    setSelectedItem({});
+    const newProducts = data.products.filter(
+      (product, index) => !selectedItems.includes(index)
+    );
+    setData({ ...data, products: newProducts });
     setSelectedItems([]);
   };
 
   const handleRedirectToCreateProductPage = () => {
     navigate(PATH_INVENTORY.createProduct);
+  };
+
+  const handleShowCreateCustomerModal = () => {
+    setShowCreateCustomertModal(true);
+  };
+
+  const handleCloseCreateCustomerModal = () => {
+    setShowCreateCustomertModal(false);
+  };
+
+  const handleCreateCustomerChange = (event) => {
+    const { name, value } = event.target;
+    setData({ ...data, customer: { ...data.customer, [name]: value } });
+  };
+
+  const handleCreateCustomerSubmit = () => {
+    dispatch(createCustomer(data.customer));
+    setShowCreateCustomertModal(false);
+    // fetch customers
   };
 
   return (
@@ -162,11 +199,11 @@ const CreateSale = () => {
         <SaleForm
           data={data}
           errors={errors}
-          submitButtonText="Registrar venta"
           onChange={handleChange}
-          onSubmit={handleSubmit}
+          onCreateCustomer={handleShowCreateCustomerModal}
         />
-        <Box mt={3} mb={1} display="flex" justifyContent="end">
+        <Divider component="div" sx={{ my: 3 }} />
+        <Box mt={3} mb={2} display="flex" justifyContent="end">
           <Button variant="contained" onClick={handleAddProduct}>
             Agregar producto
           </Button>
@@ -215,51 +252,18 @@ const CreateSale = () => {
             />
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography
-              mb={1}
-              variant="h5"
-              component="div"
-              display="flex"
-              justifyContent="space-between"
-            >
-              Subtotal:{' '}
-              <NumberFormattedInput
-                fullWidth={false}
-                displayType="text"
-                value={getSubtotal()}
-              />
-            </Typography>
-            <Typography
-              mb={1}
-              variant="h5"
-              component="div"
-              display="flex"
-              justifyContent="space-between"
-            >
-              Descuento:{' '}
-              <NumberFormattedInput
-                fullWidth={false}
-                displayType="text"
-                value={-getDiscount()}
-              />
-            </Typography>
-            <Divider component="div" sx={{ my: 1 }} />
-            <Typography
-              mb={1}
-              variant="h5"
-              component="div"
-              display="flex"
-              justifyContent="space-between"
-            >
-              Total:{' '}
-              <NumberFormattedInput
-                fullWidth={false}
-                displayType="text"
-                value={getTotal()}
-              />
-            </Typography>
+            <SaleResume
+              subTotal={getSubtotal()}
+              discount={-getDiscount()}
+              total={getTotal()}
+            />
           </Grid>
         </Grid>
+        <Box mt={3} display="flex" justifyContent="end">
+          <Button variant="contained" onClick={handleSubmit}>
+            Registrar venta
+          </Button>
+        </Box>
       </Card>
       <Modal
         fullWidth
@@ -272,9 +276,24 @@ const CreateSale = () => {
         </Typography>
         <SaleItemForm
           data={selectedItem}
+          unitOptions={unitList}
           onCreateProduct={handleRedirectToCreateProductPage}
           onCancel={handleCloseProductModal}
           onSubmit={handleInsertProduct}
+        />
+      </Modal>
+      <Modal
+        fullWidth
+        maxWidth="md"
+        open={showCreateCustomerModal}
+        onClose={handleCloseCreateCustomerModal}
+      >
+        <PersonForm
+          data={data.customer}
+          // errors={errors}
+          submitButtonText="Crear cliente"
+          onChange={handleCreateCustomerChange}
+          onSubmit={handleCreateCustomerSubmit}
         />
       </Modal>
     </Page>

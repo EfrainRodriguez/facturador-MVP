@@ -38,7 +38,7 @@ import { PersonForm } from './persons';
 import { ProfileChangePassword, ProfileGeneral } from './profile';
 
 // sales
-import { SaleForm, SaleItemForm } from './sales';
+import { SaleForm, SaleItemForm, SaleResume } from './sales';
 
 export {
   Page,
@@ -50,6 +50,7 @@ export {
   DateInput,
   ScrollBar,
   LoginForm,
+  SaleResume,
   PersonForm,
   PageHeader,
   BackButton,

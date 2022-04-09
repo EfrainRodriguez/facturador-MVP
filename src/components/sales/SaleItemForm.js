@@ -2,7 +2,7 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Box, Grid, Button, Divider, Typography } from '@mui/material';
+import { Box, Grid, Button, MenuItem, Typography } from '@mui/material';
 // formik
 import { Form, FormikProvider, useFormik } from 'formik';
 // yup
@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import TextInput from '../TextInput';
 import NumberFormattedInput from '../NumberFormattedInput';
 import SelectInput from '../SelectInput';
+import SaleResume from './SaleResume';
 // utils
 import { normalizeCurrency } from '../../utils/formatters';
 
@@ -37,7 +38,7 @@ const SaleItemForm = ({
       amount: data.amount || 1,
       salePrice: data.salePrice || '',
       discount: data.discount || '',
-      unit: data.unit || '',
+      unit: data.unit || 0,
       observation: data.observation || ''
     },
     enableReinitialize: true,
@@ -96,12 +97,17 @@ const SaleItemForm = ({
                   required
                   name="unit"
                   value={data.unit}
-                  options={unitOptions}
                   label="Unidad de medida"
                   error={touched.unit && errors.unit}
                   placeholder="Informe la unidad del producto"
                   {...getFieldProps('unit')}
-                />
+                >
+                  {unitOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.name}
+                    </MenuItem>
+                  ))}
+                </SelectInput>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <NumberFormattedInput
@@ -142,54 +148,16 @@ const SaleItemForm = ({
             </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
-            <Typography
-              mb={1}
-              variant="h5"
-              component="div"
-              display="flex"
-              justifyContent="space-between"
-            >
-              Subtotal:{' '}
-              <NumberFormattedInput
-                fullWidth={false}
-                displayType="text"
-                value={
-                  values.amount * Number(normalizeCurrency(values.salePrice))
-                }
-              />
-            </Typography>
-            <Typography
-              mb={1}
-              variant="h5"
-              component="div"
-              display="flex"
-              justifyContent="space-between"
-            >
-              Descuento:{' '}
-              <NumberFormattedInput
-                fullWidth={false}
-                displayType="text"
-                value={-Number(normalizeCurrency(values.discount))}
-              />
-            </Typography>
-            <Divider component="div" sx={{ my: 1 }} />
-            <Typography
-              mb={1}
-              variant="h5"
-              component="div"
-              display="flex"
-              justifyContent="space-between"
-            >
-              Total:{' '}
-              <NumberFormattedInput
-                fullWidth={false}
-                displayType="text"
-                value={
-                  values.amount * Number(normalizeCurrency(values.salePrice)) -
-                  Number(normalizeCurrency(values.discount))
-                }
-              />
-            </Typography>
+            <SaleResume
+              subTotal={
+                values.amount * Number(normalizeCurrency(values.salePrice))
+              }
+              discount={-Number(normalizeCurrency(values.discount))}
+              total={
+                values.amount * Number(normalizeCurrency(values.salePrice)) -
+                Number(normalizeCurrency(values.discount))
+              }
+            />
           </Grid>
         </Grid>
         <Box

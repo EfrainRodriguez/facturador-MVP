@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 // redux
 import { useSelector } from 'react-redux';
 // material
-import { Card, Button } from '@mui/material';
+import { Card, Button, Typography } from '@mui/material';
 // components
 import {
   Page,
@@ -15,6 +15,8 @@ import {
 } from '../../components';
 // paths
 import { PATH_SALES } from '../../routes/paths';
+// utils
+import { paymentStatus } from '../../utils/options';
 
 const Sales = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -23,6 +25,27 @@ const Sales = () => {
   const { saleList } = useSelector((state) => state.sales);
 
   const navigate = useNavigate();
+
+  const getPaymentStatusLabel = (data) => {
+    const statusColor = {
+      PENDING: 'error',
+      PAID: 'green'
+    };
+    const status = paymentStatus.find(
+      (thisStatus) => thisStatus.value === data
+    );
+    return status ? (
+      <Typography
+        variant="body1"
+        color={statusColor[data]}
+        textTransform="uppercase"
+      >
+        {status.label}
+      </Typography>
+    ) : (
+      ''
+    );
+  };
 
   const cellSchema = [
     {
@@ -33,7 +56,8 @@ const Sales = () => {
       columnName: 'createdAt',
       columnLabel: 'Fecha de venta',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
+      cellProps: { align: 'center' },
+      render: (data) => new Date(data).toLocaleDateString('es-ES')
     },
     {
       columnName: 'total',
@@ -48,7 +72,8 @@ const Sales = () => {
       columnName: 'paymentStatus',
       columnLabel: 'Estado de pago',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
+      cellProps: { align: 'center' },
+      render: (data) => getPaymentStatusLabel(data)
     }
   ];
 

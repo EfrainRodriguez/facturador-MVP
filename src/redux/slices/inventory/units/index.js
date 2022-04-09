@@ -9,13 +9,18 @@ export const unitSlice = createSlice({
   initialState: {
     unitList: [
       {
+        id: 0,
+        name: 'unidad',
+        description: 'Unidad 1'
+      },
+      {
         id: 1,
-        name: 'Unidad 1',
+        name: 'Kg',
         description: 'Unidad 1'
       },
       {
         id: 2,
-        name: 'Unidad 2',
+        name: 'metro',
         description: 'Unidad 2'
       }
     ],
