@@ -45,7 +45,7 @@ TextInput.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.any,
   error: PropTypes.string,
   fullWidth: PropTypes.bool,
   placeholder: PropTypes.string,

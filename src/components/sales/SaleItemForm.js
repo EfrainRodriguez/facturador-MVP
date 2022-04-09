@@ -12,6 +12,7 @@ import TextInput from '../TextInput';
 import NumberFormattedInput from '../NumberFormattedInput';
 import SelectInput from '../SelectInput';
 import SaleResume from './SaleResume';
+import AutocompleteInput from '../AutocompleteInput';
 // utils
 import { normalizeCurrency } from '../../utils/formatters';
 
@@ -25,7 +26,7 @@ const SaleItemForm = ({
   const handleCreateProduct = () => onCreateProduct && onCreateProduct();
 
   const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Por favor informe el nombre del producto'),
+    id: Yup.number().required('Por favor informe el nombre del producto'),
     amount: Yup.string().required('Por favor informe la cantidad'),
     salePrice: Yup.string().required('Por favor informe el precio de venta'),
     discount: Yup.string().required('Por favor informe el descuento')
@@ -34,16 +35,17 @@ const SaleItemForm = ({
 
   const formik = useFormik({
     initialValues: {
-      name: data.name || '',
+      id: data.id || '',
       amount: data.amount || 1,
       salePrice: data.salePrice || '',
-      discount: data.discount || '',
+      discount: data.discount || 0,
       unit: data.unit || 0,
       observation: data.observation || ''
     },
     enableReinitialize: true,
     validationSchema,
-    onSubmit: (submitData, formikHelpers) => onSubmit(submitData, formikHelpers)
+    onSubmit: (submitData, formikHelpers) =>
+      onSubmit && onSubmit(submitData, formikHelpers)
   });
 
   const { errors, touched, values, handleSubmit, getFieldProps } = formik;
@@ -63,14 +65,37 @@ const SaleItemForm = ({
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={8}>
-            <TextInput
+            <AutocompleteInput
               required
-              name="name"
+              name="id"
               label="Buscar producto"
-              value={data.name}
+              value={values.id}
               placeholder="Busque el producto por nombre"
-              error={touched.name && errors.name}
-              {...getFieldProps('name')}
+              error={touched.id && errors.id}
+              options={[
+                {
+                  id: 1,
+                  name: 'Parlante',
+                  salePrice: 3000
+                },
+                {
+                  id: 2,
+                  name: 'Audifono',
+                  salePrice: 2000
+                },
+                {
+                  id: 3,
+                  name: 'Cargador',
+                  salePrice: 1000
+                }
+              ]}
+              getOptionLabel={(option) => option.name}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              {...getFieldProps('id')}
+              onChange={(value) => {
+                formik.setFieldValue('id', value.id);
+                formik.setFieldValue('salePrice', value.salePrice);
+              }}
             />
           </Grid>
           <Grid item xs={12} sm={4} display="flex" alignItems="center">

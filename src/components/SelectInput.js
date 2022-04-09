@@ -63,7 +63,7 @@ SelectInput.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.any,
   error: PropTypes.string,
   required: PropTypes.bool,
   options: PropTypes.array,

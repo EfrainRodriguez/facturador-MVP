@@ -6,6 +6,7 @@ import PageHeader from './PageHeader';
 import BackButton from './BackButton';
 import Modal from './Modal';
 import DateInput from './DateInput';
+import AutocompleteInput from './AutocompleteInput';
 
 // table
 import { TableX, TableToolbar } from './table';
@@ -64,6 +65,7 @@ export {
   ProductDetails,
   ProfileGeneral,
   NotistackProvider,
+  AutocompleteInput,
   ChangePasswordForm,
   ForgotPasswordForm,
   NumberFormattedInput,
