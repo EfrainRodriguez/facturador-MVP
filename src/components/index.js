@@ -38,7 +38,7 @@ import { PersonForm } from './persons';
 import { ProfileChangePassword, ProfileGeneral } from './profile';
 
 // sales
-import { SaleForm } from './sales';
+import { SaleForm, SaleItemForm } from './sales';
 
 export {
   Page,
@@ -55,6 +55,7 @@ export {
   BackButton,
   SelectInput,
   ProductForm,
+  SaleItemForm,
   CategoryForm,
   TableToolbar,
   RouteProgress,

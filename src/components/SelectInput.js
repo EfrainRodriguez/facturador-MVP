@@ -2,7 +2,13 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Select, InputLabel, MenuItem, FormControl } from '@mui/material';
+import {
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  FormHelperText
+} from '@mui/material';
 
 const SelectInput = ({
   id,
@@ -45,6 +51,11 @@ const SelectInput = ({
         </MenuItem>
       ))}
     </Select>
+    {error && (
+      <FormHelperText error sx={{ m: 0 }}>
+        {error}
+      </FormHelperText>
+    )}
   </FormControl>
 );
 

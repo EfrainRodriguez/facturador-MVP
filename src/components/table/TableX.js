@@ -103,7 +103,7 @@ const Row = ({
         {cellSchema.map((item, cellIndex) => (
           <TableCell key={cellIndex} {...item.cellProps}>
             {item.render
-              ? item.render(row[item.columnName])
+              ? item.render(row[item.columnName], row, rowIndex)
               : row[item.columnName]}
           </TableCell>
         ))}
@@ -244,7 +244,7 @@ const TableX = ({
         {sourceData.length < 1 && (
           <TableBody>
             <TableRow>
-              <TableCell align="center" colSpan={6}>
+              <TableCell align="center" colSpan={12}>
                 <Box sx={{ py: 3 }}>
                   <Typography>No existen datos para mostrar</Typography>
                 </Box>

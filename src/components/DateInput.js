@@ -40,7 +40,11 @@ const DateInput = ({
       renderInput={(params) => <TextField {...params} />}
       {...rest}
     />
-    {error && <FormHelperText>{error}</FormHelperText>}
+    {error && (
+      <FormHelperText error sx={{ m: 0 }}>
+        {error}
+      </FormHelperText>
+    )}
   </FormControl>
 );
 

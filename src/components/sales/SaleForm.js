@@ -2,7 +2,7 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Card, Grid, Button, Typography } from '@mui/material';
+import { Grid, Button, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 // components
 import TextInput from '../TextInput';
@@ -10,11 +10,11 @@ import DateInput from '../DateInput';
 // utils
 import { getErrorMessage } from '../../utils/error';
 
-const SaleForm = ({ data = {}, errors = [], onChange, onAddCustomer }) => {
+const SaleForm = ({ data = {}, errors = [], onChange, onCreateCustomer }) => {
   const handleChange = (e) => onChange && onChange(e);
-  const handleAddCustomer = () => onAddCustomer && onAddCustomer();
+  const handleCreateCustomer = () => onCreateCustomer && onCreateCustomer();
   return (
-    <Card sx={{ p: 3 }}>
+    <>
       <Typography
         mb={1}
         component="div"
@@ -36,7 +36,11 @@ const SaleForm = ({ data = {}, errors = [], onChange, onAddCustomer }) => {
           />
         </Grid>
         <Grid item xs={12} sm={2} display="flex" alignItems="center">
-          <Button size="small" variant="outlined" onClick={handleAddCustomer}>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={handleCreateCustomer}
+          >
             <Add /> Nuevo cliente
           </Button>
         </Grid>
@@ -55,7 +59,7 @@ const SaleForm = ({ data = {}, errors = [], onChange, onAddCustomer }) => {
           />
         </Grid>
       </Grid>
-    </Card>
+    </>
   );
 };
 
@@ -63,7 +67,7 @@ SaleForm.propTypes = {
   data: PropTypes.object,
   errors: PropTypes.array,
   onChange: PropTypes.func,
-  onAddCustomer: PropTypes.func
+  onCreateCustomer: PropTypes.func
 };
 
 export default SaleForm;
