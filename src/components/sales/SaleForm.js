@@ -2,8 +2,8 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Grid, IconButton, Tooltip } from '@mui/material';
-import { Add } from '@mui/icons-material';
+import { Grid } from '@mui/material';
+// import { Add } from '@mui/icons-material';
 // components
 import TextInput from '../TextInput';
 import DateInput from '../DateInput';
@@ -12,28 +12,28 @@ import SelectInput from '../SelectInput';
 import { getErrorMessage } from '../../utils/error';
 import { paymentStatus, paymentMethods } from '../../utils/options';
 
-const SaleForm = ({ data = {}, errors = [], onChange, onCreateCustomer }) => {
+const SaleForm = ({ data = {}, errors = [], onChange }) => {
   const handleChange = (e) => onChange && onChange(e);
-  const handleCreateCustomer = () => onCreateCustomer && onCreateCustomer();
+  // const handleCreateCustomer = () => onCreateCustomer && onCreateCustomer();
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={10} sm={8}>
         <TextInput
           name="customer"
           label="Buscar cliente"
-          value={(data.customer && data.customer.name) || ''}
+          value={data.customer || ''}
           error={getErrorMessage('customer', errors)}
           placeholder="Busque el cliente por nombre"
           onChange={handleChange}
         />
       </Grid>
-      <Grid item xs={12} sm={2} display="flex" alignItems="center">
+      {/* <Grid item xs={2} sm={2} display="flex" alignItems="center">
         <Tooltip title="Crear cliente" placement="top">
           <IconButton color="primary" onClick={handleCreateCustomer}>
             <Add />
           </IconButton>
         </Tooltip>
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} sm={4}>
         <DateInput
           type="number"
@@ -76,8 +76,8 @@ const SaleForm = ({ data = {}, errors = [], onChange, onCreateCustomer }) => {
 SaleForm.propTypes = {
   data: PropTypes.object,
   errors: PropTypes.array,
-  onChange: PropTypes.func,
-  onCreateCustomer: PropTypes.func
+  onChange: PropTypes.func
+  // onCreateCustomer: PropTypes.func
 };
 
 export default SaleForm;

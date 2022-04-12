@@ -36,7 +36,7 @@ const CreateSale = () => {
     products: [],
     paymentStatus: 'PENDING',
     paymentMethod: 'CASH',
-    customer: {}
+    customer: ''
   });
   const [showProductModal, setShowProductModal] = useState(false);
   const [showCreateCustomerModal, setShowCreateCustomertModal] =
@@ -45,7 +45,8 @@ const CreateSale = () => {
   const {
     sales: { errors },
     inventory: {
-      units: { unitList }
+      units: { unitList },
+      products: { productList }
     }
   } = useSelector((state) => state);
 
@@ -66,7 +67,7 @@ const CreateSale = () => {
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
       render: (salePrice) => (
-        <NumberFormattedInput displayType="text" value={salePrice || ''} />
+        <NumberFormattedInput displayType="text" value={salePrice || 0} />
       )
     },
     {
@@ -75,7 +76,7 @@ const CreateSale = () => {
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
       render: (discount) => (
-        <NumberFormattedInput displayType="text" value={discount || ''} />
+        <NumberFormattedInput displayType="text" value={discount || 0} />
       )
     },
     {
@@ -277,6 +278,7 @@ const CreateSale = () => {
         <SaleItemForm
           data={selectedItem}
           unitOptions={unitList}
+          productOptions={productList}
           onCreateProduct={handleRedirectToCreateProductPage}
           onCancel={handleCloseProductModal}
           onSubmit={handleInsertProduct}

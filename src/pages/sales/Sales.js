@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 // redux
 import { useSelector } from 'react-redux';
 // material
-import { Card, Button, Typography } from '@mui/material';
+import { Card, Button } from '@mui/material';
 // components
 import {
   Page,
+  Label,
   TableX,
   ActionButtons,
   TableToolbar,
@@ -29,19 +30,15 @@ const Sales = () => {
   const getPaymentStatusLabel = (data) => {
     const statusColor = {
       PENDING: 'error',
-      PAID: 'green'
+      PAID: 'success'
     };
     const status = paymentStatus.find(
       (thisStatus) => thisStatus.value === data
     );
     return status ? (
-      <Typography
-        variant="body1"
-        color={statusColor[data]}
-        textTransform="uppercase"
-      >
+      <Label variant="outlined" color={statusColor[status.value]}>
         {status.label}
-      </Typography>
+      </Label>
     ) : (
       ''
     );
@@ -65,7 +62,7 @@ const Sales = () => {
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
       render: (data) => (
-        <NumberFormattedInput displayType="text" value={data || ''} />
+        <NumberFormattedInput displayType="text" value={data || 0} />
       )
     },
     {

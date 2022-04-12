@@ -7,6 +7,7 @@ import BackButton from './BackButton';
 import Modal from './Modal';
 import DateInput from './DateInput';
 import AutocompleteInput from './AutocompleteInput';
+import Label from './Label';
 
 // table
 import { TableX, TableToolbar } from './table';
@@ -44,6 +45,7 @@ import { SaleForm, SaleItemForm, SaleResume } from './sales';
 export {
   Page,
   Modal,
+  Label,
   TableX,
   UnitForm,
   SaleForm,

@@ -2,7 +2,16 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Box, Grid, Button, MenuItem, Typography } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Button,
+  Tooltip,
+  MenuItem,
+  IconButton,
+  Typography
+} from '@mui/material';
+import { Add } from '@mui/icons-material';
 // formik
 import { Form, FormikProvider, useFormik } from 'formik';
 // yup
@@ -19,6 +28,7 @@ import { normalizeCurrency } from '../../utils/formatters';
 const SaleItemForm = ({
   data = {},
   unitOptions = [],
+  productOptions = [],
   onSubmit,
   onCancel,
   onCreateProduct
@@ -36,6 +46,7 @@ const SaleItemForm = ({
   const formik = useFormik({
     initialValues: {
       id: data.id || '',
+      name: data.name || '',
       amount: data.amount || 1,
       salePrice: data.salePrice || '',
       discount: data.discount || 0,
@@ -64,7 +75,7 @@ const SaleItemForm = ({
           * Campos requeridos
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={8}>
+          <Grid item xs={10} sm={8}>
             <AutocompleteInput
               required
               name="id"
@@ -72,36 +83,23 @@ const SaleItemForm = ({
               value={values.id}
               placeholder="Busque el producto por nombre"
               error={touched.id && errors.id}
-              options={[
-                {
-                  id: 1,
-                  name: 'Parlante',
-                  salePrice: 3000
-                },
-                {
-                  id: 2,
-                  name: 'Audifono',
-                  salePrice: 2000
-                },
-                {
-                  id: 3,
-                  name: 'Cargador',
-                  salePrice: 1000
-                }
-              ]}
+              options={productOptions}
               getOptionLabel={(option) => option.name}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               {...getFieldProps('id')}
               onChange={(value) => {
                 formik.setFieldValue('id', value.id);
+                formik.setFieldValue('name', value.name);
                 formik.setFieldValue('salePrice', value.salePrice);
               }}
             />
           </Grid>
-          <Grid item xs={12} sm={4} display="flex" alignItems="center">
-            <Button size="small" variant="text" onClick={handleCreateProduct}>
-              Ir a crear producto
-            </Button>
+          <Grid item xs={2} sm={4} display="flex" alignItems="center">
+            <Tooltip title="Crear producto" placement="top">
+              <IconButton color="primary" onClick={handleCreateProduct}>
+                <Add />
+              </IconButton>
+            </Tooltip>
           </Grid>
           <Grid item xs={12} sm={8}>
             <Grid container spacing={2}>
@@ -172,17 +170,19 @@ const SaleItemForm = ({
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <SaleResume
-              subTotal={
-                values.amount * Number(normalizeCurrency(values.salePrice))
-              }
-              discount={-Number(normalizeCurrency(values.discount))}
-              total={
-                values.amount * Number(normalizeCurrency(values.salePrice)) -
-                Number(normalizeCurrency(values.discount))
-              }
-            />
+          <Grid item xs={12} sm={4} display="flex" alignItems="end">
+            <Box width="100%">
+              <SaleResume
+                subTotal={
+                  values.amount * Number(normalizeCurrency(values.salePrice))
+                }
+                discount={-Number(normalizeCurrency(values.discount))}
+                total={
+                  values.amount * Number(normalizeCurrency(values.salePrice)) -
+                  Number(normalizeCurrency(values.discount))
+                }
+              />
+            </Box>
           </Grid>
         </Grid>
         <Box
@@ -208,6 +208,7 @@ const SaleItemForm = ({
 SaleItemForm.propTypes = {
   data: PropTypes.object,
   unitOptions: PropTypes.array,
+  productOptions: PropTypes.array,
   onSubmit: PropTypes.func,
   onCancel: PropTypes.func,
   onCreateProduct: PropTypes.func
