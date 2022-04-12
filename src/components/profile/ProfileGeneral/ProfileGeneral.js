@@ -135,7 +135,7 @@ const ProfileGeneral = ({ data = {}, onSubmit }) => {
                 <Box
                   sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}
                 >
-                  <Button type="submit" variant="contained" size="large">
+                  <Button type="submit" variant="contained">
                     Guardar cambios
                   </Button>
                 </Box>

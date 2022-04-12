@@ -33,7 +33,11 @@ const TextInput = ({
       onChange={onChange}
       {...rest}
     />
-    {error && <FormHelperText>{error}</FormHelperText>}
+    {error && (
+      <FormHelperText error sx={{ m: 0 }}>
+        {error}
+      </FormHelperText>
+    )}
   </FormControl>
 );
 
@@ -41,7 +45,7 @@ TextInput.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.any,
   error: PropTypes.string,
   fullWidth: PropTypes.bool,
   placeholder: PropTypes.string,

@@ -5,6 +5,9 @@ import Page from './Page';
 import PageHeader from './PageHeader';
 import BackButton from './BackButton';
 import Modal from './Modal';
+import DateInput from './DateInput';
+import AutocompleteInput from './AutocompleteInput';
+import Label from './Label';
 
 // table
 import { TableX, TableToolbar } from './table';
@@ -36,19 +39,27 @@ import { PersonForm } from './persons';
 // profile
 import { ProfileChangePassword, ProfileGeneral } from './profile';
 
+// sales
+import { SaleForm, SaleItemForm, SaleResume } from './sales';
+
 export {
   Page,
   Modal,
+  Label,
   TableX,
   UnitForm,
+  SaleForm,
   TextInput,
+  DateInput,
   ScrollBar,
   LoginForm,
+  SaleResume,
   PersonForm,
   PageHeader,
   BackButton,
   SelectInput,
   ProductForm,
+  SaleItemForm,
   CategoryForm,
   TableToolbar,
   RouteProgress,
@@ -56,6 +67,7 @@ export {
   ProductDetails,
   ProfileGeneral,
   NotistackProvider,
+  AutocompleteInput,
   ChangePasswordForm,
   ForgotPasswordForm,
   NumberFormattedInput,

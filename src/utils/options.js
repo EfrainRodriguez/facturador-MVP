@@ -39,3 +39,33 @@ export const userStatus = [
     label: 'Necesita actualizar contraseña'
   }
 ];
+
+export const paymentStatus = [
+  {
+    value: 'PAID',
+    label: 'Pagado'
+  },
+  {
+    value: 'PENDING',
+    label: 'Pendiente'
+  }
+];
+
+export const paymentMethods = [
+  {
+    value: 'CASH',
+    label: 'Efectivo'
+  },
+  {
+    value: 'CREDIT_CARD',
+    label: 'Tarjeta de crédito'
+  },
+  {
+    value: 'DEBIT_CARD',
+    label: 'Tarjeta de débito'
+  },
+  {
+    value: 'ELECTRONIC_BANK_TRANSFER',
+    label: 'Transferencia electrónica'
+  }
+];

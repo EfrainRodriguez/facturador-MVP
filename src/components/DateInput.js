@@ -2,55 +2,44 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import {
-  Select,
-  InputLabel,
-  MenuItem,
-  FormControl,
-  FormHelperText
-} from '@mui/material';
+import { TextField, FormControl, FormHelperText } from '@mui/material';
+import { DatePicker } from '@mui/lab';
+// moment
+import moment from 'moment';
 
-const SelectInput = ({
+const DateInput = ({
   id,
   name,
   label,
   value,
   error,
-  required,
-  children,
   placeholder,
-  options = [],
   defaultValue,
   fullWidth = true,
   formControlProps,
-  inputLabelProps,
   onBlur,
   onFocus,
   onChange,
   ...rest
 }) => (
-  <FormControl required={required} fullWidth={fullWidth} {...formControlProps}>
-    <InputLabel {...inputLabelProps}>{label}</InputLabel>
-    <Select
+  <FormControl
+    fullWidth={fullWidth}
+    error={Boolean(error)}
+    {...formControlProps}
+  >
+    <DatePicker
       id={id}
       name={name}
       label={label}
-      value={value}
-      error={Boolean(error)}
+      value={value ? moment(value).toString() : ''}
       placeholder={placeholder}
       defaultValue={defaultValue}
       onBlur={onBlur}
       onFocus={onFocus}
       onChange={onChange}
+      renderInput={(params) => <TextField {...params} />}
       {...rest}
-    >
-      {children}
-      {options.map(({ label: itemLabel, value: itemValue }, index) => (
-        <MenuItem key={index} value={itemValue}>
-          {itemLabel}
-        </MenuItem>
-      ))}
-    </Select>
+    />
     {error && (
       <FormHelperText error sx={{ m: 0 }}>
         {error}
@@ -59,23 +48,19 @@ const SelectInput = ({
   </FormControl>
 );
 
-SelectInput.propTypes = {
+DateInput.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.any,
   error: PropTypes.string,
-  required: PropTypes.bool,
-  options: PropTypes.array,
-  children: PropTypes.node,
   fullWidth: PropTypes.bool,
   placeholder: PropTypes.string,
   defaultValue: PropTypes.string,
-  inputLabelProps: PropTypes.object,
   formControlProps: PropTypes.object,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
   onChange: PropTypes.func
 };
 
-export default SelectInput;
+export default DateInput;

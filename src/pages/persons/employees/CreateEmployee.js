@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
+// material
+import { Card } from '@mui/material';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
@@ -39,13 +41,15 @@ const CreateEmployee = () => {
       title="Crear empleado"
       backwardPath={PATH_PERSONS.empolyees}
     >
-      <PersonForm
-        data={data}
-        errors={errors}
-        submitButtonText="Crear empleado"
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-      />
+      <Card sx={{ p: 3 }}>
+        <PersonForm
+          data={data}
+          errors={errors}
+          submitButtonText="Crear empleado"
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+        />
+      </Card>
     </Page>
   );
 };

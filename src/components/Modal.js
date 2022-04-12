@@ -2,11 +2,11 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Card, Slide, Dialog, DialogContent } from '@mui/material';
+import { Card, Zoom, Dialog, DialogContent } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const Transition = React.forwardRef((props, ref) => (
-  <Slide direction="down" ref={ref} {...props} />
+  <Zoom ref={ref} {...props} />
 ));
 
 // --------------------------------------------------
@@ -17,10 +17,13 @@ const RootStyle = styled(Dialog)(() => ({
   }
 }));
 
-const StyledModalContent = styled(DialogContent)(() => ({
-  padding: '10px',
+const StyledModalContent = styled(DialogContent)(({ theme }) => ({
+  padding: theme.spacing(2),
   '&.MuiPaper-rounded': {
     borderRadius: 0
+  },
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(3)
   }
 }));
 
@@ -39,7 +42,6 @@ const Modal = ({ children, open, onCancel, ...props }) => {
   return (
     <RootStyle
       open={open}
-      keepMounted
       TransitionComponent={Transition}
       onClose={handleCancel}
       {...props}

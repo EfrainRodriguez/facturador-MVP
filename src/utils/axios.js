@@ -8,6 +8,7 @@ const axiosInstance = axios.create();
 
 axiosInstance.defaults.baseURL =
   'https://facturador-electronico-api.herokuapp.com/api'; // process.env.REACT_APP_URL_API;
+// axiosInstance.defaults.baseURL = 'http://localhost:1234'; // process.env.REACT_APP_URL_API;
 
 axiosInstance.interceptors.response.use(
   (response) => response,

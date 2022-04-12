@@ -8,13 +8,16 @@ import { Card, Button } from '@mui/material';
 // components
 import {
   Page,
+  Label,
   TableX,
   ActionButtons,
   TableToolbar,
   NumberFormattedInput
 } from '../../components';
 // paths
-import { PATH_INVENTORY } from '../../routes/paths';
+import { PATH_SALES } from '../../routes/paths';
+// utils
+import { paymentStatus } from '../../utils/options';
 
 const Sales = () => {
   const [selectedItems, setSelectedItems] = useState([]);
@@ -23,6 +26,23 @@ const Sales = () => {
   const { saleList } = useSelector((state) => state.sales);
 
   const navigate = useNavigate();
+
+  const getPaymentStatusLabel = (data) => {
+    const statusColor = {
+      PENDING: 'error',
+      PAID: 'success'
+    };
+    const status = paymentStatus.find(
+      (thisStatus) => thisStatus.value === data
+    );
+    return status ? (
+      <Label variant="outlined" color={statusColor[status.value]}>
+        {status.label}
+      </Label>
+    ) : (
+      ''
+    );
+  };
 
   const cellSchema = [
     {
@@ -33,7 +53,8 @@ const Sales = () => {
       columnName: 'createdAt',
       columnLabel: 'Fecha de venta',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
+      cellProps: { align: 'center' },
+      render: (data) => new Date(data).toLocaleDateString('es-ES')
     },
     {
       columnName: 'total',
@@ -41,19 +62,20 @@ const Sales = () => {
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
       render: (data) => (
-        <NumberFormattedInput displayType="text" value={data || ''} />
+        <NumberFormattedInput displayType="text" value={data || 0} />
       )
     },
     {
       columnName: 'paymentStatus',
       columnLabel: 'Estado de pago',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
+      cellProps: { align: 'center' },
+      render: (data) => getPaymentStatusLabel(data)
     }
   ];
 
   const handleCreateNewSale = () => {
-    navigate(PATH_INVENTORY.createProduct);
+    navigate(PATH_SALES.createSale);
   };
 
   const handleSelect = (items) => {
@@ -70,7 +92,7 @@ const Sales = () => {
 
   const handleEditSale = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editProductRoot}/${selectedItem.id}`);
+      navigate(`${PATH_SALES.editSaleRoot}/${selectedItem.id}`);
     }
   };
 

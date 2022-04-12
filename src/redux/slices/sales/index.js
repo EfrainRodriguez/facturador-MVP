@@ -13,7 +13,7 @@ export const saleSlice = createSlice({
         customer: 'Juan Perez',
         createdAt: '2020-01-01',
         total: 50000,
-        paymentStatus: 'Pendiente',
+        paymentStatus: 'PAID',
         paymentMethod: 'Efectivo'
       },
       {
@@ -21,7 +21,7 @@ export const saleSlice = createSlice({
         customer: 'Pepito Perez',
         createdAt: '2020-01-01',
         total: 20000,
-        paymentStatus: 'Pago',
+        paymentStatus: 'PENDING',
         paymentMethod: 'Efectivo'
       },
       {
@@ -29,7 +29,7 @@ export const saleSlice = createSlice({
         customer: 'Sultanito Perez',
         createdAt: '2020-01-01',
         total: 7000,
-        paymentStatus: 'Pago',
+        paymentStatus: 'PAID',
         paymentMethod: 'Efectivo'
       }
     ],
@@ -57,11 +57,11 @@ export const fetchSales = () => (dispatch) => {
 
 export const createSale = (sale) => (dispatch, getState) => {
   // dispatch(setLoading(true));
-  dispatch(setSaleList([...getState().inventory.sales.saleList, sale]));
+  dispatch(setSaleList([...getState().sales.saleList, sale]));
 };
 
 export const updateSale = (sale) => (dispatch, getState) => {
-  const saleList = getState().inventory.sales.saleList.map((item) => {
+  const saleList = getState().sales.saleList.map((item) => {
     if (item.id === sale.id) {
       return sale;
     }
