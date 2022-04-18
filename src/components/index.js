@@ -42,6 +42,9 @@ import { ProfileChangePassword, ProfileGeneral } from './profile';
 // sales
 import { SaleForm, SaleItemForm, SaleResume } from './sales';
 
+// dashboard
+import { AnalyticsCard } from './dashboard';
+
 export {
   Page,
   Modal,
@@ -62,6 +65,7 @@ export {
   SaleItemForm,
   CategoryForm,
   TableToolbar,
+  AnalyticsCard,
   RouteProgress,
   ActionButtons,
   ProductDetails,

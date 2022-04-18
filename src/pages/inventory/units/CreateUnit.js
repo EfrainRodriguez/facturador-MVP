@@ -23,9 +23,14 @@ const CreateUnit = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
-    dispatch(createUnits(data));
-    navigate(PATH_INVENTORY.units);
-    enqueueSnackbar('Unidad creada!', { variant: 'success' });
+    dispatch(createUnits(data))
+      .then(() => {
+        navigate(PATH_INVENTORY.units);
+        enqueueSnackbar('Unidad creada!', { variant: 'success' });
+      })
+      .catch(() => {
+        // TODO: handle error
+      });
   };
 
   const handleChange = (event) => {

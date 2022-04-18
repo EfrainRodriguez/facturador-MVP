@@ -40,3 +40,9 @@ axiosInstance.interceptors.request.use(
 );
 
 export default axiosInstance;
+
+// other axios client
+
+export const axiosClient = axios.create();
+
+axiosClient.defaults.baseURL = 'https://facturador-api-mvp.herokuapp.com/api';

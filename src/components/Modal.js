@@ -21,9 +21,6 @@ const StyledModalContent = styled(DialogContent)(({ theme }) => ({
   padding: theme.spacing(2),
   '&.MuiPaper-rounded': {
     borderRadius: 0
-  },
-  [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(3)
   }
 }));
 

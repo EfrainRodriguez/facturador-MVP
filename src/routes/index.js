@@ -82,11 +82,11 @@ export const routes = [
       // home
       {
         path: PATH_HOME.root,
-        component: () => <div>home</div>
+        component: lazy(() => import('../pages/dashboard/Home'))
       },
       {
         path: '/',
-        component: () => <div>home</div>
+        component: lazy(() => import('../pages/dashboard/Home'))
       },
       // sales
       {

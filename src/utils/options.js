@@ -69,3 +69,25 @@ export const paymentMethods = [
     label: 'Transferencia electrónica'
   }
 ];
+
+export const categoryStatus = [
+  {
+    value: 'ACTIVE',
+    label: 'Activo'
+  },
+  {
+    value: 'INACTIVE',
+    label: 'Inactivo'
+  }
+];
+
+export const productStatus = [
+  {
+    value: 'ACTIVE',
+    label: 'Activo'
+  },
+  {
+    value: 'INACTIVE',
+    label: 'Inactivo'
+  }
+];
