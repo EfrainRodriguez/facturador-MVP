@@ -1,29 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
+// axios client
+import { axiosClient } from '../../../../utils/axios';
 // common slice
-// import { setLoading } from '../../common';
+import { setLoading } from '../../common';
 
 // ----------------------------------------------------------------------
 
 export const unitSlice = createSlice({
   name: 'units',
   initialState: {
-    unitList: [
-      {
-        id: 0,
-        name: 'unidad',
-        description: 'Unidad 1'
-      },
-      {
-        id: 1,
-        name: 'Kg',
-        description: 'Unidad 1'
-      },
-      {
-        id: 2,
-        name: 'metro',
-        description: 'Unidad 2'
-      }
-    ],
+    unitList: [],
     errors: []
   },
   reducers: {
@@ -43,20 +29,69 @@ export default unitSlice.reducer;
 // ----------------------------------------------------------------------
 
 export const fetchUnits = () => (dispatch) => {
-  dispatch(setUnitList([]));
-};
-
-export const createUnits = (unit) => (dispatch, getState) => {
-  // dispatch(setLoading(true));
-  dispatch(setUnitList([...getState().inventory.units.unitList, unit]));
-};
-
-export const updateUnit = (unit) => (dispatch, getState) => {
-  const unitList = getState().inventory.units.unitList.map((item) => {
-    if (item.id === unit.id) {
-      return unit;
-    }
-    return item;
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get('/units')
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   });
-  dispatch(setUnitList(unitList));
+};
+
+export const fetchUnit = (unitId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get(`/units/${unitId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const createUnits = (unitData) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .post('/units', unitData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const updateUnit = (unitId, unitData) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .put(`/units/${unitId}`, unitData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
 };

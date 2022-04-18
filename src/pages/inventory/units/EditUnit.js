@@ -7,7 +7,7 @@ import { Card } from '@mui/material';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUnit } from '../../../redux/slices/inventory/units';
+import { updateUnit, fetchUnit } from '../../../redux/slices/inventory/units';
 // components
 import { Page, UnitForm } from '../../../components';
 // paths
@@ -16,7 +16,7 @@ import { PATH_INVENTORY } from '../../../routes/paths';
 const CreateUnit = () => {
   const [data, setData] = useState({});
 
-  const { errors, unitList } = useSelector((state) => state.inventory.units);
+  const { errors } = useSelector((state) => state.inventory.units);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,9 +24,14 @@ const CreateUnit = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
-    dispatch(updateUnit(data));
-    navigate(PATH_INVENTORY.units);
-    enqueueSnackbar('Unidad atualizada!', { variant: 'success' });
+    dispatch(updateUnit(id, data))
+      .then(() => {
+        navigate(PATH_INVENTORY.units);
+        enqueueSnackbar('Unidad atualizada!', { variant: 'success' });
+      })
+      .catch(() => {
+        // TODO: handle error
+      });
   };
 
   const handleChange = (event) => {
@@ -35,9 +40,10 @@ const CreateUnit = () => {
   };
 
   useEffect(() => {
-    const unit = unitList.find((item) => item.id == id);
-    setData(unit);
-  }, [unitList, id]);
+    dispatch(fetchUnit(id)).then((response) => {
+      setData(response.data);
+    });
+  }, [dispatch, id]);
 
   return (
     <Page

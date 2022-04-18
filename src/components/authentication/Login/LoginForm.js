@@ -32,11 +32,11 @@ const LoginForm = ({ email, remember, documentNumber, onSubmit }) => {
     password: Yup.string().required('Por favor digite su contraseña'),
     documentNumber: Yup.number()
       .typeError('La cédula debe contener sólo números')
-      .test(
-        'len',
-        'La cédula debe tener al menos 7 dígitos',
-        (val) => val && val.toString().length > 6
-      )
+      // .test(
+      //   'len',
+      //   'La cédula debe tener al menos 7 dígitos',
+      //   (val) => val && val.toString().length > 6
+      // )
       .positive('La cédula no puede ser un número negativo')
       .required('Por favor digite su cédula')
   });

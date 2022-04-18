@@ -8,12 +8,12 @@ import TextInput from '../../TextInput';
 import SelectInput from '../../SelectInput';
 // utils
 import { getErrorMessage } from '../../../utils/error';
+import { categoryStatus } from '../../../utils/options';
 
 const ProductForm = ({
   data = {},
   errors = [],
   submitButtonText,
-  statusOptions = [],
   categoryOptions = [],
   onChange,
   onSubmit
@@ -48,7 +48,7 @@ const ProductForm = ({
           <SelectInput
             name="status"
             value={data.status || ''}
-            options={statusOptions}
+            options={categoryStatus}
             label="Status de la categoria"
             error={getErrorMessage('status', errors)}
             placeholder="Informe el status de la categoria"
@@ -80,7 +80,6 @@ const ProductForm = ({
 ProductForm.propTypes = {
   data: PropTypes.object,
   errors: PropTypes.array,
-  statusOptions: PropTypes.array,
   categoryOptions: PropTypes.array,
   submitButtonText: PropTypes.string,
   onChange: PropTypes.func,

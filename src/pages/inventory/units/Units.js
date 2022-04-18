@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
-// redux
-import { useSelector } from 'react-redux';
 // material
 import { Card, Button } from '@mui/material';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUnits, setUnitList } from '../../../redux/slices/inventory/units';
 // components
 import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
@@ -17,6 +18,7 @@ const Units = () => {
   const { unitList } = useSelector((state) => state.inventory.units);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const cellSchema = [
     {
@@ -47,11 +49,17 @@ const Units = () => {
 
   const handleEditUnit = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editUnitRoot}/${selectedItem.id}`);
+      navigate(`${PATH_INVENTORY.editUnitRoot}/${selectedItem._id}`);
     }
   };
 
   const handleDeleteUnit = () => {};
+
+  useEffect(() => {
+    dispatch(fetchUnits()).then((response) => {
+      dispatch(setUnitList(response.data));
+    });
+  }, [dispatch]);
 
   return (
     <Page

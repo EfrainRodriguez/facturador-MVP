@@ -9,6 +9,7 @@ import TextInput from '../../TextInput';
 import SelectInput from '../../SelectInput';
 // utils
 import { getErrorMessage } from '../../../utils/error';
+import { productStatus } from '../../../utils/options';
 
 const ProductForm = ({
   data = {},
@@ -161,6 +162,17 @@ const ProductForm = ({
             value={data.description || ''}
             error={getErrorMessage('description', errors)}
             placeholder="Agregue una descripción para el producto"
+            onChange={handleChange}
+          />
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <SelectInput
+            name="status"
+            value={data.status || ''}
+            options={productStatus}
+            label="Status del producto"
+            error={getErrorMessage('status', errors)}
+            placeholder="Informe el status del producto"
             onChange={handleChange}
           />
         </Grid>

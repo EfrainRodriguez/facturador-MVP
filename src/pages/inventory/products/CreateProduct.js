@@ -12,7 +12,9 @@ import { Page, ProductForm } from '../../../components';
 import { PATH_INVENTORY } from '../../../routes/paths';
 
 const CreateProduct = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    status: 'ACTIVE'
+  });
 
   const { errors } = useSelector((state) => state.inventory.products);
 
