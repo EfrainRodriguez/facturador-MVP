@@ -80,10 +80,10 @@ const Units = () => {
   };
 
   const handleDeleteUnit = () => {
+    setIsModalOpen(false);
     if (selectedItems) {
       dispatch(deleteManyUnits(selectedItems))
         .then(() => {
-          setIsModalOpen(false);
           if (selectedItems.length > 1) {
             enqueueSnackbar(`Se eliminaron ${selectedItems.length} unidades`, {
               variant: 'success'

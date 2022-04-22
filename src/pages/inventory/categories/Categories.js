@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // material
-import { Card, Button } from '@mui/material';
+import { Card, Button, Box, Typography } from '@mui/material';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
@@ -13,13 +13,20 @@ import {
   deleteManyCategories
 } from '../../../redux/slices/inventory/categories';
 // components
-import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
+import {
+  Page,
+  TableX,
+  ActionButtons,
+  TableToolbar,
+  Modal
+} from '../../../components';
 // paths
 import { PATH_INVENTORY } from '../../../routes/paths';
 
 const Categories = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { categoryList } = useSelector((state) => state.inventory.categories);
 
@@ -62,13 +69,27 @@ const Categories = () => {
     setSelectedItems(items);
   };
 
-  const handleChangePage = () => {};
+  const handleChangePage = (page) => {
+    dispatch(
+      fetchCategories(
+        `pageNumber=${page + 1}&pageSize=${categoryList.pageSize}`
+      )
+    ).then((response) => {
+      dispatch(setCategoryList(response.data && response.data.data));
+    });
+  };
 
   const handleRowSelected = (item) => {
     setSelectedItem(item);
   };
 
-  const handleChangeRowsPerPage = () => {};
+  const handleChangeRowsPerPage = (rows) => {
+    dispatch(
+      fetchCategories(`pageNumber=${categoryList.pageNumber}&pageSize=${rows}`)
+    ).then((response) => {
+      dispatch(setCategoryList(response.data && response.data.data));
+    });
+  };
 
   const handleEditCategory = () => {
     if (selectedItem) {
@@ -77,6 +98,7 @@ const Categories = () => {
   };
 
   const handleDeleteCategory = () => {
+    setIsModalOpen(false);
     if (selectedItems) {
       dispatch(deleteManyCategories(selectedItems))
         .then(() => {
@@ -142,11 +164,14 @@ const Categories = () => {
                   : 'Eliminar categoria'
               }
               onEdit={handleEditCategory}
-              onDelete={handleDeleteCategory}
+              onDelete={() => setIsModalOpen(true)}
             />
           }
         />
         <TableX
+          rowsPerPage={categoryList.pageSize}
+          page={categoryList.pageNumber - 1}
+          count={categoryList.total}
           selected={selectedItems}
           sourceData={categoryList.categories}
           cellSchema={cellSchema}
@@ -156,6 +181,19 @@ const Categories = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Card>
+      <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
+        <Typography variant="subtitle1">
+          Está seguro que desea eliminar la(s) unidad(es)
+        </Typography>
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button variant="outlined" onClick={() => setIsModalOpen(false)}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={handleDeleteCategory}>
+            Confirmar
+          </Button>
+        </Box>
+      </Modal>
     </Page>
   );
 };
