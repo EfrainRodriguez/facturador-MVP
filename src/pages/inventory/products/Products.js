@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // material
-import { Card, Button } from '@mui/material';
+import { Card, Button, Typography, Box } from '@mui/material';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
@@ -24,7 +24,8 @@ import {
   ActionButtons,
   ProductDetails,
   TableToolbar,
-  NumberFormattedInput
+  NumberFormattedInput,
+  Modal
 } from '../../../components';
 // paths
 import { PATH_INVENTORY } from '../../../routes/paths';
@@ -32,6 +33,7 @@ import { PATH_INVENTORY } from '../../../routes/paths';
 const Products = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
     products: { productList },
@@ -94,13 +96,25 @@ const Products = () => {
     setSelectedItems(items);
   };
 
-  const handleChangePage = () => {};
+  const handleChangePage = (page) => {
+    dispatch(
+      fetchProducts(`pageNumber=${page + 1}&pageSize=${unitList.pageSize}`)
+    ).then((response) => {
+      dispatch(setProductList(response.data && response.data.data));
+    });
+  };
 
   const handleRowSelected = (item) => {
     setSelectedItem(item);
   };
 
-  const handleChangeRowsPerPage = () => {};
+  const handleChangeRowsPerPage = (rows) => {
+    dispatch(
+      fetchProducts(`pageNumber=${unitList.pageNumber}&pageSize=${rows}`)
+    ).then((response) => {
+      dispatch(setProductList(response.data && response.data.data));
+    });
+  };
 
   const handleEditProduct = () => {
     if (selectedItem) {
@@ -109,6 +123,7 @@ const Products = () => {
   };
 
   const handleDeleteProduct = () => {
+    setIsModalOpen(false);
     if (selectedItems) {
       dispatch(deleteManyProducts(selectedItems))
         .then(() => {
@@ -174,7 +189,7 @@ const Products = () => {
                   : 'Eliminar producto'
               }
               onEdit={handleEditProduct}
-              onDelete={handleDeleteProduct}
+              onDelete={() => setIsModalOpen(true)}
             />
           }
         />
@@ -183,6 +198,9 @@ const Products = () => {
           renderRowDetails={(item) => (
             <ProductDetails data={item} units={unitList.units} />
           )}
+          rowsPerPage={productList.pageSize}
+          page={productList.pageNumber - 1}
+          count={productList.total}
           selected={selectedItems}
           sourceData={productList.products}
           cellSchema={cellSchema}
@@ -192,6 +210,19 @@ const Products = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Card>
+      <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
+        <Typography variant="subtitle1">
+          Está seguro que desea eliminar la(s) unidad(es)
+        </Typography>
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button variant="outlined" onClick={() => setIsModalOpen(false)}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={handleDeleteProduct}>
+            Confirmar
+          </Button>
+        </Box>
+      </Modal>
     </Page>
   );
 };
