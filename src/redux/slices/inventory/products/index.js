@@ -33,22 +33,24 @@ export default productSlice.reducer;
 
 // ----------------------------------------------------------------------
 
-export const fetchProducts = () => (dispatch) => {
-  dispatch(setLoading(true));
-  return new Promise((resolve, reject) => {
-    axiosClient
-      .get('/products')
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => {
-        reject(error);
-      })
-      .finally(() => {
-        dispatch(setLoading(false));
-      });
-  });
-};
+export const fetchProducts =
+  (query = '') =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get(`/products?${query}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+    });
+  };
 
 export const fetchProduct = (id) => (dispatch) => {
   dispatch(setLoading(true));

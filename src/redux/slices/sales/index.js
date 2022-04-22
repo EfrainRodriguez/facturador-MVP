@@ -33,22 +33,24 @@ export default saleSlice.reducer;
 
 // ----------------------------------------------------------------------
 
-export const fetchSales = () => (dispatch) => {
-  dispatch(setLoading(true));
-  return new Promise((resolve, reject) => {
-    axiosClient
-      .get('/sales')
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => {
-        reject(error);
-      })
-      .finally(() => {
-        dispatch(setLoading(false));
-      });
-  });
-};
+export const fetchSales =
+  (query = '') =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get(`/sales?${query}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+    });
+  };
 
 export const fetchSale = (saleId) => (dispatch) => {
   dispatch(setLoading(true));

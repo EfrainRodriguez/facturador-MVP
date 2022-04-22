@@ -33,22 +33,24 @@ export default categorySlice.reducer;
 
 // ----------------------------------------------------------------------
 
-export const fetchCategories = () => (dispatch) => {
-  dispatch(setLoading(true));
-  return new Promise((resolve, reject) => {
-    axiosClient
-      .get('/categories')
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => {
-        reject(error);
-      })
-      .finally(() => {
-        dispatch(setLoading(false));
-      });
-  });
-};
+export const fetchCategories =
+  (query = '') =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get(`/categories?${query}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+    });
+  };
 
 export const fetchCategory = (categoryId) => (dispatch) => {
   dispatch(setLoading(true));

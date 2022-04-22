@@ -183,7 +183,7 @@ const Categories = () => {
       </Card>
       <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
         <Typography variant="subtitle1">
-          Está seguro que desea eliminar la(s) unidad(es)
+          Está seguro que desea eliminar la(s) categoria(s)
         </Typography>
         <Box mt={2} display="flex" justifyContent="space-between">
           <Button variant="outlined" onClick={() => setIsModalOpen(false)}>

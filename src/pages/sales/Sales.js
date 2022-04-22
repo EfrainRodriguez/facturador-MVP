@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // material
-import { Card, Button } from '@mui/material';
+import { Card, Button, Box, Typography } from '@mui/material';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
@@ -19,7 +19,8 @@ import {
   TableX,
   ActionButtons,
   TableToolbar,
-  NumberFormattedInput
+  NumberFormattedInput,
+  Modal
 } from '../../components';
 // paths
 import { PATH_SALES } from '../../routes/paths';
@@ -29,6 +30,7 @@ import { paymentStatus } from '../../utils/options';
 const Sales = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { saleList } = useSelector((state) => state.sales);
 
@@ -100,13 +102,25 @@ const Sales = () => {
     setSelectedItems(items);
   };
 
-  const handleChangePage = () => {};
+  const handleChangePage = (page) => {
+    dispatch(
+      fetchSales(`pageNumber=${page + 1}&pageSize=${saleList.pageSize}`)
+    ).then((response) => {
+      dispatch(setSaleList(response.data && response.data.data));
+    });
+  };
 
   const handleRowSelected = (item) => {
     setSelectedItem(item);
   };
 
-  const handleChangeRowsPerPage = () => {};
+  const handleChangeRowsPerPage = (rows) => {
+    dispatch(
+      fetchSales(`pageNumber=${saleList.pageNumber}&pageSize=${rows}`)
+    ).then((response) => {
+      dispatch(setSaleList(response.data && response.data.data));
+    });
+  };
 
   const handleEditSale = () => {
     if (selectedItem) {
@@ -115,6 +129,7 @@ const Sales = () => {
   };
 
   const handleDeleteSale = () => {
+    setIsModalOpen(false);
     if (selectedItems) {
       dispatch(deleteManySales(selectedItems))
         .then(() => {
@@ -172,12 +187,15 @@ const Sales = () => {
                 selectedItems.length > 1 ? 'Eliminar ventas' : 'Eliminar venta'
               }
               onEdit={handleEditSale}
-              onDelete={handleDeleteSale}
+              onDelete={() => setIsModalOpen(true)}
             />
           }
         />
         <TableX
           hasCollapse
+          rowsPerPage={saleList.pageSize}
+          page={saleList.pageNumber - 1}
+          count={saleList.total}
           selected={selectedItems}
           sourceData={saleList.sales}
           cellSchema={cellSchema}
@@ -187,6 +205,19 @@ const Sales = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Card>
+      <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
+        <Typography variant="subtitle1">
+          Está seguro que desea eliminar la(s) venta(s)
+        </Typography>
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button variant="outlined" onClick={() => setIsModalOpen(false)}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={handleDeleteSale}>
+            Confirmar
+          </Button>
+        </Box>
+      </Modal>
     </Page>
   );
 };
