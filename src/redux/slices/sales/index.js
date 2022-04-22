@@ -1,38 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+// axios client
+import { axiosClient } from '../../../utils/axios';
 // common slice
-// import { setLoading } from '../../common';
+import { setLoading } from '../common';
 
 // ----------------------------------------------------------------------
 
 export const saleSlice = createSlice({
   name: 'sales',
   initialState: {
-    saleList: [
-      {
-        id: 1,
-        customer: 'Juan Perez',
-        createdAt: '2020-01-01',
-        total: 50000,
-        paymentStatus: 'PAID',
-        paymentMethod: 'Efectivo'
-      },
-      {
-        id: 1,
-        customer: 'Pepito Perez',
-        createdAt: '2020-01-01',
-        total: 20000,
-        paymentStatus: 'PENDING',
-        paymentMethod: 'Efectivo'
-      },
-      {
-        id: 1,
-        customer: 'Sultanito Perez',
-        createdAt: '2020-01-01',
-        total: 7000,
-        paymentStatus: 'PAID',
-        paymentMethod: 'Efectivo'
-      }
-    ],
+    saleList: {
+      sales: [],
+      total: 0,
+      pageNumber: 1,
+      pageSize: 10
+    },
     errors: []
   },
   reducers: {
@@ -52,20 +34,96 @@ export default saleSlice.reducer;
 // ----------------------------------------------------------------------
 
 export const fetchSales = () => (dispatch) => {
-  dispatch(setSaleList([]));
-};
-
-export const createSale = (sale) => (dispatch, getState) => {
-  // dispatch(setLoading(true));
-  dispatch(setSaleList([...getState().sales.saleList, sale]));
-};
-
-export const updateSale = (sale) => (dispatch, getState) => {
-  const saleList = getState().sales.saleList.map((item) => {
-    if (item.id === sale.id) {
-      return sale;
-    }
-    return item;
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get('/sales')
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   });
-  dispatch(setSaleList(saleList));
+};
+
+export const fetchSale = (saleId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get(`/sales/${saleId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const createSale = (saleData) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .post('/sales', saleData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const updateSale = (saleId, saleData) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .put(`/sales/${saleId}`, saleData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteSale = (saleId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .delete(`/sales/${saleId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteManySales = (sales) => async (dispatch) => {
+  dispatch(setLoading(true));
+  return Promise.all(sales.map((sale) => dispatch(deleteSale(sale._id))))
+    .then((response) => response)
+    .catch((error) => error)
+    .finally(() => {
+      dispatch(setLoading(false));
+    });
 };

@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
-// redux
-import { useSelector } from 'react-redux';
 // material
 import { Card, Button } from '@mui/material';
+// notistack
+import { useSnackbar } from 'notistack';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchSales,
+  setSaleList,
+  deleteManySales
+} from '../../redux/slices/sales';
 // components
 import {
   Page,
@@ -26,6 +33,8 @@ const Sales = () => {
   const { saleList } = useSelector((state) => state.sales);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const getPaymentStatusLabel = (data) => {
     const statusColor = {
@@ -61,9 +70,18 @@ const Sales = () => {
       columnLabel: 'Total de venta',
       columnProps: { align: 'center' },
       cellProps: { align: 'center' },
-      render: (data) => (
-        <NumberFormattedInput displayType="text" value={data || 0} />
-      )
+      render: (data, allData = {}) => {
+        let saleTotal = 0;
+        if (!allData.products)
+          return <NumberFormattedInput displayType="text" value={saleTotal} />;
+        saleTotal = allData.products.reduce(
+          (total, thisData) =>
+            total +
+            (thisData.salePrice * thisData.amount - (thisData.discount || 0)),
+          0
+        );
+        return <NumberFormattedInput displayType="text" value={saleTotal} />;
+      }
     },
     {
       columnName: 'paymentStatus',
@@ -92,11 +110,42 @@ const Sales = () => {
 
   const handleEditSale = () => {
     if (selectedItem) {
-      navigate(`${PATH_SALES.editSaleRoot}/${selectedItem.id}`);
+      navigate(`${PATH_SALES.editSaleRoot}/${selectedItem._id}`);
     }
   };
 
-  const handleDeleteSale = () => {};
+  const handleDeleteSale = () => {
+    if (selectedItems) {
+      dispatch(deleteManySales(selectedItems))
+        .then(() => {
+          if (selectedItems.length > 1) {
+            enqueueSnackbar('Ventas eliminadas correctamente', {
+              variant: 'success'
+            });
+          } else {
+            enqueueSnackbar('Venta eliminada correctamente', {
+              variant: 'success'
+            });
+          }
+          dispatch(fetchSales()).then((response) => {
+            dispatch(setSaleList(response.data && response.data.data));
+            setSelectedItems([]);
+            setSelectedItem(null);
+          });
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.data.message, {
+            variant: 'error'
+          });
+        });
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchSales()).then((response) => {
+      dispatch(setSaleList(response.data && response.data.data));
+    });
+  }, [dispatch]);
 
   return (
     <Page
@@ -130,7 +179,7 @@ const Sales = () => {
         <TableX
           hasCollapse
           selected={selectedItems}
-          sourceData={saleList}
+          sourceData={saleList.sales}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}

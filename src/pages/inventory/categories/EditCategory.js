@@ -5,7 +5,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { updateCategory } from '../../../redux/slices/inventory/categories';
+import {
+  updateCategory,
+  fetchCategories,
+  fetchCategory,
+  setCategoryList
+} from '../../../redux/slices/inventory/categories';
 // components
 import { Page, CategoryForm } from '../../../components';
 // paths
@@ -24,9 +29,14 @@ const CreateProduct = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
-    dispatch(updateCategory(data));
-    navigate(PATH_INVENTORY.categories);
-    enqueueSnackbar('Categoria atualizada!', { variant: 'success' });
+    dispatch(updateCategory(id, data))
+      .then(() => {
+        navigate(PATH_INVENTORY.categories);
+        enqueueSnackbar('Categoria atualizada!', { variant: 'success' });
+      })
+      .catch(() => {
+        // TODO: handle error
+      });
   };
 
   const handleChange = (event) => {
@@ -35,9 +45,13 @@ const CreateProduct = () => {
   };
 
   useEffect(() => {
-    const category = categoryList.find((item) => item.id == id);
-    setData(category);
-  }, [categoryList, id]);
+    dispatch(fetchCategory(id)).then((response) => {
+      setData(response.data && response.data.data);
+    });
+    dispatch(fetchCategories()).then((response) => {
+      dispatch(setCategoryList(response.data.data));
+    });
+  }, [dispatch, id]);
 
   return (
     <Page
@@ -48,6 +62,7 @@ const CreateProduct = () => {
       <CategoryForm
         data={data}
         errors={errors}
+        categoryOptions={categoryList.categories}
         submitButtonText="Guardar cambios"
         onChange={handleChange}
         onSubmit={handleSubmit}

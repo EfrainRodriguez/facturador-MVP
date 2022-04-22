@@ -3,9 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // material
 import { Card, Button } from '@mui/material';
+// notistack
+import { useSnackbar } from 'notistack';
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUnits, setUnitList } from '../../../redux/slices/inventory/units';
+import {
+  fetchUnits,
+  setUnitList,
+  deleteManyUnits
+} from '../../../redux/slices/inventory/units';
 // components
 import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
@@ -19,6 +25,7 @@ const Units = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const cellSchema = [
     {
@@ -53,11 +60,36 @@ const Units = () => {
     }
   };
 
-  const handleDeleteUnit = () => {};
+  const handleDeleteUnit = () => {
+    if (selectedItems) {
+      dispatch(deleteManyUnits(selectedItems))
+        .then(() => {
+          if (selectedItems.length > 1) {
+            enqueueSnackbar(`Se eliminaron ${selectedItems.length} unidades`, {
+              variant: 'success'
+            });
+          } else {
+            enqueueSnackbar(`Se eliminó la unidad ${selectedItems[0].name}`, {
+              variant: 'success'
+            });
+          }
+          dispatch(fetchUnits()).then((response) => {
+            dispatch(setUnitList(response.data && response.data.data));
+            setSelectedItems([]);
+            setSelectedItem(null);
+          });
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.message, {
+            variant: 'error'
+          });
+        });
+    }
+  };
 
   useEffect(() => {
     dispatch(fetchUnits()).then((response) => {
-      dispatch(setUnitList(response.data));
+      dispatch(setUnitList(response.data && response.data.data));
     });
   }, [dispatch]);
 
@@ -94,7 +126,7 @@ const Units = () => {
         />
         <TableX
           selected={selectedItems}
-          sourceData={unitList}
+          sourceData={unitList.units}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}

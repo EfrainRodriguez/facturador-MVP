@@ -17,7 +17,7 @@ const BackButton = ({ path, text, icon, onClick, ...restProps }) => {
   };
   return (
     <Button variant="outlined" onClick={handleClick} {...restProps}>
-      {icon || <ArrowBack />}
+      {icon || <ArrowBack />}&nbsp;
       {text || 'Volver'}
     </Button>
   );

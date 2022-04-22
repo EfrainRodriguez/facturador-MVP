@@ -18,6 +18,7 @@ const AutocompleteInput = ({
   options = [],
   placeholder,
   defaultValue,
+  inputValue,
   fullWidth = true,
   formControlProps,
   noOptionsText = 'No hay items',
@@ -29,7 +30,9 @@ const AutocompleteInput = ({
   <FormControl fullWidth={fullWidth} {...formControlProps}>
     <Autocomplete
       id={id}
+      value={value}
       options={options}
+      inputValue={inputValue}
       noOptionsText={noOptionsText}
       onChange={(event, newInputValue) => {
         onChange(newInputValue);
@@ -41,7 +44,6 @@ const AutocompleteInput = ({
           {...params}
           name={name}
           label={label}
-          value={value}
           error={Boolean(error)}
           placeholder={placeholder}
           defaultValue={defaultValue}
@@ -65,6 +67,7 @@ AutocompleteInput.propTypes = {
   error: PropTypes.string,
   options: PropTypes.array,
   fullWidth: PropTypes.bool,
+  inputValue: PropTypes.string,
   placeholder: PropTypes.string,
   defaultValue: PropTypes.string,
   noOptionsText: PropTypes.string,

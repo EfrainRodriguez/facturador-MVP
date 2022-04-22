@@ -41,7 +41,7 @@ const CreateUnit = () => {
 
   useEffect(() => {
     dispatch(fetchUnit(id)).then((response) => {
-      setData(response.data);
+      setData(response.data && response.data.data);
     });
   }, [dispatch, id]);
 

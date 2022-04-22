@@ -9,7 +9,12 @@ import { setLoading } from '../../common';
 export const unitSlice = createSlice({
   name: 'units',
   initialState: {
-    unitList: [],
+    unitList: {
+      units: [],
+      total: 0,
+      pageNumber: 1,
+      pageSize: 10
+    },
     errors: []
   },
   reducers: {
@@ -94,4 +99,31 @@ export const updateUnit = (unitId, unitData) => (dispatch) => {
         dispatch(setLoading(false));
       });
   });
+};
+
+export const deleteUnit = (unitId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .delete(`/units/${unitId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteManyUnits = (units) => async (dispatch) => {
+  dispatch(setLoading(true));
+  return Promise.all(units.map((unit) => dispatch(deleteUnit(unit._id))))
+    .then((response) => response)
+    .catch((error) => error)
+    .finally(() => {
+      dispatch(setLoading(false));
+    });
 };

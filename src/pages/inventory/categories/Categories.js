@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
-// redux
-import { useSelector } from 'react-redux';
 // material
 import { Card, Button } from '@mui/material';
+// notistack
+import { useSnackbar } from 'notistack';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchCategories,
+  setCategoryList,
+  deleteManyCategories
+} from '../../../redux/slices/inventory/categories';
 // components
 import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
 // paths
@@ -17,6 +24,8 @@ const Categories = () => {
   const { categoryList } = useSelector((state) => state.inventory.categories);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const cellSchema = [
     {
@@ -24,8 +33,14 @@ const Categories = () => {
       columnLabel: 'Nombre'
     },
     {
-      columnName: 'father',
-      columnLabel: 'Categoria padre'
+      columnName: 'parent',
+      columnLabel: 'Categoria padre',
+      render: (item) => {
+        const category = categoryList.categories.find(
+          (thisCategory) => thisCategory._id === item
+        );
+        return category ? category.name : 'Sin categoria padre';
+      }
     },
     {
       columnName: 'description',
@@ -57,11 +72,48 @@ const Categories = () => {
 
   const handleEditCategory = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editCategoryRoot}/${selectedItem.id}`);
+      navigate(`${PATH_INVENTORY.editCategoryRoot}/${selectedItem._id}`);
     }
   };
 
-  const handleDeleteCategory = () => {};
+  const handleDeleteCategory = () => {
+    if (selectedItems) {
+      dispatch(deleteManyCategories(selectedItems))
+        .then(() => {
+          if (selectedItems.length > 1) {
+            enqueueSnackbar(
+              `Se eliminaron ${selectedItems.length} categorias`,
+              {
+                variant: 'success'
+              }
+            );
+          } else {
+            enqueueSnackbar(
+              `Se elimino la categoria ${selectedItems[0].name}`,
+              {
+                variant: 'success'
+              }
+            );
+          }
+          dispatch(fetchCategories()).then((response) => {
+            dispatch(setCategoryList(response.data && response.data.data));
+            setSelectedItems([]);
+            setSelectedItem(null);
+          });
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.data.message, {
+            variant: 'error'
+          });
+        });
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchCategories()).then((response) => {
+      dispatch(setCategoryList(response.data.data));
+    });
+  }, [dispatch]);
 
   return (
     <Page
@@ -96,7 +148,7 @@ const Categories = () => {
         />
         <TableX
           selected={selectedItems}
-          sourceData={categoryList}
+          sourceData={categoryList.categories}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}

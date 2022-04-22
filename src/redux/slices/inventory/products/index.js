@@ -1,48 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+// axios client
+import { axiosClient } from '../../../../utils/axios';
 // common slice
-// import { setLoading } from '../../common';
+import { setLoading } from '../../common';
 
 // ----------------------------------------------------------------------
 
 export const productSlice = createSlice({
   name: 'products',
   initialState: {
-    productList: [
-      {
-        id: 1,
-        name: 'Producto 1',
-        amount: 10,
-        unit: 1,
-        brand: 'Marca 1',
-        description: 'Descripción 1',
-        code: 'Referencia 1',
-        purchasePrice: 100,
-        salePrice: 200,
-        category: 1
-      },
-      {
-        id: 2,
-        name: 'Producto 2',
-        amount: 20,
-        unit: 2,
-        brand: 'Marca 2',
-        description: 'Descripción 2',
-        purchasePrice: 300,
-        salePrice: 400,
-        category: 2
-      },
-      {
-        id: 3,
-        name: 'Producto 3',
-        amount: 30,
-        unit: 3,
-        brand: 'Marca 3',
-        description: 'Descripción 3',
-        purchasePrice: 500,
-        salePrice: 600,
-        category: 3
-      }
-    ],
+    productList: {
+      products: [],
+      total: 0,
+      pageNumber: 1,
+      pageSize: 10
+    },
     errors: []
   },
   reducers: {
@@ -62,22 +34,98 @@ export default productSlice.reducer;
 // ----------------------------------------------------------------------
 
 export const fetchProducts = () => (dispatch) => {
-  dispatch(setProductList([]));
-};
-
-export const createProduct = (product) => (dispatch, getState) => {
-  // dispatch(setLoading(true));
-  dispatch(
-    setProductList([...getState().inventory.products.productList, product])
-  );
-};
-
-export const updateProduct = (product) => (dispatch, getState) => {
-  const productList = getState().inventory.products.productList.map((item) => {
-    if (item.id === product.id) {
-      return product;
-    }
-    return item;
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get('/products')
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
   });
-  dispatch(setProductList(productList));
+};
+
+export const fetchProduct = (id) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get(`/products/${id}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const createProduct = (product) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .post('/products', product)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const updateProduct = (product) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .put(`/products/${product.id}`, product)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteProduct = (productId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .delete(`/products/${productId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteManyProducts = (products) => async (dispatch) => {
+  dispatch(setLoading(true));
+  return Promise.all(
+    products.map((product) => dispatch(deleteProduct(product._id)))
+  )
+    .then((response) => response)
+    .catch((error) => error)
+    .finally(() => {
+      dispatch(setLoading(false));
+    });
 };

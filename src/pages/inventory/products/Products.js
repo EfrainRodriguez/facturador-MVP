@@ -1,10 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
-// redux
-import { useSelector } from 'react-redux';
 // material
 import { Card, Button } from '@mui/material';
+// notistack
+import { useSnackbar } from 'notistack';
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  fetchProducts,
+  setProductList,
+  deleteManyProducts
+} from '../../../redux/slices/inventory/products';
+import {
+  fetchCategories,
+  setCategoryList
+} from '../../../redux/slices/inventory/categories';
+import { fetchUnits, setUnitList } from '../../../redux/slices/inventory/units';
 // components
 import {
   Page,
@@ -21,9 +33,15 @@ const Products = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const { productList } = useSelector((state) => state.inventory.products);
+  const {
+    products: { productList },
+    categories: { categoryList },
+    units: { unitList }
+  } = useSelector((state) => state.inventory);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
 
   const cellSchema = [
     {
@@ -58,7 +76,13 @@ const Products = () => {
       columnName: 'category',
       columnLabel: 'Categoria',
       columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
+      cellProps: { align: 'center' },
+      render: (data) => {
+        const category = categoryList.categories.find(
+          (thisCategory) => thisCategory._id === data
+        );
+        return category ? category.name : 'Sin categoria';
+      }
     }
   ];
 
@@ -80,11 +104,48 @@ const Products = () => {
 
   const handleEditProduct = () => {
     if (selectedItem) {
-      navigate(`${PATH_INVENTORY.editProductRoot}/${selectedItem.id}`);
+      navigate(`${PATH_INVENTORY.editProductRoot}/${selectedItem._id}`);
     }
   };
 
-  const handleDeleteProduct = () => {};
+  const handleDeleteProduct = () => {
+    if (selectedItems) {
+      dispatch(deleteManyProducts(selectedItems))
+        .then(() => {
+          if (selectedItems.length > 1) {
+            enqueueSnackbar('Productos eliminados correctamente', {
+              variant: 'success'
+            });
+          } else {
+            enqueueSnackbar('Producto eliminado correctamente', {
+              variant: 'success'
+            });
+          }
+          dispatch(fetchProducts()).then((response) => {
+            dispatch(setProductList(response.data && response.data.data));
+            setSelectedItems([]);
+            setSelectedItem(null);
+          });
+        })
+        .catch((error) => {
+          enqueueSnackbar(error.data.message, {
+            variant: 'error'
+          });
+        });
+    }
+  };
+
+  useEffect(() => {
+    dispatch(fetchProducts()).then((response) => {
+      dispatch(setProductList(response.data.data));
+    });
+    dispatch(fetchCategories()).then((response) => {
+      dispatch(setCategoryList(response.data.data));
+    });
+    dispatch(fetchUnits()).then((response) => {
+      dispatch(setUnitList(response.data.data));
+    });
+  }, [dispatch]);
 
   return (
     <Page
@@ -119,9 +180,11 @@ const Products = () => {
         />
         <TableX
           hasCollapse
-          renderRowDetails={(item) => <ProductDetails data={item} />}
+          renderRowDetails={(item) => (
+            <ProductDetails data={item} units={unitList.units} />
+          )}
           selected={selectedItems}
-          sourceData={productList}
+          sourceData={productList.products}
           cellSchema={cellSchema}
           onSelect={handleSelect}
           onChangePage={handleChangePage}

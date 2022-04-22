@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 // router
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // material
 import { Box, Grid, Card, Button, Divider, Typography } from '@mui/material';
 import { AddCircle } from '@mui/icons-material';
@@ -8,7 +8,7 @@ import { AddCircle } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { createSale } from '../../redux/slices/sales';
+import { updateSale, fetchSale } from '../../redux/slices/sales';
 import { createCustomer } from '../../redux/slices/persons/customers';
 import {
   fetchProducts,
@@ -34,7 +34,7 @@ import { PATH_SALES, PATH_INVENTORY } from '../../routes/paths';
 // utils
 import { normalizeCurrency } from '../../utils/formatters';
 
-const CreateSale = () => {
+const EditSale = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
   const [data, setData] = useState({
@@ -102,6 +102,7 @@ const CreateSale = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { id } = useParams();
 
   const getSubtotal = () =>
     data.products.reduce((acc, curr) => acc + curr.salePrice * curr.amount, 0);
@@ -112,10 +113,14 @@ const CreateSale = () => {
   const getTotal = () => getSubtotal() - getDiscount();
 
   const handleSubmit = () => {
-    dispatch(createSale(data)).then(() => {
-      navigate(PATH_SALES.root);
-      enqueueSnackbar('Venta registrada!', { variant: 'success' });
-    });
+    dispatch(updateSale(id, data))
+      .then(() => {
+        navigate(PATH_SALES.root);
+        enqueueSnackbar('Venta actualizada!', { variant: 'success' });
+      })
+      .catch(() => {
+        // TODO: handle error
+      });
   };
 
   const handleChange = (event) => {
@@ -197,16 +202,19 @@ const CreateSale = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchSale(id)).then((response) => {
+      setData(response.data && response.data.data);
+    });
     dispatch(fetchProducts()).then((response) => {
       dispatch(setProductList(response.data && response.data.data));
     });
     dispatch(fetchUnits()).then((response) => {
-      dispatch(setUnitList(response.data && response.data.data));
+      dispatch(setUnitList(response.data.data));
     });
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   return (
-    <Page hasBackButton title="Registrar venta" backwardPath={PATH_SALES.root}>
+    <Page hasBackButton title="Editar venta" backwardPath={PATH_SALES.root}>
       <Card sx={{ p: 3 }}>
         <SaleForm
           data={data}
@@ -275,7 +283,7 @@ const CreateSale = () => {
         </Grid>
         <Box mt={3} display="flex" justifyContent="end">
           <Button variant="contained" onClick={handleSubmit}>
-            Registrar venta
+            Guardar venta
           </Button>
         </Box>
       </Card>
@@ -306,7 +314,7 @@ const CreateSale = () => {
         <PersonForm
           data={data.customer}
           // errors={errors}
-          submitButtonText="Crear cliente"
+          submitButtonText="Guardar cambios"
           onChange={handleCreateCustomerChange}
           onSubmit={handleCreateCustomerSubmit}
         />
@@ -315,4 +323,4 @@ const CreateSale = () => {
   );
 };
 
-export default CreateSale;
+export default EditSale;
