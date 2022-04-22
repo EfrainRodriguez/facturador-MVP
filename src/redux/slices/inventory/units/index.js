@@ -33,22 +33,24 @@ export default unitSlice.reducer;
 
 // ----------------------------------------------------------------------
 
-export const fetchUnits = () => (dispatch) => {
-  dispatch(setLoading(true));
-  return new Promise((resolve, reject) => {
-    axiosClient
-      .get('/units')
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => {
-        reject(error);
-      })
-      .finally(() => {
-        dispatch(setLoading(false));
-      });
-  });
-};
+export const fetchUnits =
+  (query = '') =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get(`/units?${query}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+    });
+  };
 
 export const fetchUnit = (unitId) => (dispatch) => {
   dispatch(setLoading(true));

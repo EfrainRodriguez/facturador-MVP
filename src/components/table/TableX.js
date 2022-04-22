@@ -156,8 +156,8 @@ const TableX = ({
     ''
   );
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sourceData.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sourceData.length) : 0;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -235,11 +235,11 @@ const TableX = ({
               />
             );
           })}
-          {emptyRows > 0 && (
+          {/* {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
             </TableRow>
-          )}
+          )} */}
         </TableBody>
         {sourceData.length < 1 && (
           <TableBody>

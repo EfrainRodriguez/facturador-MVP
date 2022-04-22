@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // material
-import { Card, Button } from '@mui/material';
+import { Card, Button, Box, Typography } from '@mui/material';
 // notistack
 import { useSnackbar } from 'notistack';
 // redux
@@ -13,13 +13,20 @@ import {
   deleteManyUnits
 } from '../../../redux/slices/inventory/units';
 // components
-import { Page, TableX, ActionButtons, TableToolbar } from '../../../components';
+import {
+  Page,
+  TableX,
+  ActionButtons,
+  TableToolbar,
+  Modal
+} from '../../../components';
 // paths
 import { PATH_INVENTORY } from '../../../routes/paths';
 
 const Units = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { unitList } = useSelector((state) => state.inventory.units);
 
@@ -46,13 +53,25 @@ const Units = () => {
     setSelectedItems(items);
   };
 
-  const handleChangePage = () => {};
+  const handleChangePage = (page) => {
+    dispatch(
+      fetchUnits(`pageNumber=${page + 1}&pageSize=${unitList.pageSize}`)
+    ).then((response) => {
+      dispatch(setUnitList(response.data && response.data.data));
+    });
+  };
 
   const handleRowSelected = (item) => {
     setSelectedItem(item);
   };
 
-  const handleChangeRowsPerPage = () => {};
+  const handleChangeRowsPerPage = (rows) => {
+    dispatch(
+      fetchUnits(`pageNumber=${unitList.pageNumber}&pageSize=${rows}`)
+    ).then((response) => {
+      dispatch(setUnitList(response.data && response.data.data));
+    });
+  };
 
   const handleEditUnit = () => {
     if (selectedItem) {
@@ -64,6 +83,7 @@ const Units = () => {
     if (selectedItems) {
       dispatch(deleteManyUnits(selectedItems))
         .then(() => {
+          setIsModalOpen(false);
           if (selectedItems.length > 1) {
             enqueueSnackbar(`Se eliminaron ${selectedItems.length} unidades`, {
               variant: 'success'
@@ -120,11 +140,14 @@ const Units = () => {
                   : 'Eliminar unidad'
               }
               onEdit={handleEditUnit}
-              onDelete={handleDeleteUnit}
+              onDelete={() => setIsModalOpen(true)}
             />
           }
         />
         <TableX
+          rowsPerPage={unitList.pageSize}
+          page={unitList.pageNumber - 1}
+          count={unitList.total}
           selected={selectedItems}
           sourceData={unitList.units}
           cellSchema={cellSchema}
@@ -134,6 +157,19 @@ const Units = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Card>
+      <Modal open={isModalOpen} onCancel={() => setIsModalOpen(false)}>
+        <Typography variant="subtitle1">
+          Está seguro que desea eliminar la(s) unidad(es)
+        </Typography>
+        <Box mt={2} display="flex" justifyContent="space-between">
+          <Button variant="outlined" onClick={() => setIsModalOpen(false)}>
+            Cancelar
+          </Button>
+          <Button variant="contained" onClick={handleDeleteUnit}>
+            Confirmar
+          </Button>
+        </Box>
+      </Modal>
     </Page>
   );
 };
