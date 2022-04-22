@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // router
 import { useNavigate } from 'react-router-dom';
 // notistack
@@ -6,6 +6,11 @@ import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { createProduct } from '../../../redux/slices/inventory/products';
+import {
+  fetchCategories,
+  setCategoryList
+} from '../../../redux/slices/inventory/categories';
+import { fetchUnits, setUnitList } from '../../../redux/slices/inventory/units';
 // components
 import { Page, ProductForm } from '../../../components';
 // paths
@@ -16,33 +21,40 @@ const CreateProduct = () => {
     status: 'ACTIVE'
   });
 
-  const { errors } = useSelector((state) => state.inventory.products);
+  const {
+    products: { errors },
+    units: { unitList },
+    categories: { categoryList }
+  } = useSelector((state) => state.inventory);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
-  const categories = [
-    {
-      label: 'Categoria 1',
-      value: 1
-    },
-    {
-      label: 'Categoria 2',
-      value: 2
-    }
-  ];
-
   const handleSubmit = () => {
-    dispatch(createProduct(data));
-    navigate(PATH_INVENTORY.products);
-    enqueueSnackbar('Producto creado!', { variant: 'success' });
+    dispatch(createProduct(data))
+      .then(() => {
+        navigate(PATH_INVENTORY.products);
+        enqueueSnackbar('Producto creado!', { variant: 'success' });
+      })
+      .catch(() => {
+        // TODO: handle error
+      });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
   };
+
+  useEffect(() => {
+    dispatch(fetchCategories()).then((response) => {
+      dispatch(setCategoryList(response.data.data));
+    });
+    dispatch(fetchUnits()).then((response) => {
+      dispatch(setUnitList(response.data.data));
+    });
+  }, [dispatch]);
 
   return (
     <Page
@@ -53,7 +65,8 @@ const CreateProduct = () => {
       <ProductForm
         data={data}
         errors={errors}
-        categoryOptions={categories}
+        categoryOptions={categoryList.categories}
+        unitOptions={unitList.units}
         submitButtonText="Crear producto"
         onChange={handleChange}
         onSubmit={handleSubmit}

@@ -1,26 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
+// axios client
+import { axiosClient } from '../../../../utils/axios';
 // common slice
-// import { setLoading } from '../../common';
+import { setLoading } from '../../common';
 
 // ----------------------------------------------------------------------
 
 export const categorySlice = createSlice({
   name: 'categories',
   initialState: {
-    categoryList: [
-      {
-        id: 1,
-        name: 'Categoria 1',
-        father: 'Sin categoria',
-        status: 'Activo'
-      },
-      {
-        id: 2,
-        name: 'Categoria 2',
-        father: 'Categoria 1',
-        status: 'Activo'
-      }
-    ],
+    categoryList: {
+      categories: [],
+      total: 0,
+      pageNumber: 1,
+      pageSize: 10
+    },
     errors: []
   },
   reducers: {
@@ -39,25 +33,101 @@ export default categorySlice.reducer;
 
 // ----------------------------------------------------------------------
 
-export const fetchCategories = () => (dispatch) => {
-  dispatch(setCategoryList([]));
+export const fetchCategories =
+  (query = '') =>
+  (dispatch) => {
+    dispatch(setLoading(true));
+    return new Promise((resolve, reject) => {
+      axiosClient
+        .get(`/categories?${query}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        })
+        .finally(() => {
+          dispatch(setLoading(false));
+        });
+    });
+  };
+
+export const fetchCategory = (categoryId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .get(`/categories/${categoryId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
 };
 
-export const createCategory = (category) => (dispatch, getState) => {
-  // dispatch(setLoading(true));
-  dispatch(
-    setCategoryList([...getState().inventory.categories.categoryList, category])
-  );
+export const createCategory = (categoryData) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .post('/categories', categoryData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
 };
 
-export const updateCategory = (category) => (dispatch, getState) => {
-  const categoryList = getState().inventory.categories.categoryList.map(
-    (item) => {
-      if (item.id === category.id) {
-        return category;
-      }
-      return item;
-    }
-  );
-  dispatch(setCategoryList(categoryList));
+export const updateCategory = (categorId, categoryData) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .put(`/categories/${categorId}`, categoryData)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteCategory = (categoryId) => (dispatch) => {
+  dispatch(setLoading(true));
+  return new Promise((resolve, reject) => {
+    axiosClient
+      .delete(`/categories/${categoryId}`)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => {
+        reject(error);
+      })
+      .finally(() => {
+        dispatch(setLoading(false));
+      });
+  });
+};
+
+export const deleteManyCategories = (categories) => async (dispatch) => {
+  dispatch(setLoading(true));
+  return Promise.all(
+    categories.map((category) => dispatch(deleteCategory(category._id)))
+  )
+    .then((response) => response)
+    .catch((error) => error)
+    .finally(() => {
+      dispatch(setLoading(false));
+    });
 };

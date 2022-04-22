@@ -2,7 +2,14 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Card, Grid, Button, Divider, Typography } from '@mui/material';
+import {
+  Card,
+  Grid,
+  Button,
+  Divider,
+  Typography,
+  MenuItem
+} from '@mui/material';
 // components
 import NumberFormattedInput from '../../NumberFormattedInput';
 import TextInput from '../../TextInput';
@@ -50,11 +57,16 @@ const ProductForm = ({
             name="category"
             label="Categoria"
             value={data.category || ''}
-            options={categoryOptions}
             error={getErrorMessage('category', errors)}
             placeholder="Informe la categoria del producto"
             onChange={handleChange}
-          />
+          >
+            {categoryOptions.map((category) => (
+              <MenuItem key={category._id} value={category._id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </SelectInput>
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextInput
@@ -126,12 +138,17 @@ const ProductForm = ({
             required
             name="unit"
             value={data.unit || ''}
-            options={unitOptions}
             label="Unidad de medida"
             error={getErrorMessage('unit', errors)}
             placeholder="Informe la unidad del producto"
             onChange={handleChange}
-          />
+          >
+            {unitOptions.map((unit) => (
+              <MenuItem key={unit._id} value={unit._id}>
+                {unit.name}
+              </MenuItem>
+            ))}
+          </SelectInput>
         </Grid>
         <Grid item xs={12} sm={4}>
           <TextInput

@@ -156,8 +156,8 @@ const TableX = ({
     ''
   );
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sourceData.length) : 0;
+  // const emptyRows =
+  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - sourceData.length) : 0;
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -167,18 +167,18 @@ const TableX = ({
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = sourceData.map((n, index) => index);
+      const newSelecteds = sourceData.map((n) => n);
       onSelect(newSelecteds);
       return;
     }
     onSelect([]);
   };
 
-  const handleSelected = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleSelected = (event, name, rowData) => {
+    const selectedIndex = selected.indexOf(rowData);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, rowData);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -193,7 +193,7 @@ const TableX = ({
   };
 
   const handleSelectedRow = (event, name, rowData) => {
-    handleSelected(event, name);
+    handleSelected(event, name, rowData);
     onRowSelected(rowData);
   };
 
@@ -220,7 +220,7 @@ const TableX = ({
         />
         <TableBody>
           {filteredProducts.map((row, rowIndex) => {
-            const isItemSelected = selected.indexOf(rowIndex) !== -1;
+            const isItemSelected = selected.indexOf(row) !== -1;
             return (
               <Row
                 row={row}
@@ -235,11 +235,11 @@ const TableX = ({
               />
             );
           })}
-          {emptyRows > 0 && (
+          {/* {emptyRows > 0 && (
             <TableRow style={{ height: 53 * emptyRows }}>
               <TableCell colSpan={6} />
             </TableRow>
-          )}
+          )} */}
         </TableBody>
         {sourceData.length < 1 && (
           <TableBody>

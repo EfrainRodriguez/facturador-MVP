@@ -36,7 +36,7 @@ const SaleItemForm = ({
   const handleCreateProduct = () => onCreateProduct && onCreateProduct();
 
   const validationSchema = Yup.object().shape({
-    id: Yup.number().required('Por favor informe el nombre del producto'),
+    // id: Yup.string().required('Por favor informe el nombre del producto'),
     amount: Yup.string().required('Por favor informe la cantidad'),
     salePrice: Yup.string().required('Por favor informe el precio de venta'),
     discount: Yup.string().required('Por favor informe el descuento')
@@ -45,8 +45,8 @@ const SaleItemForm = ({
 
   const formik = useFormik({
     initialValues: {
-      id: data.id || '',
-      name: data.name || '',
+      productId: data || '',
+      productName: data.productName || '',
       amount: data.amount || 1,
       salePrice: data.salePrice || '',
       discount: data.discount || 0,
@@ -78,18 +78,19 @@ const SaleItemForm = ({
           <Grid item xs={10} sm={8}>
             <AutocompleteInput
               required
-              name="id"
+              name="productId"
               label="Buscar producto"
-              value={values.id}
+              value={values}
+              inputValue={values.productName}
               placeholder="Busque el producto por nombre"
-              error={touched.id && errors.id}
+              error={touched.productId && errors.productId}
               options={productOptions}
               getOptionLabel={(option) => option.name}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-              {...getFieldProps('id')}
+              isOptionEqualToValue={(option, value) => option._id === value._id}
+              {...getFieldProps('productId')}
               onChange={(value) => {
-                formik.setFieldValue('id', value.id);
-                formik.setFieldValue('name', value.name);
+                formik.setFieldValue('productId', value._id);
+                formik.setFieldValue('productName', value.name);
                 formik.setFieldValue('salePrice', value.salePrice);
               }}
             />
@@ -126,7 +127,7 @@ const SaleItemForm = ({
                   {...getFieldProps('unit')}
                 >
                   {unitOptions.map((option) => (
-                    <MenuItem key={option.id} value={option.id}>
+                    <MenuItem key={option._id} value={option._id}>
                       {option.name}
                     </MenuItem>
                   ))}

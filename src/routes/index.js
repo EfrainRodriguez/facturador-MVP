@@ -97,6 +97,10 @@ export const routes = [
         path: PATH_SALES.createSale,
         component: lazy(() => import('../pages/sales/CreateSale'))
       },
+      {
+        path: PATH_SALES.editSale,
+        component: lazy(() => import('../pages/sales/EditSale'))
+      },
       // profile
       {
         path: PATH_PROFILE.root,

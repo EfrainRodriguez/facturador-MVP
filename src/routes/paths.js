@@ -24,7 +24,9 @@ export const PATH_PROFILE = {
 
 export const PATH_SALES = {
   root: ROOT_SALES,
-  createSale: path(ROOT_SALES, '/crear')
+  createSale: path(ROOT_SALES, '/crear'),
+  editSale: path(ROOT_SALES, '/editar/:id'),
+  editSaleRoot: path(ROOT_SALES, '/editar')
 };
 
 export const PATH_INVENTORY = {

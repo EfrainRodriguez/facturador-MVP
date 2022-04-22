@@ -2,7 +2,7 @@ import React from 'react';
 // prop types
 import PropTypes from 'prop-types';
 // material
-import { Card, Grid, Button } from '@mui/material';
+import { Card, Grid, Button, MenuItem } from '@mui/material';
 // components
 import TextInput from '../../TextInput';
 import SelectInput from '../../SelectInput';
@@ -35,14 +35,20 @@ const ProductForm = ({
         </Grid>
         <Grid item xs={12} sm={6}>
           <SelectInput
-            name="father"
+            name="parent"
             label="Categoria padre"
-            value={data.father || ''}
-            options={categoryOptions}
-            error={getErrorMessage('father', errors)}
+            value={data.parent || ''}
+            error={getErrorMessage('parent', errors)}
             placeholder="Informe la categoria padre"
             onChange={handleChange}
-          />
+          >
+            {/* <MenuItem value="">Sin categoria padre</MenuItem> */}
+            {categoryOptions.map((category) => (
+              <MenuItem key={category._id} value={category._id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </SelectInput>
         </Grid>
         <Grid item xs={12} sm={6}>
           <SelectInput
