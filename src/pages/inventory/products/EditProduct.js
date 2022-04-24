@@ -7,7 +7,8 @@ import { useSnackbar } from 'notistack';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   updateProduct,
-  fetchProduct
+  fetchProduct,
+  setErrors
 } from '../../../redux/slices/inventory/products';
 import {
   fetchCategories,
@@ -18,6 +19,8 @@ import { fetchUnits, setUnitList } from '../../../redux/slices/inventory/units';
 import { Page, ProductForm } from '../../../components';
 // paths
 import { PATH_INVENTORY } from '../../../routes/paths';
+// utils
+import { clearError } from '../../../utils/error';
 
 const EditProduct = () => {
   const [data, setData] = useState({});
@@ -34,15 +37,26 @@ const EditProduct = () => {
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = () => {
-    dispatch(updateProduct(data)).then(() => {
-      navigate(PATH_INVENTORY.products);
-      enqueueSnackbar('Producto actualizado!', { variant: 'success' });
-    });
+    dispatch(updateProduct(id, { ...data, stock: data.amount }))
+      .then(() => {
+        navigate(PATH_INVENTORY.products);
+        enqueueSnackbar('Producto actualizado!', { variant: 'success' });
+      })
+      .catch((error) => {
+        if (error.response) {
+          const { data: errorData } = error.response.data;
+          enqueueSnackbar(errorData.message, { variant: 'error' });
+          if (errorData.errors) {
+            dispatch(setErrors(errorData.errors));
+          }
+        }
+      });
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setData({ ...data, [name]: value });
+    dispatch(setErrors(clearError(name, errors)));
   };
 
   useEffect(() => {
@@ -56,6 +70,10 @@ const EditProduct = () => {
       dispatch(setUnitList(response.data.data));
     });
   }, [dispatch, id]);
+
+  useEffect(() => {
+    dispatch(setErrors([]));
+  }, [dispatch]);
 
   return (
     <Page

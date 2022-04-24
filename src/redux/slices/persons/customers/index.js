@@ -8,34 +8,34 @@ export const customerSlice = createSlice({
   name: 'customers',
   initialState: {
     customerList: [
-      {
-        id: 1,
-        firstName: 'Cliente 1',
-        lastName: 'Cliente 1',
-        documentNumber: '123456789',
-        email: 'email@email.com',
-        phone: '1234567890',
-        address: 'Calle 1',
-        city: 'Ciudad 1',
-        state: 'Estado 1',
-        country: 'Pais 1',
-        zipCode: '12345',
-        status: 'Activo'
-      },
-      {
-        id: 2,
-        firstName: 'Cliente 2',
-        lastName: 'Cliente 2',
-        documentNumber: '123456789',
-        email: 'email@email.com',
-        phone: '1234567890',
-        address: 'Calle 2',
-        city: 'Ciudad 2',
-        state: 'Estado 2',
-        country: 'Pais 2',
-        zipCode: '12345',
-        status: 'Activo'
-      }
+      // {
+      //   id: 1,
+      //   firstName: 'Cliente 1',
+      //   lastName: 'Cliente 1',
+      //   documentNumber: '123456789',
+      //   email: 'email@email.com',
+      //   phone: '1234567890',
+      //   address: 'Calle 1',
+      //   city: 'Ciudad 1',
+      //   state: 'Estado 1',
+      //   country: 'Pais 1',
+      //   zipCode: '12345',
+      //   status: 'Activo'
+      // },
+      // {
+      //   id: 2,
+      //   firstName: 'Cliente 2',
+      //   lastName: 'Cliente 2',
+      //   documentNumber: '123456789',
+      //   email: 'email@email.com',
+      //   phone: '1234567890',
+      //   address: 'Calle 2',
+      //   city: 'Ciudad 2',
+      //   state: 'Estado 2',
+      //   country: 'Pais 2',
+      //   zipCode: '12345',
+      //   status: 'Activo'
+      // }
     ],
     errors: []
   },

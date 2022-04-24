@@ -94,6 +94,11 @@ const Products = () => {
 
   const handleSelect = (items) => {
     setSelectedItems(items);
+    if (items.length === 1) {
+      setSelectedItem(items[0]);
+    } else {
+      setSelectedItem(null);
+    }
   };
 
   const handleChangePage = (page) => {

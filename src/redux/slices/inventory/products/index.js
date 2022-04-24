@@ -86,11 +86,11 @@ export const createProduct = (product) => (dispatch) => {
   });
 };
 
-export const updateProduct = (product) => (dispatch) => {
+export const updateProduct = (productId, productData) => (dispatch) => {
   dispatch(setLoading(true));
   return new Promise((resolve, reject) => {
     axiosClient
-      .put(`/products/${product.id}`, product)
+      .put(`/products/${productId}`, productData)
       .then((response) => {
         resolve(response);
       })
