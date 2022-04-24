@@ -16,7 +16,7 @@ import TextInput from '../../TextInput';
 import SelectInput from '../../SelectInput';
 // utils
 import { getErrorMessage } from '../../../utils/error';
-import { productStatus } from '../../../utils/options';
+// import { productStatus } from '../../../utils/options';
 
 const ProductForm = ({
   data = {},
@@ -32,7 +32,7 @@ const ProductForm = ({
   return (
     <Card sx={{ p: 3 }}>
       <Typography
-        mb={1}
+        mb={2}
         component="div"
         variant="caption"
         sx={{ color: 'text.secondary' }}
@@ -40,6 +40,17 @@ const ProductForm = ({
         * Campos requeridos
       </Typography>
       <Grid container spacing={2}>
+        <Grid item xs={12} sm={4}>
+          <TextInput
+            autoFocus
+            name="barCode"
+            value={data.barCode || ''}
+            label="Código de barras"
+            error={getErrorMessage('barCode', errors)}
+            placeholder="Informe el código de barras del producto"
+            onChange={handleChange}
+          />
+        </Grid>
         <Grid item xs={12} sm={8}>
           <TextInput
             required
@@ -52,31 +63,14 @@ const ProductForm = ({
           />
         </Grid>
         <Grid item xs={12} sm={4}>
-          <SelectInput
-            required
-            name="category"
-            label="Categoria"
-            value={data.category || ''}
-            error={getErrorMessage('category', errors)}
-            placeholder="Informe la categoria del producto"
-            onChange={handleChange}
-          >
-            {categoryOptions.map((category) => (
-              <MenuItem key={category._id} value={category._id}>
-                {category.name}
-              </MenuItem>
-            ))}
-          </SelectInput>
-        </Grid>
-        <Grid item xs={12} sm={4}>
           <TextInput
             required
             type="number"
             name="amount"
-            label="Cantidad en stock"
+            label="Cantidad inicial en inventario"
             value={data.amount || ''}
             error={getErrorMessage('amount', errors)}
-            placeholder="Informe la cantiad de stock"
+            placeholder="Informe la cantiad inicial en inventario"
             onChange={handleChange}
           />
         </Grid>
@@ -135,7 +129,22 @@ const ProductForm = ({
         </Grid>
         <Grid item xs={12} sm={4}>
           <SelectInput
-            required
+            name="category"
+            label="Categoria"
+            value={data.category || ''}
+            error={getErrorMessage('category', errors)}
+            placeholder="Informe la categoria del producto"
+            onChange={handleChange}
+          >
+            {categoryOptions.map((category) => (
+              <MenuItem key={category._id} value={category._id}>
+                {category.name}
+              </MenuItem>
+            ))}
+          </SelectInput>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <SelectInput
             name="unit"
             value={data.unit || ''}
             label="Unidad de medida"
@@ -160,16 +169,6 @@ const ProductForm = ({
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <TextInput
-            name="code"
-            value={data.code || ''}
-            label="Referencia"
-            error={getErrorMessage('code', errors)}
-            placeholder="Informe una referencia para el producto"
-            onChange={handleChange}
-          />
-        </Grid>
         <Grid item xs={12} sm={8}>
           <TextInput
             multiline
@@ -182,7 +181,7 @@ const ProductForm = ({
             onChange={handleChange}
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        {/* <Grid item xs={12} sm={4}>
           <SelectInput
             name="status"
             value={data.status || ''}
@@ -192,7 +191,7 @@ const ProductForm = ({
             placeholder="Informe el status del producto"
             onChange={handleChange}
           />
-        </Grid>
+        </Grid> */}
         <Grid item xs={12} display="flex" justifyContent="end">
           <Button variant="contained" onClick={handleSubmit}>
             {submitButtonText || 'Guardar'}

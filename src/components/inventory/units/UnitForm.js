@@ -21,6 +21,8 @@ const UnitForm = ({
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <TextInput
+          required
+          autoFocus
           name="name"
           label="Nombre"
           value={data.name || ''}
