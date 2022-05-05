@@ -13,6 +13,7 @@ const DateInput = ({
   label,
   value,
   error,
+  size = 'small',
   placeholder,
   defaultValue,
   fullWidth = true,
@@ -37,7 +38,7 @@ const DateInput = ({
       onBlur={onBlur}
       onFocus={onFocus}
       onChange={onChange}
-      renderInput={(params) => <TextField {...params} />}
+      renderInput={(params) => <TextField size={size} {...params} />}
       {...rest}
     />
     {error && (
@@ -53,6 +54,7 @@ DateInput.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.any,
+  size: PropTypes.string,
   error: PropTypes.string,
   fullWidth: PropTypes.bool,
   placeholder: PropTypes.string,

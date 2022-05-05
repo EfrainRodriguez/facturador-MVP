@@ -168,10 +168,9 @@ const TableX = ({
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = sourceData.map((n) => n);
-      onSelect(newSelecteds);
-      return;
+      return onSelect && onSelect(newSelecteds);
     }
-    onSelect([]);
+    return onSelect && onSelect([]);
   };
 
   const handleSelected = (event, name, rowData) => {
@@ -189,17 +188,16 @@ const TableX = ({
         selected.slice(selectedIndex + 1)
       );
     }
-    onSelect(newSelected);
+    return onSelect && onSelect(newSelected);
   };
 
   const handleSelectedRow = (event, name, rowData) => {
     handleSelected(event, name, rowData);
-    onRowSelected(rowData);
+    return onRowSelected && onRowSelected(rowData);
   };
 
-  const handleChangePage = (event, newPage) => {
-    onChangePage(newPage);
-  };
+  const handleChangePage = (event, newPage) =>
+    onChangePage && onChangePage(newPage);
 
   const handleChangeRowsPerPage = (event) =>
     onChangeRowsPerPage && onChangeRowsPerPage(event.target.value);

@@ -131,3 +131,17 @@ export const deleteManyProducts = (products) => async (dispatch) => {
       dispatch(setLoading(false));
     });
 };
+
+export const fetchProductByNameAutocomplete =
+  (query = '') =>
+  () =>
+    new Promise((resolve, reject) => {
+      axiosClient
+        .get(`/products/search/byName?${query}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });

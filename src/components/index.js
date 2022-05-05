@@ -40,7 +40,7 @@ import { PersonForm } from './persons';
 import { ProfileChangePassword, ProfileGeneral } from './profile';
 
 // sales
-import { SaleForm, SaleItemForm, SaleResume } from './sales';
+import { SaleForm, SaleItemForm, SaleResume, SaleProductList } from './sales';
 
 // dashboard
 import { AnalyticsCard } from './dashboard';
@@ -70,6 +70,7 @@ export {
   ActionButtons,
   ProductDetails,
   ProfileGeneral,
+  SaleProductList,
   NotistackProvider,
   AutocompleteInput,
   ChangePasswordForm,

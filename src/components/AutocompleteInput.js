@@ -15,6 +15,7 @@ const AutocompleteInput = ({
   label,
   value,
   error,
+  size = 'small',
   options = [],
   placeholder,
   defaultValue,
@@ -30,9 +31,11 @@ const AutocompleteInput = ({
   <FormControl fullWidth={fullWidth} {...formControlProps}>
     <Autocomplete
       id={id}
+      name={name}
       value={value}
       options={options}
       inputValue={inputValue}
+      defaultValue={defaultValue}
       noOptionsText={noOptionsText}
       onChange={(event, newInputValue) => {
         onChange(newInputValue);
@@ -42,11 +45,10 @@ const AutocompleteInput = ({
       renderInput={(params) => (
         <TextField
           {...params}
-          name={name}
           label={label}
+          size={size}
           error={Boolean(error)}
           placeholder={placeholder}
-          defaultValue={defaultValue}
         />
       )}
       {...rest}
@@ -64,6 +66,7 @@ AutocompleteInput.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.string,
+  size: PropTypes.string,
   error: PropTypes.string,
   options: PropTypes.array,
   fullWidth: PropTypes.bool,

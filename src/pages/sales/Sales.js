@@ -56,10 +56,10 @@ const Sales = () => {
   };
 
   const cellSchema = [
-    {
-      columnName: 'customer',
-      columnLabel: 'Cliente'
-    },
+    // {
+    //   columnName: 'customer',
+    //   columnLabel: 'Cliente'
+    // },
     {
       columnName: 'createdAt',
       columnLabel: 'Fecha de venta',
@@ -83,6 +83,26 @@ const Sales = () => {
           0
         );
         return <NumberFormattedInput displayType="text" value={saleTotal} />;
+      }
+    },
+    {
+      columnName: 'discount',
+      columnLabel: 'Descuento',
+      columnProps: { align: 'center' },
+      cellProps: { align: 'center' },
+      render: (data, allData = {}) => {
+        let discountTotal = 0;
+        if (!allData.products)
+          return (
+            <NumberFormattedInput displayType="text" value={discountTotal} />
+          );
+        discountTotal = allData.products.reduce(
+          (discount, thisData) => discount + (thisData.discount || 0),
+          0
+        );
+        return (
+          <NumberFormattedInput displayType="text" value={discountTotal} />
+        );
       }
     },
     {

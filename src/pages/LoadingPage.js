@@ -1,6 +1,6 @@
 import React from 'react';
 // material
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Typography, Box } from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
 // custom styles ---------------------------------------------
@@ -19,7 +19,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   backgroundColor:
     theme.palette.mode === 'light'
-      ? 'rgba(255, 255, 255, 0.5)'
+      ? 'rgba(255, 255, 255, 0.75)'
       : alpha(theme.palette.background.default, 0.8)
 }));
 
@@ -27,7 +27,12 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 const LoadingPage = () => (
   <RootStyle>
-    <CircularProgress />
+    <Box textAlign="center">
+      <CircularProgress />
+      <Typography mt={2} variant="subtitle1">
+        Cargando datos...
+      </Typography>
+    </Box>
   </RootStyle>
 );
 

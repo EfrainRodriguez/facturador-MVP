@@ -10,6 +10,8 @@ const TextInput = ({
   label,
   value,
   error,
+  size = 'small',
+  autoComplete = 'off',
   placeholder,
   defaultValue,
   fullWidth = true,
@@ -23,8 +25,10 @@ const TextInput = ({
     <TextField
       id={id}
       name={name}
+      size={size}
       label={label}
       value={value}
+      autoComplete={autoComplete}
       error={Boolean(error)}
       placeholder={placeholder}
       defaultValue={defaultValue}
@@ -44,8 +48,10 @@ const TextInput = ({
 TextInput.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
+  size: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.any,
+  autoComplete: PropTypes.string,
   error: PropTypes.string,
   fullWidth: PropTypes.bool,
   placeholder: PropTypes.string,

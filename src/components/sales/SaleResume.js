@@ -8,10 +8,14 @@ import NumberFormattedInput from '../NumberFormattedInput';
 
 const SaleResume = ({ subTotal, discount, total }) => (
   <>
+    <Typography mb={1} variant="subtitle1">
+      Resumen de la venta
+    </Typography>
     <Typography
       mb={1}
-      variant="h5"
+      variant="body1"
       component="div"
+      fontWeight={400}
       display="flex"
       justifyContent="space-between"
     >
@@ -24,7 +28,8 @@ const SaleResume = ({ subTotal, discount, total }) => (
     </Typography>
     <Typography
       mb={1}
-      variant="h5"
+      variant="body1"
+      fontWeight={400}
       component="div"
       display="flex"
       justifyContent="space-between"
@@ -39,7 +44,8 @@ const SaleResume = ({ subTotal, discount, total }) => (
     <Divider component="div" sx={{ my: 1 }} />
     <Typography
       mb={1}
-      variant="h5"
+      variant="body1"
+      fontWeight={400}
       component="div"
       display="flex"
       justifyContent="space-between"
