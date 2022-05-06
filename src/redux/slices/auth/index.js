@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 // jwt decode
 import jwtDecode from 'jwt-decode';
 // axios
-import axios from '../../../utils/axios';
+import axios, { axiosClient } from '../../../utils/axios';
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -62,7 +62,7 @@ export const login = (data) => (dispatch) => {
   dispatch(setIsLoading(true));
 
   return new Promise((resolve, reject) => {
-    axios
+    axiosClient
       .post('/auth/login', data)
       .then((response) => {
         const { accessToken, refreshToken } = response.data.data;
@@ -87,7 +87,7 @@ export const logout = () => (dispatch, getState) => {
   dispatch(logoutSucces());
   dispatch(setSession(null));
   return new Promise((resolve, reject) => {
-    axios
+    axiosClient
       .post('/auth/logout', { refreshToken })
       .then((response) => resolve(response))
       .catch((error) => reject(error));
@@ -107,7 +107,7 @@ export const fetchRefreshToken = () => (dispatch, getState) => {
   dispatch(setIsLoading(true));
 
   if (refreshToken) {
-    axios
+    axiosClient
       .post('/auth/token', {
         email,
         refreshToken,
@@ -139,7 +139,7 @@ export const forgotPassword = (data) => (dispatch) => {
   dispatch(setIsLoading(true));
 
   return new Promise((resolve, reject) => {
-    axios
+    axiosClient
       .post('/auth/forgot-password', {
         email
       })
@@ -162,7 +162,7 @@ export const resetPassword = (data) => (dispatch) => {
   dispatch(setIsLoading(true));
 
   return new Promise((resolve, reject) => {
-    axios
+    axiosClient
       .post('/auth/reset-password', {
         newPassword,
         passwordConfirm,
@@ -186,7 +186,7 @@ export const updatePassword = (data) => (dispatch) => {
   dispatch(setIsLoading(true));
 
   return new Promise((resolve, reject) => {
-    axios
+    axiosClient
       .post('/auth/update-password', {
         currentPassword,
         newPassword,

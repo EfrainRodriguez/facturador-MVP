@@ -59,10 +59,10 @@ const ForgotPassword = () => {
           }
         );
       })
-      .catch((error) => {
+      .catch(({ response: { data: error } }) => {
         enqueueSnackbar(
-          error.response
-            ? error.response.data.message
+          error
+            ? error.data.message
             : 'Error inesperado, por favor intente nuevamente',
           {
             variant: 'error'

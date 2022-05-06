@@ -57,19 +57,17 @@ const Login = () => {
           variant: 'success'
         });
       })
-      .catch((error) => {
+      .catch(({ response: { data: error } }) => {
         enqueueSnackbar(
-          error.response
-            ? error.response.data.message
+          error
+            ? error.data.message
             : 'Error inesperado, por favor intente nuevamente',
           {
             variant: 'error'
           }
         );
         return (
-          error.response &&
-          error.response.data &&
-          setErrors(getErrorObject(error.response.data.errors))
+          error.data.errors && setErrors(getErrorObject(error.data.errors))
         );
       });
   };
