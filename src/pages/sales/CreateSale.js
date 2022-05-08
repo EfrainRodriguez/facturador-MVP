@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 // router
 // import { useNavigate } from 'react-router-dom';
+// lodash
+import { debounce } from 'lodash';
 // material
 import {
   Box,
@@ -147,13 +149,13 @@ const CreateSale = () => {
     });
   };
 
-  const handleSearchProductByName = (event, inputValue, rowIndex) => {
-    setProductsFromSearch({
-      ...productsFromSearch,
-      isLoading: true,
-      index: rowIndex
-    });
+  const handleSearchProductByName = debounce((event, inputValue, rowIndex) => {
     if (inputValue.length > 3) {
+      setProductsFromSearch({
+        ...productsFromSearch,
+        isLoading: true,
+        index: rowIndex
+      });
       dispatch(fetchProductByNameAutocomplete(`name=${inputValue}`))
         .then((response) => {
           if (
@@ -176,9 +178,10 @@ const CreateSale = () => {
           });
         });
     }
-  };
+  }, 500);
 
   const handleSelectProductFromSearch = (e, product, rowIndex) => {
+    if (!product) return;
     const products = [...data.products];
     products[rowIndex] = {
       ...products[rowIndex],

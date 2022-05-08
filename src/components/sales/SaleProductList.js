@@ -11,7 +11,8 @@ import {
   Tooltip,
   InputAdornment,
   TextField,
-  Autocomplete
+  Autocomplete,
+  CircularProgress
 } from '@mui/material';
 import { Delete, Search } from '@mui/icons-material';
 // components
@@ -78,6 +79,11 @@ const SaleProductList = ({
                 name="name"
                 value={product}
                 inputValue={product.name}
+                options={
+                  productsFromSearch.index === index
+                    ? productsFromSearch.list
+                    : []
+                }
                 onChange={(e, value) =>
                   handleSelectProductFromSearch(e, value, index)
                 }
@@ -88,17 +94,23 @@ const SaleProductList = ({
                 onInputChange={(e, inputValue) =>
                   handleSearchItemByName(e, inputValue, index)
                 }
-                options={
-                  productsFromSearch.index === index
-                    ? productsFromSearch.list
-                    : []
-                }
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     size="small"
                     label="Buscar producto"
                     placeholder="Busque el producto por nombre"
+                    InputProps={{
+                      ...params.InputProps,
+                      endAdornment: (
+                        <>
+                          {productsFromSearch.isLoading ? (
+                            <CircularProgress color="inherit" size={20} />
+                          ) : null}
+                          {params.InputProps.endAdornment}
+                        </>
+                      )
+                    }}
                   />
                 )}
               />
