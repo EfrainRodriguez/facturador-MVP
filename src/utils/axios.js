@@ -45,8 +45,8 @@ export default axiosInstance;
 
 export const axiosClient = axios.create();
 
-// axiosClient.defaults.baseURL = 'https://facturador-api-mvp.herokuapp.com/api';
-axiosClient.defaults.baseURL = 'http://localhost:1234/api';
+axiosClient.defaults.baseURL = 'https://facturador-api-mvp.herokuapp.com/api';
+// axiosClient.defaults.baseURL = 'http://localhost:1234/api';
 
 axiosClient.interceptors.response.use(
   (response) => response,
