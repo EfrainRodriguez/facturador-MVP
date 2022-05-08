@@ -52,6 +52,12 @@ const Products = () => {
     },
     {
       columnName: 'amount',
+      columnLabel: 'Cantidad inventariada',
+      columnProps: { align: 'center' },
+      cellProps: { align: 'center' }
+    },
+    {
+      columnName: 'stock',
       columnLabel: 'Cantidad en stock',
       columnProps: { align: 'center' },
       cellProps: { align: 'center' }
@@ -73,18 +79,6 @@ const Products = () => {
       render: (data) => (
         <NumberFormattedInput displayType="text" value={data || ''} />
       )
-    },
-    {
-      columnName: 'category',
-      columnLabel: 'Categoria',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (data) => {
-        const category = categoryList.categories.find(
-          (thisCategory) => thisCategory._id === data
-        );
-        return category ? category.name : 'Sin categoria';
-      }
     }
   ];
 
@@ -103,7 +97,7 @@ const Products = () => {
 
   const handleChangePage = (page) => {
     dispatch(
-      fetchProducts(`pageNumber=${page + 1}&pageSize=${unitList.pageSize}`)
+      fetchProducts(`pageNumber=${page + 1}&pageSize=${productList.pageSize}`)
     ).then((response) => {
       dispatch(setProductList(response.data && response.data.data));
     });
@@ -115,7 +109,7 @@ const Products = () => {
 
   const handleChangeRowsPerPage = (rows) => {
     dispatch(
-      fetchProducts(`pageNumber=${unitList.pageNumber}&pageSize=${rows}`)
+      fetchProducts(`pageNumber=${productList.pageNumber}&pageSize=${rows}`)
     ).then((response) => {
       dispatch(setProductList(response.data && response.data.data));
     });
@@ -201,7 +195,11 @@ const Products = () => {
         <TableX
           hasCollapse
           renderRowDetails={(item) => (
-            <ProductDetails data={item} units={unitList.units} />
+            <ProductDetails
+              data={item}
+              units={unitList.units}
+              categories={categoryList.categories}
+            />
           )}
           rowsPerPage={productList.pageSize}
           page={productList.pageNumber - 1}

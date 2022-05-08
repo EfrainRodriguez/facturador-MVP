@@ -51,6 +51,7 @@ const NumberFormattedInput = ({
       type={type}
       name={name}
       mask={mask}
+      size="small"
       value={value}
       format={format}
       prefix={prefix}

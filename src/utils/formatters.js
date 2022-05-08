@@ -32,7 +32,7 @@ export const normalizeCurrency = (num) => {
     } else {
       num = parseFloat(num).toFixed(2);
     }
-    return num;
+    return Number(num);
   }
   return null;
 };

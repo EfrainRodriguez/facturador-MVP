@@ -12,10 +12,16 @@ import {
   TableBody
 } from '@mui/material';
 
-const ProductDetails = ({ data = {}, units = [] }) => {
+const ProductDetails = ({ data = {}, units = [], categories = [] }) => {
   const getUnit = (unitId) => {
     const unit = units.find((item) => item._id === unitId);
     return unit ? unit.name : '';
+  };
+  const getCategory = (categoryId) => {
+    const category = categories.find(
+      (thisCategory) => thisCategory._id === categoryId
+    );
+    return category ? category.name : 'Sin categoria';
   };
   return (
     <Box mt={4} mb={4} display="flex" justifyContent="center">
@@ -24,8 +30,9 @@ const ProductDetails = ({ data = {}, units = [] }) => {
           <TableHead>
             <TableRow>
               <TableCell>Unidad</TableCell>
+              <TableCell>Categoria</TableCell>
               <TableCell align="center">Marca</TableCell>
-              <TableCell align="center">Referencia</TableCell>
+              <TableCell align="center">Código de barras</TableCell>
               <TableCell>Descripción</TableCell>
             </TableRow>
           </TableHead>
@@ -34,8 +41,11 @@ const ProductDetails = ({ data = {}, units = [] }) => {
               <TableCell component="th" scope="row">
                 {getUnit(data.unit)}
               </TableCell>
+              <TableCell component="th" scope="row">
+                {getCategory(data.category)}
+              </TableCell>
               <TableCell align="center">{data.brand}</TableCell>
-              <TableCell align="center">{data.code}</TableCell>
+              <TableCell align="center">{data.barCode}</TableCell>
               <TableCell colSpan={12}>{data.description}</TableCell>
             </TableRow>
           </TableBody>
@@ -47,7 +57,8 @@ const ProductDetails = ({ data = {}, units = [] }) => {
 
 ProductDetails.propTypes = {
   data: PropTypes.object,
-  units: PropTypes.array
+  units: PropTypes.array,
+  categories: PropTypes.array
 };
 
 export default ProductDetails;

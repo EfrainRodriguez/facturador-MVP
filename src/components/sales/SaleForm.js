@@ -17,7 +17,7 @@ const SaleForm = ({ data = {}, errors = [], onChange }) => {
   // const handleCreateCustomer = () => onCreateCustomer && onCreateCustomer();
   return (
     <Grid container spacing={2}>
-      <Grid item xs={10} sm={8}>
+      <Grid item xs={12}>
         <TextInput
           name="customer"
           label="Buscar cliente"
@@ -34,7 +34,7 @@ const SaleForm = ({ data = {}, errors = [], onChange }) => {
           </IconButton>
         </Tooltip>
       </Grid> */}
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} md={6}>
         <DateInput
           type="number"
           name="createdAt"
@@ -47,7 +47,7 @@ const SaleForm = ({ data = {}, errors = [], onChange }) => {
           }
         />
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12} md={6}>
         <SelectInput
           name="paymentStatus"
           value={data.paymentStatus}
@@ -58,7 +58,7 @@ const SaleForm = ({ data = {}, errors = [], onChange }) => {
           onChange={handleChange}
         />
       </Grid>
-      <Grid item xs={12} sm={4}>
+      <Grid item xs={12}>
         <SelectInput
           name="paymentMethod"
           value={data.paymentMethod}
@@ -66,6 +66,17 @@ const SaleForm = ({ data = {}, errors = [], onChange }) => {
           error={getErrorMessage('paymentMethod', errors)}
           placeholder="Informe el metodo de pago"
           options={paymentMethods}
+          onChange={handleChange}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextInput
+          multiline
+          minRows={2}
+          name="observation"
+          label="Observación"
+          value={data.observation || ''}
+          placeholder="Agregue alguna observación para esta venta"
           onChange={handleChange}
         />
       </Grid>

@@ -15,6 +15,7 @@ const SelectInput = ({
   name,
   label,
   value,
+  size = 'small',
   error,
   required,
   children,
@@ -29,7 +30,12 @@ const SelectInput = ({
   onChange,
   ...rest
 }) => (
-  <FormControl required={required} fullWidth={fullWidth} {...formControlProps}>
+  <FormControl
+    size={size}
+    required={required}
+    fullWidth={fullWidth}
+    {...formControlProps}
+  >
     <InputLabel {...inputLabelProps}>{label}</InputLabel>
     <Select
       id={id}
@@ -64,6 +70,7 @@ SelectInput.propTypes = {
   name: PropTypes.string,
   label: PropTypes.string,
   value: PropTypes.any,
+  size: PropTypes.string,
   error: PropTypes.string,
   required: PropTypes.bool,
   options: PropTypes.array,

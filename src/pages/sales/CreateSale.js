@@ -1,199 +1,215 @@
 import React, { useState, useEffect } from 'react';
 // router
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+// lodash
+import { debounce } from 'lodash';
 // material
-import { Box, Grid, Card, Button, Divider, Typography } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Card,
+  Tooltip,
+  IconButton,
+  Typography
+} from '@mui/material';
 import { AddCircle } from '@mui/icons-material';
 // notistack
-import { useSnackbar } from 'notistack';
+// import { useSnackbar } from 'notistack';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import { createSale } from '../../redux/slices/sales';
-import { createCustomer } from '../../redux/slices/persons/customers';
+// import { createSale } from '../../redux/slices/sales';
 import {
   fetchProducts,
-  setProductList
+  setProductList,
+  fetchProductByNameAutocomplete
 } from '../../redux/slices/inventory/products';
 import { fetchUnits, setUnitList } from '../../redux/slices/inventory/units';
 // components
 import {
   Page,
-  Modal,
-  TableX,
   SaleForm,
-  TextInput,
+  ScrollBar,
   SaleResume,
-  PersonForm,
-  TableToolbar,
-  SaleItemForm,
-  ActionButtons,
-  NumberFormattedInput
+  SaleProductList
 } from '../../components';
 // paths
-import { PATH_SALES, PATH_INVENTORY } from '../../routes/paths';
+import { PATH_SALES } from '../../routes/paths';
 // utils
 import { normalizeCurrency } from '../../utils/formatters';
 
 const CreateSale = () => {
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [selectedItem, setSelectedItem] = useState({});
+  // STATE -----------------------------------------------------
   const [data, setData] = useState({
     createdAt: new Date(),
-    products: [],
+    products: [
+      {
+        amountSold: 1
+      }
+    ],
     paymentStatus: 'PAID',
     paymentMethod: 'CASH',
     customer: ''
   });
-  const [showProductModal, setShowProductModal] = useState(false);
-  const [showCreateCustomerModal, setShowCreateCustomertModal] =
-    useState(false);
+
+  const [productsFromSearch, setProductsFromSearch] = useState({
+    list: [],
+    index: 0,
+    isLoading: false
+  });
 
   const {
-    sales: { errors },
-    inventory: {
-      units: { unitList },
-      products: { productList }
-    }
+    sales: { errors }
+    // inventory: {
+    //   units: { unitList }
+    // }
   } = useSelector((state) => state);
 
-  const cellSchema = [
-    {
-      columnName: 'productName',
-      columnLabel: 'Nombre'
-    },
-    {
-      columnName: 'amount',
-      columnLabel: 'Cantidad',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' }
-    },
-    {
-      columnName: 'salePrice',
-      columnLabel: 'Valor unitario',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (salePrice) => (
-        <NumberFormattedInput displayType="text" value={salePrice || 0} />
-      )
-    },
-    {
-      columnName: 'discount',
-      columnLabel: 'Descuento',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (discount) => (
-        <NumberFormattedInput displayType="text" value={discount || 0} />
-      )
-    },
-    {
-      columnName: 'total',
-      columnLabel: 'Valor total',
-      columnProps: { align: 'center' },
-      cellProps: { align: 'center' },
-      render: (total, allData) => (
-        <NumberFormattedInput
-          displayType="text"
-          value={allData.salePrice * allData.amount - allData.discount || ''}
-        />
-      )
-    }
-  ];
-
+  // HOOKS -----------------------------------------------------
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  // const navigate = useNavigate();
+  // const { enqueueSnackbar } = useSnackbar();
+
+  // OTHER FUNCTIONS -------------------------------------------
+  // const removeEmptyProducts = (products) =>
+  //   products.filter((product = {}) => Object.keys(product).length > 0);
+
+  const appendRowData = (product, rowIndex) => {
+    const allProducts = [...data.products];
+    allProducts[rowIndex] = {
+      ...allProducts[rowIndex],
+      ...product
+    };
+    setData({ ...data, products: allProducts });
+  };
 
   const getSubtotal = () =>
-    data.products.reduce((acc, curr) => acc + curr.salePrice * curr.amount, 0);
+    data.products.reduce((acc, curr) => {
+      const salePrice = normalizeCurrency(curr.salePrice) || 0;
+      const amount = Number(curr.amount) || 0;
+      return acc + salePrice * amount;
+    }, 0);
 
   const getDiscount = () =>
-    data.products.reduce((acc, curr) => acc + curr.discount, 0);
+    data.products.reduce((acc, curr) => {
+      const discount = normalizeCurrency(curr.discount) || 0;
+      return acc + discount;
+    }, 0);
 
   const getTotal = () => getSubtotal() - getDiscount();
 
-  const handleSubmit = () => {
-    dispatch(createSale(data)).then(() => {
-      navigate(PATH_SALES.root);
-      enqueueSnackbar('Venta registrada!', { variant: 'success' });
-    });
-  };
+  // HANDLERS --------------------------------------------------
 
-  const handleChange = (event) => {
+  const handleChangeRowData = (event, rowIndex) => {
     const { name, value } = event.target;
-    setData({ ...data, [name]: value });
+    const products = [...data.products];
+    products[rowIndex][name] = value;
+    setData({ ...data, products });
   };
 
-  const handleSelect = (items) => {
-    setSelectedItems(items);
+  const handleDeleteProduct = (rowIndex) => {
+    const products = [...data.products];
+    if (products.length === 1) {
+      products[rowIndex] = {};
+    } else {
+      products.splice(rowIndex, 1);
+    }
+    setData({ ...data, products });
   };
-
-  const handleChangePage = () => {};
-
-  const handleRowSelected = (item) => {
-    setSelectedItem(item);
-  };
-
-  const handleChangeRowsPerPage = () => {};
 
   const handleAddProduct = () => {
-    setShowProductModal(true);
-    setSelectedItem({});
-  };
-
-  const handleCloseProductModal = () => {
-    setShowProductModal(false);
-    setSelectedItem({});
-    setSelectedItems([]);
-  };
-
-  const handleInsertProduct = (product) => {
     setData({
       ...data,
       products: [
         ...data.products,
         {
-          ...product,
-          salePrice: Number(normalizeCurrency(product.salePrice)),
-          discount: Number(normalizeCurrency(product.discount))
+          amountSold: 1
         }
       ]
     });
-    setShowProductModal(false);
   };
 
-  const handleEditProduct = () => {
-    setShowProductModal(true);
+  const handleSearchProductByCode = (barCode, rowIndex) => {
+    dispatch(fetchProducts(`barCode=${barCode}`)).then((response) => {
+      if (
+        response.data &&
+        response.data.data.products &&
+        response.data.data.products.length > 0
+      ) {
+        appendRowData(response.data.data.products[0], rowIndex);
+        const products = [...data.products];
+        products[rowIndex] = {
+          ...products[rowIndex],
+          ...response.data.data.products[0]
+        };
+        products[rowIndex + 1] = {
+          amountSold: 1
+        };
+        setData({ ...data, products });
+      }
+    });
   };
 
-  const handleDeleteProduct = () => {
-    const newProducts = data.products.filter(
-      (product) => !selectedItems.includes(product)
-    );
-    setData({ ...data, products: newProducts });
-    setSelectedItems([]);
+  const handleSearchProductByName = debounce((event, inputValue, rowIndex) => {
+    if (inputValue.length > 3) {
+      setProductsFromSearch({
+        ...productsFromSearch,
+        isLoading: true,
+        index: rowIndex
+      });
+      dispatch(fetchProductByNameAutocomplete(`name=${inputValue}`))
+        .then((response) => {
+          if (
+            response.data &&
+            response.data.data &&
+            response.data.data.length > 0
+          ) {
+            setProductsFromSearch({
+              ...productsFromSearch,
+              list: response.data.data,
+              isLoading: false
+            });
+          }
+        })
+        .catch(() => {
+          setProductsFromSearch({
+            ...productsFromSearch,
+            list: [],
+            isLoading: false
+          });
+        });
+    }
+  }, 500);
+
+  const handleSelectProductFromSearch = (e, product, rowIndex) => {
+    if (!product) return;
+    const products = [...data.products];
+    products[rowIndex] = {
+      ...products[rowIndex],
+      ...product
+    };
+    setData({ ...data, products });
+    setProductsFromSearch({
+      ...productsFromSearch,
+      list: [],
+      isLoading: false
+    });
   };
 
-  const handleRedirectToCreateProductPage = () => {
-    navigate(PATH_INVENTORY.createProduct);
-  };
+  // const handleSubmit = () => {
+  //   dispatch(
+  //     createSale({
+  //       ...data,
+  //       products: removeEmptyProducts(data.products)
+  //     })
+  //   ).then(() => {
+  //     navigate(PATH_SALES.root);
+  //     enqueueSnackbar('Venta registrada!', { variant: 'success' });
+  //   });
+  // };
 
-  const handleShowCreateCustomerModal = () => {
-    setShowCreateCustomertModal(true);
-  };
-
-  const handleCloseCreateCustomerModal = () => {
-    setShowCreateCustomertModal(false);
-  };
-
-  const handleCreateCustomerChange = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setData({ ...data, customer: { ...data.customer, [name]: value } });
-  };
-
-  const handleCreateCustomerSubmit = () => {
-    dispatch(createCustomer(data.customer));
-    setShowCreateCustomertModal(false);
-    // fetch customers
+    setData({ ...data, [name]: value });
   };
 
   useEffect(() => {
@@ -207,110 +223,50 @@ const CreateSale = () => {
 
   return (
     <Page hasBackButton title="Registrar venta" backwardPath={PATH_SALES.root}>
-      <Card sx={{ p: 3 }}>
-        <SaleForm
-          data={data}
-          errors={errors}
-          onChange={handleChange}
-          onCreateCustomer={handleShowCreateCustomerModal}
-        />
-        <Divider component="div" sx={{ my: 3 }} />
-        <Box mt={3} mb={2} display="flex" justifyContent="end">
-          <Button variant="contained" onClick={handleAddProduct}>
-            <AddCircle />
-            &nbsp; Agregar producto
-          </Button>
-        </Box>
-        <Card sx={{ px: 2, pt: 2, pb: 0 }}>
-          <Typography variant="subtitle1" mb={2} textAlign="center">
-            Lista de productos
-          </Typography>
-          <TableToolbar
-            numSelected={selectedItems.length}
-            actions={
-              <ActionButtons
-                editLabel="Editar producto"
-                editProps={{ disabled: selectedItems.length > 1 }}
-                deleteLabel={
-                  selectedItems.length > 1
-                    ? 'Eliminar productos'
-                    : 'Eliminar producto'
-                }
-                onEdit={handleEditProduct}
-                onDelete={handleDeleteProduct}
-              />
-            }
-          />
-          <TableX
-            hasCollapse
-            selected={selectedItems}
-            sourceData={data.products}
-            cellSchema={cellSchema}
-            onSelect={handleSelect}
-            onChangePage={handleChangePage}
-            onRowSelected={handleRowSelected}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-          />
-        </Card>
-        <Divider component="div" sx={{ my: 3 }} />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={8}>
-            <TextInput
-              multiline
-              minRows={2}
-              name="observation"
-              label="Observación"
-              value={data.observation || ''}
-              placeholder="Agregue alguna observación para esta venta"
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={4}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ p: 2, mb: 2 }}>
+            <SaleForm data={data} errors={errors} onChange={handleChange} />
+          </Card>
+          <Card sx={{ p: 2, pb: 0 }}>
             <SaleResume
               subTotal={getSubtotal()}
               discount={-getDiscount()}
               total={getTotal()}
             />
-          </Grid>
+          </Card>
         </Grid>
-        <Box mt={3} display="flex" justifyContent="end">
-          <Button variant="contained" onClick={handleSubmit}>
-            Registrar venta
-          </Button>
-        </Box>
-      </Card>
-      <Modal
-        fullWidth
-        maxWidth="md"
-        open={showProductModal}
-        onClose={handleCloseProductModal}
-      >
-        <Typography variant="subtitle1" mt={-1} mb={2}>
-          Información de producto
-        </Typography>
-        <SaleItemForm
-          data={selectedItem}
-          unitOptions={unitList.units}
-          productOptions={productList.products}
-          onCreateProduct={handleRedirectToCreateProductPage}
-          onCancel={handleCloseProductModal}
-          onSubmit={handleInsertProduct}
-        />
-      </Modal>
-      <Modal
-        fullWidth
-        maxWidth="md"
-        open={showCreateCustomerModal}
-        onClose={handleCloseCreateCustomerModal}
-      >
-        <PersonForm
-          data={data.customer}
-          // errors={errors}
-          submitButtonText="Crear cliente"
-          onChange={handleCreateCustomerChange}
-          onSubmit={handleCreateCustomerSubmit}
-        />
-      </Modal>
+        <Grid item xs={12} md={8}>
+          <Card sx={{ py: 2, px: 0 }}>
+            <Box
+              px={2}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography variant="subtitle1" textAlign="center">
+                Lista de productos
+              </Typography>
+              <Tooltip placement="top" title="Agregar producto">
+                <IconButton variant="contained" onClick={handleAddProduct}>
+                  <AddCircle fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+            <ScrollBar style={{ maxHeight: 370 }}>
+              <SaleProductList
+                products={data.products}
+                productsFromSearch={productsFromSearch}
+                onChange={handleChangeRowData}
+                onDeleteItem={handleDeleteProduct}
+                onSearchItemByCode={handleSearchProductByCode}
+                onSearchItemByName={handleSearchProductByName}
+                onSelectProductFromSearch={handleSelectProductFromSearch}
+              />
+            </ScrollBar>
+          </Card>
+        </Grid>
+      </Grid>
     </Page>
   );
 };
